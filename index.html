@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>质粒管理系统 - 增强编辑版</title>
+    <script src="js/lib/tailwind.min.js"></script>
+    <script src="js/lib/vue.global.js"></script>
+    <script src="js/lib/compromise.js"></script>
+    <style>
+        [v-cloak] { display: none !important; }
+        .init-loader { position: fixed; inset: 0; background: #f9fafb; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+        /* 当 Vue 挂载完成（v-cloak 移除）后，隐藏加载层 */
+        [v-cloak] ~ .init-loader { display: flex !important; }
+        #app:not([v-cloak]) ~ .init-loader { display: none !important; }
+        #app:not([v-cloak]) + #init-loader { display: none !important; }
+        
+        .filter-tag { cursor: pointer; transition: all 0.2s; }
+        .filter-tag:hover { opacity: 0.8; }
+        .filter-tag.active { background-color: #3b82f6; color: white; }
+        .drop-zone { border: 2px dashed #cbd5e1; transition: all 0.3s; }
+        .drop-zone.dragging { border-color: #3b82f6; background-color: #eff6ff; }
+        .modal-enter-active, .modal-leave-active { transition: opacity 0.3s; }
+        .modal-enter-from, .modal-leave-to { opacity: 0; }
+        
+        /* 交互美化 */
+        .card-hover { transition: transform 0.2s, box-shadow 0.2s; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .btn-scale { transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn-scale:active { transform: scale(0.95); opacity: 0.9; }
+        .btn-scale:hover { filter: brightness(1.1); }
+        
+        /* 引导层样式 */
+        .guide-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; }
+        .guide-box { position: relative; background: white; padding: 28px; border-radius: 20px; max-width: 400px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); z-index: 1001; }
+        .highlight-target { position: relative; z-index: 1002 !important; box-shadow: 0 0 0 4px #3b82f6, 0 0 20px rgba(59, 130, 246, 0.5) !important; background: white !important; }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div id="app" v-cloak class="container mx-auto px-4 py-8 max-w-[1600px] relative z-10">
+        <!-- 用户引导 -->
+        <div v-if="showGuide" class="guide-overlay" @click.stop></div>
+        <div v-if="showGuide" class="fixed inset-0 z-[1100] flex items-center justify-center pointer-events-none">
+            <div class="guide-box pointer-events-auto shadow-2xl border border-blue-100">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">{{ guideSteps[guideStep].title }}</h3>
+                </div>
+                <p class="text-gray-600 mb-8 leading-relaxed">{{ guideSteps[guideStep].content }}</p>
+                <div class="flex justify-between items-center">
+                    <button @click="skipGuide" class="text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors">不再提示</button>
+                    <div class="flex gap-2">
+                        <div v-for="(s, i) in guideSteps" :key="i" :class="['w-2 h-2 rounded-full transition-all', i === guideStep ? 'bg-blue-600 w-4' : 'bg-gray-200']"></div>
+                    </div>
+                    <button @click="nextGuide" class="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 font-bold btn-scale">
+                        {{ guideStep === guideSteps.length - 1 ? '立即开启' : '下一步' }}
+                    </button>
+                </div>
+            </div>
+
+        <!-- 数据加载界面 -->
+        <div v-if="!isDatabaseReady" class="max-w-xl mx-auto mt-20">
+            <div class="bg-white rounded-xl shadow-xl p-8 text-center">
+                <div class="mb-6">
+                    <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">欢迎使用质粒管理系统</h2>
+                    <p class="text-gray-500 mt-2">请选择或拖入您的数据库文件开始管理</p>
+                </div>
+                
+                <div 
+                    @dragover.prevent="isDragging = true" 
+                    @dragleave.prevent="isDragging = false" 
+                    @drop.prevent="handleDrop"
+                    :class="['drop-zone p-10 rounded-lg mb-6 cursor-pointer', isDragging ? 'dragging' : '']"
+                    @click="linkLocalDatabase"
+                >
+                    <p class="text-gray-400 font-medium">点击选择并链接 <span class="font-mono text-blue-500 underline">plasmid_database.json</span></p>
+                    <p class="text-[10px] text-gray-400 mt-2">链接后可实现“一键保存”，无需重复选择</p>
+                </div>
+                
+                <!-- 隐藏的文件输入框，用于不支持 showOpenFilePicker 的浏览器 -->
+                <input 
+                    type="file" 
+                    id="db-file-input" 
+                    class="hidden" 
+                    accept=".json" 
+                    @change="handleFileSelect"
+                >
+                </div>
+            </div>
+        </div>
+
+        <!-- 主界面 -->
+        <div v-else>
+            <header class="mb-8 flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">质粒管理系统</h1>
+                    <p class="text-gray-600 mt-2">
+                        共有 {{ plasmids.length }} 条记录 | 
+                        <span class="text-blue-600 font-medium">当前筛选出 {{ filteredPlasmids.length }} 条</span>
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <div v-if="isElectron" class="relative">
+                        <button @click="scanAndImportLocal" class="px-4 py-2 bg-amber-500 text-white rounded-md hover:bg-amber-600 shadow-sm flex items-center gap-2 transition-all btn-scale">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            扫描当前目录
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="btn-batch-import" @click="triggerBatchImport" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 shadow-sm flex items-center gap-2 transition-all btn-scale">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            批量导入
+                        </button>
+                    </div>
+                    <div class="relative group">
+                        <button class="px-4 py-2 bg-white border border-gray-300 text-gray-600 rounded-md hover:bg-gray-50 shadow-sm flex items-center gap-2 transition-all btn-scale">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
+                            自定义列
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 p-2">
+                            <label v-for="(visible, col) in settings.displayConfig.columnVisibility" :key="col" class="flex items-center gap-3 px-3 py-2 hover:bg-blue-50 rounded-md cursor-pointer transition-colors">
+                                <input type="checkbox" v-model="settings.displayConfig.columnVisibility[col]" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">{{ col }}</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button @click="showExportModal = true" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 shadow-sm flex items-center gap-2 transition-all btn-scale">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2m3.293-7.707a1 1 0 011.414 0L9 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" /></svg>
+                            导出 CSV
+                        </button>
+                        <label class="px-4 py-2 bg-white border border-gray-300 text-gray-600 rounded-md hover:bg-gray-50 shadow-sm flex items-center gap-2 transition-all btn-scale cursor-pointer">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                            导入 CSV
+                            <input type="file" accept=".csv" class="hidden" @change="handleCSVImport">
+                        </label>
+                    </div>
+                    <button id="btn-save-db" @click="saveDatabaseFile" class="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 shadow-sm flex items-center gap-2 transition-all btn-scale" :title="dbFileHandle ? '直接保存到已链接的文件' : '保存当前所有质粒到本地数据库文件'">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+                        {{ dbFileHandle ? '直接保存' : '保存到数据库' }}
+                    </button>
+                    <button @click="showSettingsModal = true" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 shadow-sm flex items-center gap-2 transition-all btn-scale">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        设置
+                    </button>
+                    <button @click="showLogModal = true" class="px-4 py-2 bg-slate-700 text-white rounded-md hover:bg-slate-800 shadow-sm flex items-center gap-2 transition-all btn-scale">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        系统日志
+                    </button>
+                    <button @click="resetData" class="px-4 py-2 bg-white border border-gray-300 text-gray-600 rounded-md hover:bg-gray-50 transition-all btn-scale">切换数据库</button>
+                </div>
+            </header>
+
+            <!-- 搜索和过滤 -->
+            <div id="section-search" class="bg-white rounded-lg shadow-md p-6 mb-8 border border-gray-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            深度全局搜索 (支持文件名、特征、抗性、描述等所有字段)
+                        </label>
+                        <input v-model="searchQuery" type="text" placeholder="输入任何关键词..." class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                    </div>
+                    <div class="w-48">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">每页显示条数</label>
+                        <select v-model="pageSize" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                            <option :value="10">10 条</option>
+                            <option :value="20">20 条</option>
+                            <option :value="50">50 条</option>
+                            <option :value="100">100 条</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-4 pt-4 border-t border-gray-50">
+                    <div v-for="(options, key) in filterOptions" :key="key" class="min-w-0">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 truncate">{{ key }}</label>
+                        <div class="flex flex-wrap gap-1 max-h-24 overflow-y-auto pr-1 scrollbar-thin">
+                            <span v-for="option in options" :key="option" @click="toggleFilter(key, option)"
+                                :class="['px-1.5 py-0.5 text-[10px] rounded border cursor-pointer transition-all whitespace-nowrap', isFilterActive(key, option) ? 'active bg-blue-600 text-white border-blue-600 shadow-sm' : 'bg-white text-gray-500 border-gray-100 hover:border-blue-200']">
+                                {{ option }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据表格 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50 text-xs text-gray-500 uppercase font-bold tracking-wider">
+                            <tr>
+                                <th v-if="settings.displayConfig.columnVisibility['质粒信息']" class="px-6 py-4 text-left">质粒信息</th>
+                                <th v-if="settings.displayConfig.columnVisibility['特征与分类']" class="px-6 py-4 text-left">特征与分类</th>
+                                <th v-if="settings.displayConfig.columnVisibility['抗性']" class="px-6 py-4 text-left">抗性</th>
+                                <th v-if="settings.displayConfig.columnVisibility['专业特征']" class="px-6 py-4 text-left">专业特征</th>
+                                <th v-if="settings.displayConfig.columnVisibility['序列信息']" class="px-6 py-4 text-left">序列信息</th>
+                                <th v-if="settings.displayConfig.columnVisibility['描述']" class="px-6 py-4 text-left">描述</th>
+                                <th class="px-6 py-4 text-center w-32">管理操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr v-for="(p, index) in paginatedPlasmids" :key="p.文件名" class="hover:bg-blue-50/30 transition-colors group">
+                                <td v-if="settings.displayConfig.columnVisibility['质粒信息']" class="px-6 py-5">
+                                    <div class="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{{ p.文件名 }}</div>
+                                    <div class="flex items-center gap-2 mt-1.5">
+                                        <button @click="copyText(p.路径, '路径已复制')" class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded hover:bg-blue-100 hover:text-blue-600 transition-all flex items-center gap-1">
+                                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
+                                            复制路径
+                                        </button>
+                                        <div class="text-[10px] text-gray-400 truncate max-w-[150px]" :title="p.路径">{{ p.路径 }}</div>
+                                    </div>
+                                </td>
+                                <td v-if="settings.displayConfig.columnVisibility['特征与分类']" class="px-6 py-5">
+                                    <div class="flex flex-wrap gap-1.5 mb-2">
+                                        <template v-if="Array.isArray(p.载体类型)">
+                                            <span v-for="tag in p.载体类型" :key="tag" class="px-1.5 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-bold rounded">{{ tag }}</span>
+                                        </template>
+                                        <span v-else-if="p.载体类型" class="px-1.5 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-bold rounded">{{ p.载体类型 }}</span>
+                                        
+                                        <template v-if="Array.isArray(p.物种)">
+                                            <span v-for="tag in p.物种" :key="tag" class="px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded">{{ tag }}</span>
+                                        </template>
+                                        <span v-else-if="p.物种" class="px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded">{{ p.物种 }}</span>
+                                    </div>
+                                    <div class="text-xs flex flex-wrap items-center gap-1.5">
+                                        <span class="font-bold text-gray-700">靶基因:</span> 
+                                        <span class="text-gray-900 font-medium">{{ Array.isArray(p.靶基因) ? p.靶基因.join(',') : p.靶基因 }}</span>
+                                        <div v-if="p.靶基因 && p.靶基因 !== '无' && p.靶基因.length" class="flex gap-1">
+                                            <template v-for="link in getBioLinks(p.靶基因, p.物种)" :key="link.name">
+                                                <div class="flex items-center gap-0.5 group">
+                                                    <a :href="link.uniprot" target="_blank" class="w-4 h-4 flex items-center justify-center bg-blue-50 text-blue-600 text-[9px] font-black rounded hover:bg-blue-600 hover:text-white transition-all border border-blue-100" title="UniProt: 蛋白质信息">U</a>
+                                                    <a :href="link.ncbi" target="_blank" class="w-4 h-4 flex items-center justify-center bg-green-50 text-green-600 text-[9px] font-black rounded hover:bg-green-600 hover:text-white transition-all border border-green-100" title="NCBI: 基因/核苷酸信息">N</a>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <div class="text-[10px] text-gray-500 mt-0.5">
+                                        <span class="font-medium text-gray-400">功能:</span> {{ Array.isArray(p.功能) ? p.功能.join(',') : p.功能 }}
+                                    </div>
+                                </td>
+                                <td v-if="settings.displayConfig.columnVisibility['抗性']" class="px-6 py-5 text-xs">
+                                    <div class="flex flex-col gap-1">
+                                        <div v-if="p.大肠杆菌抗性 && p.大肠杆菌抗性.length" class="flex items-center gap-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>
+                                            <span class="text-gray-600">E.coli: {{ Array.isArray(p.大肠杆菌抗性) ? p.大肠杆菌抗性.join(',') : p.大肠杆菌抗性 }}</span>
+                                        </div>
+                                        <div v-if="p.哺乳动物抗性 && p.哺乳动物抗性.length" class="flex items-center gap-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                                            <span class="text-gray-600">Mammal: {{ Array.isArray(p.哺乳动物抗性) ? p.哺乳动物抗性.join(',') : p.哺乳动物抗性 }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td v-if="settings.displayConfig.columnVisibility['专业特征']" class="px-6 py-5 text-[11px]">
+                                    <div class="space-y-1">
+                                        <div v-if="p.插入类型 && p.插入类型.length"><span class="font-bold text-gray-500">插入:</span> {{ Array.isArray(p.插入类型) ? p.插入类型.join(',') : p.插入类型 }}</div>
+                                        <div v-if="p.蛋白标签 && p.蛋白标签.length"><span class="font-bold text-gray-500">标签:</span> {{ Array.isArray(p.蛋白标签) ? p.蛋白标签.join(',') : p.蛋白标签 }}</div>
+                                        <div v-if="p.荧光蛋白 && p.荧光蛋白.length"><span class="font-bold text-gray-500">荧光:</span> {{ Array.isArray(p.荧光蛋白) ? p.荧光蛋白.join(',') : p.荧光蛋白 }}</div>
+                                        <div v-if="p.启动子 && p.启动子.length"><span class="font-bold text-gray-500">启动子:</span> {{ Array.isArray(p.启动子) ? p.启动子.join(',') : p.启动子 }}</div>
+                                        <div v-if="p.突变 && p.突变.length"><span class="font-bold text-red-500">突变:</span> {{ Array.isArray(p.突变) ? p.突变.join(',') : p.突变 }}</div>
+                                    </div>
+                                </td>
+                                <td v-if="settings.displayConfig.columnVisibility['序列信息']" class="px-6 py-5 text-xs">
+                                    <div v-if="p.序列" class="flex flex-col gap-1">
+                                        <div class="flex items-center gap-1.5 text-emerald-600 font-bold">
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                            已录入
+                                        </div>
+                                        <div class="text-[10px] text-gray-400 font-mono">{{ p.序列.length }} bp</div>
+                                    </div>
+                                    <div v-else class="text-gray-300 italic flex items-center gap-1">
+                                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                                        暂无序列
+                                    </div>
+                                </td>
+                                <td v-if="settings.displayConfig.columnVisibility['描述']" class="px-6 py-5">
+                                    <div class="text-xs text-gray-500 max-w-xs line-clamp-2" :title="p.描述">{{ p.描述 }}</div>
+                                </td>
+                                <td class="px-6 py-5 sticky right-0 bg-white group-hover:bg-blue-50/50 transition-colors shadow-[-4px_0_10px_-4px_rgba(0,0,0,0.1)]">
+                                    <div class="flex flex-col gap-2 items-center">
+                                        <button v-if="isElectron" @click="openFileNative(p.路径)" class="inline-flex items-center gap-1 px-3 py-1.5 bg-indigo-50 text-indigo-600 text-xs font-bold rounded-lg hover:bg-indigo-600 hover:text-white transition-all shadow-sm w-28 justify-center btn-scale">
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                            软件打开
+                                        </button>
+                                        <button @click="viewSequence(p)" class="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-50 text-emerald-600 text-xs font-bold rounded-lg hover:bg-emerald-600 hover:text-white transition-all shadow-sm w-28 justify-center btn-scale">
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                            查看序列
+                                        </button>
+                                        <button @click="editItem(p)" class="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm w-28 justify-center btn-scale">
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                            编辑修改
+                                        </button>
+                                        <button @click="deleteItem(p)" class="inline-flex items-center gap-1 px-3 py-1.5 bg-red-50 text-red-600 text-xs font-bold rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-sm w-28 justify-center btn-scale">
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                            删除记录
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- 分页 -->
+                <div class="px-6 py-5 flex justify-between items-center bg-gray-50 border-t border-gray-100">
+                    <div class="text-sm text-gray-500 font-medium">
+                        显示第 <span class="text-gray-900 font-bold">{{ (currentPage-1)*pageSize + 1 }}</span> 到 
+                        <span class="text-gray-900 font-bold">{{ Math.min(currentPage*pageSize, filteredPlasmids.length) }}</span> 条 
+                        (共 {{ filteredPlasmids.length }} 条)
+                    </div>
+                    <div class="flex gap-2">
+                        <button @click="currentPage--" :disabled="currentPage === 1" class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-bold text-gray-600 disabled:opacity-40 hover:bg-gray-50 transition-all shadow-sm">上一页</button>
+                        <div class="flex items-center px-5 bg-white border border-gray-200 rounded-lg text-sm font-bold text-blue-600 shadow-sm">
+                            {{ currentPage }} / {{ totalPages }}
+                        </div>
+                        <button @click="currentPage++" :disabled="currentPage >= totalPages" class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-bold text-gray-600 disabled:opacity-40 hover:bg-gray-50 transition-all shadow-sm">下一页</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 编辑弹窗 -->
+        <transition name="modal">
+            <div v-if="editingItem" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-100">
+                    <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white z-10">
+                        <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                            <span class="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                            </span>
+                            修改质粒信息
+                        </h3>
+                        <button @click="editingItem = null" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+                    
+                    <div class="p-8 space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-bold text-gray-700 mb-2">文件名</label>
+                                <input v-model="editForm.文件名" type="text" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">载体类型</label>
+                                <input v-model="editForm.载体类型" type="text" list="list-载体类型" placeholder="用逗号隔开" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">靶基因</label>
+                                <input v-model="editForm.靶基因" type="text" list="list-靶基因" placeholder="用逗号隔开" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">物种</label>
+                                <input v-model="editForm.物种" type="text" list="list-物种" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">功能</label>
+                                <input v-model="editForm.功能" type="text" list="list-功能" placeholder="用逗号隔开" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">大肠杆菌抗性</label>
+                                <input v-model="editForm.大肠杆菌抗性" type="text" list="list-大肠杆菌抗性" placeholder="用逗号隔开" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">哺乳动物抗性</label>
+                                <input v-model="editForm.哺乳动物抗性" type="text" list="list-哺乳动物抗性" placeholder="用逗号隔开" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">插入类型</label>
+                                <input v-model="editForm.插入类型" type="text" list="list-插入类型" placeholder="如 shRNA, cDNA" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">蛋白标签</label>
+                                <input v-model="editForm.蛋白标签" type="text" list="list-蛋白标签" placeholder="如 Flag, Myc, His" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">荧光蛋白</label>
+                                <input v-model="editForm.荧光蛋白" type="text" list="list-荧光蛋白" placeholder="如 EGFP, mCherry" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">启动子</label>
+                                <input v-model="editForm.启动子" type="text" list="list-启动子" placeholder="如 CMV, EF1a, U6" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">四环素诱导</label>
+                                <input v-model="editForm.四环素诱导" type="text" list="list-四环素诱导" placeholder="是/否 或 诱导剂" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">突变</label>
+                                <input v-model="editForm.突变" type="text" list="list-突变" placeholder="描述突变位点" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-bold text-gray-700 mb-2">质粒序列 (ATCG)</label>
+                                <textarea v-model="editForm.序列" rows="4" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all font-mono text-xs uppercase" placeholder="粘贴或输入 ATCG 序列..."></textarea>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-bold text-gray-700 mb-2">完整路径</label>
+                                <input v-model="editForm.路径" type="text" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all font-mono text-xs">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-bold text-gray-700 mb-2">描述说明</label>
+                                <textarea v-model="editForm.描述" rows="3" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"></textarea>
+                            </div>
+
+                            <!-- 外部数据库参考 -->
+                            <div v-if="editForm.靶基因 && editForm.靶基因 !== '无'" class="md:col-span-2 p-4 bg-blue-50/50 rounded-xl border border-blue-100/50">
+                                <h4 class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    外部数据库参考
+                                </h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div v-for="link in getBioLinks(editForm.靶基因, editForm.物种)" :key="link.name" class="bg-white p-3 rounded-lg border border-blue-100 shadow-sm">
+                                        <div class="text-sm font-bold text-gray-800 mb-2 flex items-center justify-between">
+                                            {{ link.name }}
+                                            <span class="text-[10px] text-gray-400 font-normal">{{ editForm.物种 || '未指定物种' }}</span>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <a :href="link.uniprot" target="_blank" class="flex-1 py-1.5 bg-blue-600 text-white text-xs font-bold rounded text-center hover:bg-blue-700 transition-all">UniProt (蛋白)</a>
+                                            <a :href="link.ncbi" target="_blank" class="flex-1 py-1.5 bg-green-600 text-white text-xs font-bold rounded text-center hover:bg-green-700 transition-all">NCBI (基因)</a>
+                                            <a :href="link.geneCards" target="_blank" class="flex-1 py-1.5 bg-orange-500 text-white text-xs font-bold rounded text-center hover:bg-orange-600 transition-all">GeneCards</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="px-8 py-6 border-t border-gray-100 bg-gray-50 flex justify-end gap-3 rounded-b-2xl">
+                        <button @click="editingItem = null" class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-200 rounded-lg transition-all">取消</button>
+                        <button @click="saveEdit" class="px-8 py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all">保存修改</button>
+                    </div>
+                </div>
+            </div>
+        </transition>
+
+        <!-- 系统设置弹窗 -->
+        <transition name="modal">
+            <div v-if="showSettingsModal" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl border border-gray-100 overflow-hidden">
+                    <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                        <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                            系统设置
+                        </h3>
+                        <button @click="showSettingsModal = false" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+
+                    <div class="p-8 space-y-6">
+                        <!-- 显示设置 -->
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">显示与界面</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-700 font-medium">每页显示条数</span>
+                                    <select v-model="settings.displayConfig.itemsPerPage" class="px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option :value="10">10 条</option>
+                                        <option :value="20">20 条</option>
+                                        <option :value="50">50 条</option>
+                                        <option :value="100">100 条</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-700 font-medium">显示标签</span>
+                                    <input type="checkbox" v-model="settings.displayConfig.showTags" class="w-5 h-5 text-blue-600 rounded border-gray-300">
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-700 font-medium">显示专业特征列</span>
+                                    <input type="checkbox" v-model="settings.displayConfig.columnVisibility['专业特征']" class="w-5 h-5 text-blue-600 rounded border-gray-300">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 识别设置 -->
+                        <div v-if="isElectron">
+                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">桌面端增强</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">默认打开软件路径 (可选)</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" v-model="settings.externalSoftwarePath" placeholder="如: C:\Program Files\SnapGene\SnapGene.exe" 
+                                            class="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                                        <button @click="selectExternalSoftware" class="px-4 py-2.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all shadow-sm">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
+                                        </button>
+                                    </div>
+                                    <p class="mt-1.5 text-xs text-gray-400">留空则使用系统默认软件。指定后，点击“软件打开”将强制使用该程序。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 识别设置 -->
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">自动识别配置</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-700 font-medium">自动提取并保存序列</span>
+                                    <input type="checkbox" v-model="settings.recognitionConfig.saveSequence" class="w-5 h-5 text-blue-600 rounded border-gray-300">
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-700 font-medium">启用 NLP 语义分析</span>
+                                    <input type="checkbox" v-model="settings.recognitionConfig.enableNlp" class="w-5 h-5 text-blue-600 rounded border-gray-300">
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-700 font-medium">自动提取靶基因</span>
+                                    <input type="checkbox" v-model="settings.recognitionConfig.extractTargetGene" class="w-5 h-5 text-blue-600 rounded border-gray-300">
+                                </div>
+                                <div class="pt-4 border-t border-gray-100">
+                                    <h5 class="text-sm font-bold text-gray-700 mb-2">序列文件维护</h5>
+                                    <p class="text-xs text-gray-500 mb-3">如果发现序列文件缺失或 CSV 导出无序列，可使用此功能重新生成</p>
+                                    <button @click="regenerateAllSequences" class="w-full py-2.5 bg-emerald-50 text-emerald-600 font-bold rounded-lg hover:bg-emerald-600 hover:text-white transition-all flex items-center justify-center gap-2 border border-emerald-100">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                                        重新生成所有序列文件
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 导出设置 -->
+                        <div class="pt-6 border-t border-gray-100">
+                            <button @click="saveSettingsFile" class="w-full py-3 bg-blue-50 text-blue-600 font-bold rounded-xl hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                导出设置文件 (settings.json)
+                            </button>
+                            <p class="text-center text-[10px] text-gray-400 mt-2">导出后请手动替换 e:/tool/data/settings.json 以实现永久保存</p>
+                        </div>
+                    </div>
+                    
+                    <div class="px-8 py-4 bg-gray-50 text-right">
+                        <button @click="showSettingsModal = false" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition-all">
+                            确定
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </transition>
+
+        <!-- 序列查看器弹窗 -->
+        <transition name="modal">
+            <div v-if="showSequenceModal" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col border border-gray-100 overflow-hidden">
+                    <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                        <div class="flex flex-col">
+                            <h3 class="text-xl font-bold text-gray-800 flex items-center gap-3">
+                                <span class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
+                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                </span>
+                                序列查看器
+                            </h3>
+                            <div class="text-xs text-gray-500 mt-1 font-mono">{{ currentSequenceFileName }} (长度: {{ currentSequenceLength }} bp)</div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-2 mr-4 bg-white px-3 py-1.5 rounded-lg border border-gray-200">
+                                <label class="flex items-center gap-1.5 text-xs font-bold text-gray-500 cursor-pointer">
+                                    <input type="checkbox" v-model="sequenceViewerOptions.coloring" class="w-4 h-4 rounded border-gray-300">
+                                    ATCG 着色
+                                </label>
+                                <label class="flex items-center gap-1.5 text-xs font-bold text-gray-500 cursor-pointer ml-2">
+                                    <input type="checkbox" v-model="sequenceViewerOptions.showNumbers" class="w-4 h-4 rounded border-gray-300">
+                                    显示编号
+                                </label>
+                            </div>
+                            <button @click="showSequenceModal = false" class="text-gray-400 hover:text-gray-600 transition-colors">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 overflow-auto bg-slate-50 p-8 font-mono text-sm leading-relaxed tracking-widest break-all select-all scrollbar-thin">
+                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-inner min-h-full">
+                            <template v-if="sequenceViewerOptions.coloring">
+                                <span v-for="(char, i) in currentSequence" :key="i" 
+                                    :class="[
+                                        char === 'A' ? 'text-red-500' : 
+                                        char === 'T' ? 'text-blue-500' : 
+                                        char === 'C' ? 'text-green-500' : 
+                                        char === 'G' ? 'text-orange-500' : 'text-gray-400',
+                                        'inline-block'
+                                    ]">
+                                    <span v-if="sequenceViewerOptions.showNumbers && i % 50 === 0" class="absolute -left-1 text-[9px] text-gray-300 pointer-events-none select-none">{{ i + 1 }}</span>
+                                    {{ char }}
+                                </span>
+                            </template>
+                            <template v-else>
+                                {{ currentSequence }}
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <div class="px-8 py-6 border-t border-gray-100 bg-gray-50 flex justify-between items-center">
+                        <div class="flex gap-2">
+                            <button v-if="isElectron && currentSequencePath" @click="openFileNative(currentSequencePath)" class="px-4 py-2 bg-indigo-50 text-indigo-600 text-xs font-bold rounded-lg hover:bg-indigo-600 hover:text-white transition-all shadow-sm flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                外部软件打开
+                            </button>
+                            <button @click="copySequence" class="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
+                                复制序列
+                            </button>
+                        </div>
+                        <button @click="showSequenceModal = false" class="px-8 py-2.5 bg-gray-800 text-white font-bold rounded-lg hover:bg-black shadow-lg transition-all">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </transition>
+
+        <!-- 自动匹配建议列表 -->
+        <datalist v-for="(list, key) in suggestions" :key="'list-'+key" :id="'list-'+key">
+            <option v-for="item in list" :key="item" :value="item"></option>
+        </datalist>
+
+        <!-- 批量导入弹窗 -->
+        <transition name="modal">
+            <div v-if="showBatchModal" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+                <div v-cloak class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] flex flex-col border border-gray-100">
+                    <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50 rounded-t-2xl">
+                        <h3 class="text-xl font-bold text-gray-800 flex items-center gap-3">
+                            <span class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                            </span>
+                            批量识别与导入 (确认识别结果)
+                        </h3>
+                        <div class="flex items-center gap-4">
+                            <div v-if="isElectron" v-cloak class="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold border border-green-200">
+                                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                桌面专业模式 (已开启绝对路径支持)
+                            </div>
+                            <div class="text-sm text-gray-500" v-if="batchImportItems">已选 <span class="text-indigo-600 font-bold">{{ batchImportItems.filter(i => i.selected).length }}</span> / {{ batchImportItems.length }} 条记录</div>
+                            <button @click="showBatchModal = false" class="text-gray-400 hover:text-gray-600 transition-colors">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="px-8 py-3 bg-green-50 border-b border-green-100 flex items-center justify-between">
+                        <div class="flex items-center gap-2 text-green-700 font-bold text-xs">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                            已通过桌面原生接口抓取真实物理路径，无需手动补全
+                        </div>
+                    </div>
+
+                    <div class="flex-1 overflow-auto p-4">
+                        <div v-if="batchImportItems.length === 0" class="flex flex-col items-center justify-center py-20 text-gray-400">
+                            <div class="w-16 h-16 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
+                            <p class="text-lg font-medium animate-pulse">正在深度识别质粒特征...</p>
+                        </div>
+                        <table v-else class="min-w-full divide-y divide-gray-200 text-xs">
+                            <thead class="bg-gray-50 sticky top-0 z-10">
+                                <tr>
+                                    <th class="px-4 py-3 text-left w-10"><input type="checkbox" :checked="batchImportItems.length > 0 && batchImportItems.every(i => i.selected)" @change="toggleAllBatchItems($event.target.checked)" class="w-4 h-4 rounded border-gray-300"></th>
+                                    <th class="px-4 py-3 text-left font-bold text-gray-500 uppercase">文件名</th>
+                                    <th class="px-4 py-3 text-left font-bold text-gray-500 uppercase">路径 (绝对路径)</th>
+                                    <th class="px-4 py-3 text-left font-bold text-gray-500 uppercase">基本信息 (载体/物种/类型)</th>
+                                    <th class="px-4 py-3 text-left font-bold text-gray-500 uppercase">基因/启动子/标签</th>
+                                    <th class="px-4 py-3 text-left font-bold text-gray-500 uppercase">抗性/诱导</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr v-for="item in batchImportItems" :key="item.文件名" :class="['hover:bg-gray-50 transition-colors', item.isDuplicate ? 'bg-amber-50/50' : '']">
+                                    <td class="px-4 py-3 text-center"><input type="checkbox" v-model="item.selected" :disabled="item.isDuplicate" class="w-4 h-4 rounded border-gray-300"></td>
+                                    <td class="px-4 py-3">
+                                        <input v-model="item.文件名" class="w-full bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none font-bold py-1">
+                                        <div v-if="item.isDuplicate" class="text-[9px] text-amber-600 mt-0.5 flex items-center gap-1 font-bold italic">
+                                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/></svg>
+                                            数据库已存在
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <input v-model="item.路径" class="w-full bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none text-gray-500 italic py-1" placeholder="请补全完整路径...">
+                                    </td>
+                                    <td class="px-4 py-3 space-y-1">
+                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-12 shrink-0">载体:</span><input v-model="item.载体类型" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-purple-600 font-medium"></div>
+                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-12 shrink-0">物种:</span><input v-model="item.物种" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-green-600 font-medium"></div>
+                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-12 shrink-0">类型:</span><input v-model="item.插入类型" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-blue-500 font-medium"></div>
+                                    </td>
+                                    <td class="px-4 py-3 space-y-1">
+                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-12 shrink-0">靶基因:</span><input v-model="item.靶基因" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 font-bold"></div>
+                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-12 shrink-0">启动子:</span><input v-model="item.启动子" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-gray-600"></div>
+                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-12 shrink-0">标签:</span><input v-model="item.蛋白标签" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-amber-600"></div>
+                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-12 shrink-0">荧光:</span><input v-model="item.荧光蛋白" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-emerald-500"></div>
+                                    </td>
+                                    <td class="px-4 py-3 space-y-1">
+                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-12 shrink-0">大肠抗:</span><input v-model="item.大肠杆菌抗性" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-orange-600"></div>
+                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-12 shrink-0">哺乳抗:</span><input v-model="item.哺乳动物抗性" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-blue-600"></div>
+                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-12 shrink-0">诱导:</span><input v-model="item.四环素诱导" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-red-500"></div>
+                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-12 shrink-0">突变:</span><input v-model="item.突变" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-rose-500"></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="px-8 py-6 border-t border-gray-100 bg-gray-50 flex justify-between items-center rounded-b-2xl">
+                        <div class="text-xs text-gray-400 max-w-md">
+                            <span class="font-bold text-gray-500">提示：</span> 您可以直接在表格中修改识别结果。对于重复项，系统默认不勾选导入。
+                        </div>
+                        <div class="flex gap-3">
+                            <button @click="showBatchModal = false" class="px-6 py-2.5 border border-gray-300 text-gray-600 font-bold rounded-xl hover:bg-gray-100 transition-all">取消</button>
+                            <button @click="saveBatchImport" class="px-10 py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition-all flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                确认导入并保存
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
+
+        <!-- 系统日志弹窗 -->
+        <transition name="modal">
+            <div v-if="showLogModal" v-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                <div class="bg-slate-900 rounded-2xl shadow-2xl w-full max-w-4xl h-[80vh] flex flex-col border border-slate-700">
+                    <div class="px-8 py-6 border-b border-slate-700 flex justify-between items-center bg-slate-800 rounded-t-2xl">
+                        <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                            <span class="w-8 h-8 bg-blue-500/20 text-blue-400 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            </span>
+                            系统运行监控日志
+                        </h3>
+                        <div class="flex gap-2">
+                            <button @click="systemLogs.splice(0)" class="px-3 py-1.5 text-xs text-slate-400 hover:text-white hover:bg-slate-700 rounded-md transition-all">清空日志</button>
+                            <button @click="showLogModal = false" class="text-slate-400 hover:text-white transition-colors">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 overflow-auto p-4">
+                        <div v-if="systemLogs.length === 0" class="text-slate-500 italic text-center py-20">暂无系统运行日志...</div>
+                        <div v-for="(log, idx) in systemLogs" :key="idx" :class="['flex gap-3 px-3 py-1.5 rounded border-l-4 transition-colors', log.type === 'error' ? 'bg-red-500/10 border-red-500 text-red-400' : log.type === 'warn' ? 'bg-amber-500/10 border-amber-500 text-amber-400' : 'bg-slate-800/50 border-blue-500 text-slate-300 hover:bg-slate-800']">
+                            <span class="text-slate-500 whitespace-nowrap">[{{ log.time }}]</span>
+                            <span :class="['font-bold px-1 rounded uppercase text-[10px]', log.type === 'error' ? 'bg-red-500 text-white' : log.type === 'warn' ? 'bg-amber-500 text-black' : 'bg-blue-500 text-white']">{{ log.type }}</span>
+                            <span class="break-all">{{ log.msg }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="px-8 py-4 border-t border-slate-700 bg-slate-800/50 rounded-b-2xl text-xs text-slate-500 flex justify-between items-center">
+                        <span>日志仅保存在内存中，刷新页面后将清空</span>
+                        <span>共 {{ systemLogs.length }} 条运行记录</span>
+                    </div>
+                </div>
+            </div>
+        </transition>
+
+        <!-- CSV 导出设置弹窗 -->
+        <transition name="modal">
+            <div v-if="showExportModal" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                <div v-cloak class="bg-white rounded-2xl shadow-2xl w-full max-w-md flex flex-col border border-gray-100 overflow-hidden">
+                    <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                        <h3 class="text-xl font-bold text-gray-800 flex items-center gap-3">
+                            <span class="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2m3.293-7.707a1 1 0 011.414 0L9 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" /></svg>
+                            </span>
+                            CSV 导出设置
+                        </h3>
+                        <button @click="showExportModal = false" class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <label class="block text-sm font-bold text-gray-700">选择要导出的字段</label>
+                            <div class="flex gap-2">
+                                <button @click="toggleAllExportFields(true)" class="text-xs text-blue-600 hover:underline">全选</button>
+                                <button @click="toggleAllExportFields(false)" class="text-xs text-gray-400 hover:underline">清空</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 max-h-[40vh] overflow-y-auto pr-2 scrollbar-thin">
+                            <label v-for="field in exportFields" :key="field.id" class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:bg-blue-50 cursor-pointer transition-all group">
+                                <input type="checkbox" v-model="field.selected" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700 group-hover:text-blue-700 transition-colors">{{ field.label }}</span>
+                            </label>
+                        </div>
+                        <p class="text-[10px] text-gray-400 mt-4 italic text-center" v-if="filteredPlasmids">系统将按所选字段顺序导出当前筛选出的 {{ filteredPlasmids.length }} 条记录</p>
+                    </div>
+                    
+                    <div class="px-8 py-6 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
+                        <button @click="showExportModal = false" class="px-6 py-2.5 border border-gray-300 text-gray-600 font-bold rounded-xl hover:bg-gray-100 transition-all">取消</button>
+                        <button @click="downloadCSV" class="px-8 py-2.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all flex items-center gap-2 btn-scale">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                            开始导出
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </transition>
+
+<!-- Duplicate Modal Removed -->
+
+        <!-- Toast 提示 -->
+        <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-800/95 text-white px-8 py-4 rounded-2xl shadow-2xl text-sm font-bold transition-all duration-300 opacity-0 pointer-events-none z-[100] flex items-center gap-3 border border-gray-700">
+            <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+            <span id="toast-text">路径已复制</span>
+        </div>
+    </div>
+
+    <!-- 系统初始化加载层 (Vue 挂载前可见) -->
+    <div class="init-loader" id="init-loader">
+        <div class="w-16 h-16 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+        <div class="text-center">
+            <p class="text-gray-500 font-bold animate-pulse text-lg">系统正在启动中...</p>
+            <p class="text-gray-400 text-sm mt-1">正在初始化桌面端业务逻辑</p>
+            <p class="text-[10px] text-gray-400 mt-4 opacity-50">如果长时间无响应，请检查 data/app_debug.log</p>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/recognition.js"></script>
+    <script src="js/data-service.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

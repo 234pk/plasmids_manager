@@ -1,0 +1,26 @@
+{
+    "name": "plasmid-viewer",
+    "version": "0.1.0",
+    "description": "交互式质粒图谱查看器 - 可嵌入的 Web 组件",
+    "main": "dist/plasmid-viewer.js",
+    "scripts": {
+        "build": "node build.js",
+        "dev": "npm run build -- --watch",
+        "test": "echo \"No tests specified\" && exit 0"
+    },
+    "keywords": [
+        "plasmid",
+        "viewer",
+        "genbank",
+        "visualization",
+        "dna",
+        "bioinformatics"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {},
+    "engines": {
+        "node": ">=12.0.0"
+    }
+}

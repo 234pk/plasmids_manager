@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# User Data
+data/
+plasmid_database.json
+
+# IDE
+.trae/
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation (as requested)
+*.md
+Prompts/
