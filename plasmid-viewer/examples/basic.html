@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlasmidViewer 示例</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        #plasmid-viewer {
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            background: #1976d2;
+            color: white;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #1565c0;
+        }
+        button.secondary {
+            background: #757575;
+        }
+        button.secondary:hover {
+            background: #616161;
+        }
+        .info-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            min-height: 100px;
+        }
+        .info-panel h3 {
+            margin-top: 0;
+            color: #1976d2;
+        }
+        .feature-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .feature-item {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .feature-item:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <h1>🧬 PlasmidViewer 交互式质粒图谱</h1>
+    
+    <div class="container">
+        <div class="controls">
+            <button onclick="viewer.zoomIn()">放大</button>
+            <button onclick="viewer.zoomOut()">缩小</button>
+            <button onclick="viewer.resetZoom()" class="secondary">重置</button>
+            <button onclick="loadSampleData()" class="secondary">加载示例</button>
+            <button onclick="clearInfo()" class="secondary">清空信息</button>
+        </div>
+        
+        <div id="plasmid-viewer"></div>
+        
+        <div class="info-panel" id="info-panel">
+            <h3>👆 点击图谱中的特征查看详情</h3>
+            <p>操作说明：</p>
+            <ul>
+                <li>🖱️ 滚轮缩放</li>
+                <li>✋ 拖拽移动</li>
+                <li>👆 点击查看特征详情</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 引入库 -->
+    <script src="src/GenBankParser.js"></script>
+    <script src="src/PlasmidViewer.js"></script>
+    
+    <script>
+        // 创建查看器
+        const viewer = new PlasmidViewer({
+            container: '#plasmid-viewer',
+            width: 800,
+            height: 600,
+            showLabels: true,
+            showArrows: true,
+            enableZoom: true,
+            enableDrag: true,
+            enableHover: true
+        });
+
+        // 示例质粒数据
+        const samplePlasmid = {
+            name: 'pLKO-TIA1-shRNA',
+            length: 5000,
+            features: [
+                { name: 'AmpR', type: 'CDS', start: 100, end: 900, strand: '+', description: '氨苄青霉素抗性' },
+                { name: 'pUC ori', type: 'origin', start: 950, end: 1400, strand: '+', description: '复制起始点' },
+                { name: 'U6 promoter', type: 'promoter', start: 1600, end: 2000, strand: '+', description: 'U6 启动子' },
+                { name: 'EGFP', type: 'fluorescent', start: 2050, end: 2750, strand: '+', description: '增强型绿色荧光蛋白' },
+                { name: 'shRNA-TIA1', type: 'insert', start: 2800, end: 3000, strand: '+', description: 'TIA1 shRNA 干扰片段' },
+                { name: 'hU6', type: 'promoter', start: 3050, end: 3450, strand: '+', description: '人类 U6 启动子' },
+                { name: 'CMV', type: 'promoter', start: 3600, end: 4200, strand: '+', description: 'CMV 启动子' },
+                { name: 'Puromycin', type: 'resistance', start: 4250, end: 4850, strand: '+', description: '嘌呤霉素抗性基因' }
+            ]
+        };
+
+        // 加载示例数据
+        function loadSampleData() {
+            viewer.load(samplePlasmid);
+            showFeatures(samplePlasmid.features);
+            document.getElementById('info-panel').innerHTML = `
+                <h3>📊 已加载示例质粒: ${samplePlasmid.name}</h3>
+                <p>长度: ${samplePlasmid.length} bp</p>
+                <p>特征数量: ${samplePlasmid.features.length}</p>
+                <p>点击图谱中的特征查看详情</p>
+            `;
+        }
+
+        // 显示特征列表
+        function showFeatures(features) {
+            const panel = document.getElementById('info-panel');
+            const html = features.map(f => `
+                <span class="feature-item" 
+                      style="background:${f.color || '#9E9E9E'}; color: white;"
+                      onmouseover="viewer.highlightFeature('${f.name}')"
+                      onmouseout="viewer.clearHighlight()"
+                      onclick="showFeatureDetail(${JSON.stringify(f).replace(/"/g, '&quot;')})">
+                    ${f.name} (${f.type})
+                </span>
+            `).join('');
+            
+            panel.innerHTML += `<div class="feature-list" style="margin-top:10px">${html}</div>`;
+        }
+
+        // 显示特征详情
+        function showFeatureDetail(feature) {
+            const panel = document.getElementById('info-panel');
+            panel.innerHTML = `
+                <h3>🔬 特征详情: ${feature.name}</h3>
+                <table style="width:100%; text-align:left;">
+                    <tr><td><strong>类型:</strong></td><td>${feature.displayType || feature.type}</td></tr>
+                    <tr><td><strong>位置:</strong></td><td>${feature.start} - ${feature.end} bp</td></tr>
+                    <tr><td><strong>长度:</strong></td><td>${feature.length || feature.end - feature.start + 1} bp</td></tr>
+                    <tr><td><strong>链向:</strong></td><td>${feature.strand === '+' ? '正向 (+)' : '反向 (-)'}</td></tr>
+                    <tr><td><strong>描述:</strong></td><td>${feature.description || '-'}</td></tr>
+                </table>
+            `;
+        }
+
+        // 清空信息
+        function clearInfo() {
+            document.getElementById('info-panel').innerHTML = `
+                <h3>👆 点击图谱中的特征查看详情</h3>
+                <p>操作说明：</p>
+                <ul>
+                    <li>🖱️ 滚轮缩放</li>
+                    <li>✋ 拖拽移动</li>
+                    <li>👆 点击查看特征详情</li>
+                </ul>
+            `;
+        }
+
+        // 绑定事件
+        viewer.on('featureClick', (feature) => {
+            showFeatureDetail(feature);
+            console.log('点击特征:', feature);
+        });
+
+        viewer.on('featureHover', (feature) => {
+            console.log('悬停特征:', feature.name);
+        });
+
+        viewer.on('plasmidLoad', (plasmid) => {
+            console.log('已加载质粒:', plasmid.name);
+        });
+
+        // 页面加载后自动加载示例
+        loadSampleData();
+    </script>
+</body>
+</html>

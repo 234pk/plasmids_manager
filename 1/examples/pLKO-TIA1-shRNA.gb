@@ -1,0 +1,65 @@
+LOCUS       pLKO-TIA1-shRNA              5021 bp    DNA     circular
+DEFINITION  Lentiviral shRNA expression vector targeting TIA1 gene
+ACCESSION   pLKO-TIA1-shRNA
+VERSION     pLKO-TIA1-shRNA.1
+KEYWORDS    shRNA, lentiviral, RNAi
+SOURCE      synthetic construct
+  ORGANISM  synthetic construct
+            synthetic construct
+FEATURES             Location/Qualifiers
+     CDS             431..1201
+                     /gene="ampR"
+                     /product="beta-lactamase"
+                     /note="ampicillin resistance"
+     promoter        1298..1697
+                     /gene="EM7"
+                     /note="EM7 promoter"
+     promoter        1768..2181
+                     /gene="U6"
+                     /note="U6 promoter for shRNA expression"
+     primer_bind     2234..2256
+                     /gene="shRNA"
+                     /note="sense strand of shRNA hairpin"
+     primer_bind     2292..2314
+                     /gene="shRNA"
+                     /note="antisense strand of shRNA hairpin"
+     misc_feature    2267..2289
+                     /note="shRNA hairpin loop (CTCGAG)"
+     promoter        2400..2953
+                     /gene="hPGK"
+                     /product="human phosphoglycerate kinase promoter"
+     CDS             3043..3741
+                     /gene="puromycin"
+                     /product="puromycin N-acetyltransferase"
+                     /note="puromycin resistance"
+     polyA_signal    3878..4120
+                     /gene="bGH polyA"
+                     /product="bovine growth hormone polyadenylation signal"
+     polyA_signal    4200..4356
+                     /gene="f1 ori"
+                     /product="f1 bacteriophage origin of replication"
+     CDS             4400..4760
+                     /gene="EGFP"
+                     /product="enhanced green fluorescent protein"
+     promoter        4765..5021
+                     /gene="CMV"
+                     /product="cytomegalovirus immediate early promoter"
+ORIGIN
+        1 atgagtattc aacatttccg tgtcgccaat aatctaaaat atatttttag aaccgttcat
+       61 agttcctatt gagaaagtta cactgaaagt atagtttagc agaagaggaa gttcgtagaa
+      121 agtttttttc ctttgtggaa aagagacgac cggatcggat cggatcggat cggatcggat
+      181 cggatcggat cggatcggat cggatcggat cggatcggat cggatcggat cggatcggat
+      241 cggatcggat cggatcggat cggatcggat cggatcggat cggatcggat cggatcggat
+      301 cggatcggat cggatcggat cggatcggat cggatcggat cggatcggat cggatcggat
+      361 cggatcggat cggatcggat cggatcggat cggatcggat cggatcggat cggatcggat
+      421 atgggattgg tgacaactca tctcagaaat caaaatgtcg ccgttatggg cgggttgttt
+      481 tttgcgcgca cttttggcga aatgagcgtt tgccaaactg tggccgggtt gacgtttgag
+      541 tacagccgcc gtattggatt ccagcgatag acaatcgtgg atatcaccat tgttgaaact
+      601 gcgggcgatc tgggcgcagt ctggcggaca ctggcgggca attatttttg atggcgcgct
+      661 tttttcgcgc tgcgatcgct gctgctggct gctgctggct gctgctgctg ctgctgctgc
+      721 tgctgctgct gctgctgctg ctgctgctgc tgctgctgct gctgctgctg ctgctgctgc
+      781 tgctgctgct gctgctgctg ctgctgctgc tgctgctgct gctgctgctg ctgctgctgc
+      841 tgctgctgct gctgctgctg ctgctgctgc tgctgctgct gctgctgctg ctgctgctgc
+      901 tgctgctgct gctgctgctg ctgctgctgc tgctgctgct gctgctgctg ctgctgctgc
+     1001 tgctgctgct gctgctgctg ctgctgctgc tgctgctgct gctgctgctg ctgctgctgc
+//
