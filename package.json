@@ -18,14 +18,35 @@
     "appId": "com.plasmid.manager",
     "productName": "质粒管理系统",
     "directories": {
-      "output": "dist"
+      "output": "dist_v3"
     },
+    "asar": false,
+    "files": [
+      "**/*",
+      "!data/**/*",
+      "!dist/**/*",
+      "!dist_build/**/*",
+      "!dist_release/**/*",
+      "!dist_v2/**/*",
+      "!dist_v3/**/*",
+      "!electron_builder_cache/**/*",
+      "!.git/**/*",
+      "!.idea/**/*",
+      "!.vscode/**/*"
+    ],
     "win": {
       "target": [
-        "portable",
-        "nsis"
+        "dir"
       ],
-      "icon": "icon.ico"
+      "forceCodeSigning": false,
+      "icon": "icon.ico",
+      "signtoolOptions": {
+        "sign": null
+      }
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     }
   }
 }

@@ -8,6 +8,7 @@ function createWindow() {
     width: 1300,
     height: 900,
     title: "质粒管理系统 - 桌面版",
+    resizable: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -17,7 +18,7 @@ function createWindow() {
 
   win.loadFile('index.html');
 
-  win.webContents.openDevTools({ mode: 'detach' });
+  // win.webContents.openDevTools({ mode: 'detach' });
 
   win.webContents.on('console-message', (_event, level, message, line, sourceId) => {
     try {
@@ -97,7 +98,7 @@ ipcMain.handle('check-init-files', async () => {
             autoSave: true,
             externalSoftwarePath: '',
             recognitionConfig: {
-                minMatchScore: 0.5,
+                minMatchScore: 0.75,
                 enableNlp: true,
                 extractTargetGene: true,
                 saveSequence: true // 新增：是否自动保存序列
@@ -199,6 +200,33 @@ ipcMain.handle('open-file-native', async (event, { filePath, softwarePath }) => 
         console.error('Open file error:', err);
         return { success: false, error: err.message };
     }
+});
+
+// 核心功能：打开文件所在文件夹并选中
+ipcMain.handle('show-item-in-folder', async (event, filePath) => {
+    try {
+        if (!filePath) return false;
+        const fullPath = path.isAbsolute(filePath) ? filePath : path.join(__dirname, filePath);
+        if (!fs.existsSync(fullPath)) return false;
+        
+        shell.showItemInFolder(fullPath);
+        return true;
+    } catch (err) {
+        console.error('Show item error:', err);
+        return false;
+    }
+});
+
+// 核心功能：新建数据库对话框
+ipcMain.handle('save-database-dialog', async () => {
+    const result = await dialog.showSaveDialog({
+        title: '新建数据库',
+        defaultPath: path.join(__dirname, 'data', 'new_database.json'),
+        filters: [
+            { name: 'JSON Database', extensions: ['json'] }
+        ]
+    });
+    return result.filePath;
 });
 
 // 核心功能：选择执行文件路径
