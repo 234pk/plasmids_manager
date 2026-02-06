@@ -9,6 +9,17 @@ npm-debug.log*
 data/
 plasmid_database.json
 
+# Build Artifacts
+dist/
+dist_*/
+out/
+release/
+electron_builder_cache/
+*.exe
+*.dmg
+*.zip
+*.nupkg
+
 # IDE
 .trae/
 .vscode/
