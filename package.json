@@ -1,6 +1,6 @@
 {
   "name": "plasmid-manager",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Plasmid Manager Desktop Application",
   "repository": {
     "type": "git",
@@ -97,7 +97,8 @@
         "NSAppleEventsUsageDescription": "Please allow access to Apple Events.",
         "NSCameraUsageDescription": "Please allow access to the camera.",
         "NSMicrophoneUsageDescription": "Please allow access to the microphone."
-      }
+      },
+      "forceCodeSigning": false
     },
     "dmg": {
       "title": "PlasmidManager-${version}",
