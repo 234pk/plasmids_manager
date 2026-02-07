@@ -2,6 +2,10 @@
   "name": "plasmid-manager",
   "version": "1.0.2",
   "description": "质粒管理系统桌面版",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/plasmid-manager.git"
+  },
   "main": "main.js",
   "scripts": {
     "start": "electron .",

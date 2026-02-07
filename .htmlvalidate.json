@@ -2,7 +2,7 @@
   "extends": ["html-validate:recommended"],
   "rules": {
     "no-unknown-elements": "off",
-    "valid-element-name": "off",
+    "element-name": "off",
     "attribute-boolean-style": "off",
     "void-style": "off",
     "no-trailing-whitespace": "off",

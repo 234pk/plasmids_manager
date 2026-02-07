@@ -685,6 +685,8 @@ window.Recognition = {
         });
 
         // 2.2 载体骨架识别 (Expanded Patterns)
+        // [已移除] 用户反馈根据路径名推测载体类型极不准确，故移除此处的正则猜测逻辑
+        /*
         // 如果没有识别出载体类型，尝试提取常见载体格式
         if (recognized.载体类型.size === 0) {
             const vectorPatterns = [
@@ -721,6 +723,7 @@ window.Recognition = {
                 }
             });
         }
+        */
 
         // 2.3 精细化物种识别
         const speciesRules = [

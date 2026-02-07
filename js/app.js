@@ -110,124 +110,11 @@ const App = {
         const filterLogic = ref('OR'); // 'AND' 或 'OR'
         const sortConfig = ref({ key: '添加时间', order: 'desc' }); // Default sort by add time descending
 
-        // UniProt Modal Logic
-        const showUniProtModal = ref(false);
-        const uniProtModalData = ref({
-            targetGene: '',
-            targetPlasmid: null,
-            loading: false,
-            result: null, // This will be the selected or best match result
-            results: [],  // All search results
-            error: null
-        });
-
-        const openUniProtModal = async (targetGene, plasmid = null) => {
-            uniProtModalData.value = {
-                targetGene: targetGene,
-                targetPlasmid: plasmid,
-                loading: true,
-                result: null,
-                results: [],
-                error: null
-            };
-            showUniProtModal.value = true;
-            
-            if (!window.UniProtService) {
-                uniProtModalData.value.error = "UniProt Service not initialized.";
-                uniProtModalData.value.loading = false;
-                return;
-            }
-
-            // 尝试获取物种 Taxonomy ID
-            let taxId = null;
-            if (plasmid && plasmid['物种']) {
-                const speciesMap = {
-                    '人': { en: 'Human', taxId: '9606' },
-                    '小鼠': { en: 'Mouse', taxId: '10090' },
-                    '大鼠': { en: 'Rat', taxId: '10116' },
-                    '食蟹猴': { en: 'Cynomolgus', taxId: '9541' },
-                    '猪': { en: 'Pig', taxId: '9823' },
-                    '果蝇': { en: 'Drosophila', taxId: '7227' },
-                    '斑马鱼': { en: 'Zebrafish', taxId: '7955' },
-                    '大肠杆菌': { en: 'E.coli', taxId: '562' },
-                    '拟南芥': { en: 'Arabidopsis', taxId: '3702' },
-                    '仓鼠': { en: 'Hamster', taxId: '10029' },
-                    '酵母': { en: 'Yeast', taxId: '4932' }
-                };
-                
-                let val = plasmid['物种'];
-                // Handle array case (take first element)
-                if (Array.isArray(val)) {
-                    val = val.length > 0 ? val[0] : '';
-                }
-                
-                if (val && typeof val === 'string') {
-                    val = val.trim();
-                    // 简单匹配
-                    if (speciesMap[val]) {
-                        taxId = speciesMap[val].taxId;
-                    } else {
-                        // 尝试匹配包含关系 (e.g. "Homo sapiens (人)")
-                        const key = Object.keys(speciesMap).find(k => val.includes(k));
-                        if (key) taxId = speciesMap[key].taxId;
-                    }
-                }
-            }
-
-            try {
-                const response = await window.UniProtService.search(targetGene, { limit: 5, taxId });
-                if (response && response.results && response.results.length > 0) {
-                    uniProtModalData.value.results = response.results;
-                    uniProtModalData.value.result = response.results[0]; // Default to first result
-                } else {
-                    uniProtModalData.value.results = [];
-                    uniProtModalData.value.error = "No results found.";
-                }
-            } catch (err) {
-                uniProtModalData.value.error = "Search failed: " + err.message;
-            } finally {
-                uniProtModalData.value.loading = false;
-            }
-        };
-
-        const closeUniProtModal = () => {
-            showUniProtModal.value = false;
-        };
-        
-        const applyUniProtData = () => {
-            const data = uniProtModalData.value.result;
-            const plasmid = uniProtModalData.value.targetPlasmid;
-            
-            if (!data || !plasmid) return;
-            
-            // Update plasmid fields
-            plasmid.uniprotId = data.uniprotId;
-            plasmid.蛋白名称 = data.name;
-            if (data.function) plasmid.蛋白功能 = data.function;
-            if (data.mass) plasmid.分子量 = String(data.mass); // Ensure string if needed
-            if (data.sequence) plasmid.蛋白序列 = data.sequence;
-            
-            // Trigger save or notification
-            if (window.Utils) window.Utils.log(`[UniProt] Applied data to ${plasmid.文件名}`);
-            
-            // Force update if needed (Vue ref reactivity should handle UI, but saving needs trigger)
-            // Since deep watch is false, we might need to manually save if auto-save relies on deep watch
-            // But looking at existing code, let's see how save is triggered.
-            // Usually editing triggers a save. Here we are programmatically editing.
-            // We can call saveDatabase manually if available, or just rely on user manual save if auto-save isn't triggered.
-            // Let's assume we should try to save if possible.
-            // But `saveDatabase` is defined inside `setup`? No, it's likely outside or available.
-            // Actually, `saveDatabase` is likely a method we can call if we expose it or if it's in scope.
-            // It seems `saveDatabase` is not in the exposed return object in the previous `Read` output (it ended at line 2309).
-            // Let's check if `saveDatabase` is available in `setup` scope.
-            // If not, we can just close the modal and let user save, or rely on auto-save mechanism if it watches `plasmids`.
-            // The watcher at line 38 is shallow (`deep: false`).
-            // So modifying properties won't trigger it.
-            // We can trigger it by `triggerRef(plasmids)` if we import it, or just reassignment `plasmids.value = [...plasmids.value]`.
-            plasmids.value = [...plasmids.value]; // Trigger watchers
-            
-            closeUniProtModal();
-        };
+        // Help & History Modals
+        const showHelpModal = ref(false);
+        const helpTab = ref('intro');
+        const showDbHistoryModal = ref(false);
+        const recentDatabases = ref([]);
 
         const refreshRecognitionContext = () => {
             if (window.Recognition && window.Recognition.setContext) {
@@ -476,52 +363,55 @@ const App = {
         const showSettingsModal = ref(false);
         const showExportModal = ref(false);
         const exportFields = ref([
-            { id: '文件名', selected: true },
-            { id: '路径', selected: true },
-            { id: '载体类型', selected: true },
-            { id: '靶基因', selected: true },
-            { id: '物种', selected: true },
-            { id: '功能', selected: true },
-            { id: '大肠杆菌抗性', selected: true },
-            { id: '哺乳动物抗性', selected: true },
-            { id: '插入类型', selected: true },
-            { id: '蛋白标签', selected: true },
-            { id: '荧光蛋白', selected: true },
-            { id: '启动子', selected: true },
-            { id: '突变', selected: true },
-            { id: '四环素诱导', selected: true },
-            { id: '保存位置', selected: true },
-            { id: '持有人', selected: true },
-            { id: '项目', selected: true },
-            { id: '序列', label: '序列 (ATCG)', selected: true },
-            { id: '描述', selected: true },
-            { id: '添加时间', selected: true },
-            { id: '更新时间', selected: true }
+            { id: '文件名', label: 'gen_0137', selected: true },
+            { id: '路径', label: 'gen_0443', selected: true },
+            { id: '载体类型', label: 'gen_0413', selected: true },
+            { id: '靶基因', label: 'gen_0151', selected: true },
+            { id: '物种', label: 'gen_0150', selected: true },
+            { id: '功能', label: 'gen_0161', selected: true },
+            { id: '大肠杆菌抗性', label: 'gen_0165', selected: true },
+            { id: '哺乳动物抗性', label: 'gen_0168', selected: true },
+            { id: '插入类型', label: 'gen_0417', selected: true },
+            { id: '蛋白标签', label: 'gen_0178', selected: true },
+            { id: '荧光蛋白', label: 'gen_0182', selected: true },
+            { id: '启动子', label: 'gen_0186', selected: true },
+            { id: '突变', label: 'gen_0190', selected: true },
+            { id: '四环素诱导', label: 'gen_0193', selected: true },
+            { id: '保存位置', label: 'gen_0195', selected: true },
+            { id: '持有人', label: 'gen_0200', selected: true },
+            { id: '项目', label: 'gen_0206', selected: true },
+            { id: '序列', label: 'gen_0209', selected: true },
+            { id: '描述', label: 'gen_0218', selected: true },
+            { id: '添加时间', label: 'gen_0212', selected: true },
+            { id: '更新时间', label: 'gen_0215', selected: true }
         ]);
 
         // 编辑相关
         const editingItem = ref(null);
         const editForm = ref({});
+        const autoRecognize = ref(true); // 默认开启智能识别
+        const recognitionPreview = ref({}); // 存储识别出的原始数据
 
         const createNewPlasmid = () => {
             batchMode.value = false;
             batchNames.value = '';
+            recognitionPreview.value = {};
             const newItem = {
                 id: `plasmid_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                 文件名: '',
                 路径: '',
-                载体类型: '',
-                靶基因: '',
-                物种: '',
-                功能: '',
-                大肠杆菌抗性: '',
-                哺乳动物抗性: '',
-                插入类型: '',
-                蛋白标签: '',
-                荧光蛋白: '',
-                启动子: '',
-                突变: '',
-                四环素诱导: '',
+                载体类型: [],
+                靶基因: [],
+                物种: [],
+                功能: [],
+                大肠杆菌抗性: [],
+                哺乳动物抗性: [],
+                插入类型: [],
+                蛋白标签: [],
+                荧光蛋白: [],
+                启动子: [],
+                突变: [],
+                四环素诱导: [],
                 UniProtID: '',
                 蛋白名称: '',
                 蛋白功能: '',
@@ -529,10 +419,19 @@ const App = {
                 蛋白序列: '',
                 序列: '',
                 描述: '',
+                customDescription: '', // 用户手动输入的描述
                 保存位置: '',
                 持有人: settings.value.defaultOwner || '',
                 项目: []
             };
+            
+            // 初始化字段为带输入框的格式
+            const fields = ['载体类型', '靶基因', '物种', '功能', '插入类型', '大肠杆菌抗性', '哺乳动物抗性', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
+            fields.forEach(f => {
+                newItem[f] = [];
+                newItem[f + '_new'] = '';
+            });
+
             editForm.value = JSON.parse(JSON.stringify(newItem));
             editingItem.value = newItem;
         };
@@ -578,7 +477,42 @@ const App = {
                 // 智能识别
                 if (window.Recognition && window.Recognition.recognize) {
                     const info = window.Recognition.recognize(name);
-                    Object.assign(newItem, info);
+                    // 转换为可勾选列表格式以统一 UI
+                    const checkableInfo = {};
+                    const fields = ['载体类型', '靶基因', '物种', '功能', '插入类型', '大肠杆菌抗性', '哺乳动物抗性', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
+                    
+                    fields.forEach(f => {
+                        // 1. 获取智能识别结果
+                        const recognized = window.Utils.toCheckableList(info[f] || []);
+                        
+                        // 2. 获取 editForm 中的默认值 (用户在批量粘贴界面设置的)
+                        // 注意：editForm 中的值已经是 {value, selected} 格式的数组
+                        const defaults = Array.isArray(editForm.value[f]) 
+                            ? editForm.value[f].filter(v => v.selected).map(v => ({ ...v })) // 复制一份
+                            : [];
+                        
+                        // 3. 合并两者 (优先使用识别结果，还是合并？通常识别结果是针对特定名称的，默认值是通用的)
+                        // 策略：将默认值添加到识别结果中
+                        const merged = [...recognized];
+                        defaults.forEach(d => {
+                            if (!merged.some(m => m.value === d.value)) {
+                                merged.push(d);
+                            }
+                        });
+                        
+                        checkableInfo[f] = merged;
+                        checkableInfo[f + '_new'] = ''; // 为每个字段添加用于输入的临时变量
+                    });
+                    
+                    Object.assign(newItem, checkableInfo);
+                    // 生成描述: 用户手动备注 + 自动生成属性
+                    const autoDesc = window.Utils.generateDescription(newItem);
+                    const manualDesc = editForm.value.customDescription || '';
+                    newItem.描述 = manualDesc ? (manualDesc + (autoDesc ? '; ' + autoDesc : '')) : autoDesc;
+                } else {
+                    // 如果没有识别引擎，但也可能有手动描述
+                    const manualDesc = editForm.value.customDescription || '';
+                    newItem.描述 = manualDesc;
                 }
                 
                 newItems.push(newItem);
@@ -604,27 +538,29 @@ const App = {
             const validItems = [];
             
             for (const item of batchPreviewList.value) {
+                // 提取所有可勾选字段的选中值
+                const fields = ['载体类型', '靶基因', '物种', '功能', '插入类型', '大肠杆菌抗性', '哺乳动物抗性', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
+                const savedItem = { ...item };
+                
+                fields.forEach(f => {
+                    const selectedVals = window.Utils.getSelectedValues(item[f]);
+                    savedItem[f] = selectedVals.join(', ');
+                    delete savedItem[f + '_new']; // 删除临时输入变量
+                });
+
                 // 简单查重：检查文件名是否已存在
-                const exists = plasmids.value.some(p => p.文件名 === item.文件名);
+                const exists = plasmids.value.some(p => p.文件名 === savedItem.文件名);
                 if (exists) {
                     duplicateCount++;
-                    // 可以选择跳过，或者重命名。这里暂时保留，但在日志中记录
-                    // 为了用户体验，我们在导入前最好让用户在表格里看到重复警告
-                    // 这里我们还是导入，因为用户可能真的需要同名质粒（虽然不推荐）
-                    // 但根据用户需求 "是不是没有查重"，我们应该给出提示或处理
-                    // 策略：如果重复，自动在名字后面加 (1)
-                    let newName = item.文件名;
+                    let newName = savedItem.文件名;
                     let counter = 1;
                     while (plasmids.value.some(p => p.文件名 === newName)) {
-                        newName = `${item.文件名} (${counter})`;
+                        newName = `${savedItem.文件名} (${counter})`;
                         counter++;
                     }
-                    if (newName !== item.文件名) {
-                         item.文件名 = newName;
-                         // 更新识别信息中可能依赖名字的字段? 不，识别已经完成
-                    }
+                    savedItem.文件名 = newName;
                 }
-                validItems.push(item);
+                validItems.push(savedItem);
             }
 
             plasmids.value.unshift(...validItems);
@@ -775,7 +711,11 @@ const App = {
                 el.classList.remove('highlight-target');
             });
 
-            const currentStep = guideSteps[guideStep.value];
+            const steps = guideSteps.value;
+            const currentStep = steps[guideStep.value];
+            if (!currentStep) {
+                return;
+            }
             if (currentStep.target) {
                 setTimeout(() => {
                     const targetEl = document.querySelector(currentStep.target);
@@ -788,7 +728,7 @@ const App = {
         };
 
         const nextGuide = () => {
-            if (guideStep.value < guideSteps.length - 1) {
+            if (guideStep.value < guideSteps.value.length - 1) {
                 guideStep.value++;
                 updateGuideHighlight();
             } else {
@@ -850,11 +790,19 @@ const App = {
         };
 
         const getProjectNameById = (projectId) => {
+            if (!projectId) return '';
+            if (Array.isArray(projectId)) {
+                return projectId.map(id => getProjectNameById(id)).filter(Boolean).join('; ');
+            }
             const project = getProjectById(projectId);
             return project ? project.name : '';
         };
 
         const getProjectDescriptionById = (projectId) => {
+            if (!projectId) return '';
+            if (Array.isArray(projectId)) {
+                return projectId.map(id => getProjectDescriptionById(id)).filter(Boolean).join('; ');
+            }
             const project = getProjectById(projectId);
             return project ? project.description : '';
         };
@@ -1027,6 +975,22 @@ const App = {
             // 3. 数据库加载
             try {
                 window.Utils.log('[系统] 正在请求加载质粒数据库...');
+                
+                // 获取最近打开的数据库
+                if (isElectron.value && ipcRenderer) {
+                    const history = await ipcRenderer.invoke('get-app-history');
+                    
+                    // 加载历史列表
+                    if (history && Array.isArray(history.recentDatabases)) {
+                        recentDatabases.value = history.recentDatabases;
+                    }
+
+                    if (history && history.lastDatabase) {
+                        window.Utils.log(`[系统] 检测到最近使用的数据库: ${history.lastDatabase}`);
+                        window.DataService.setDatabasePath(history.lastDatabase);
+                    }
+                }
+
                 let dbData = await window.DataService.loadDatabase();
                 
                 // 确保每条数据都有唯一ID
@@ -1047,6 +1011,13 @@ const App = {
                     plasmids.value = dbData;
                     refreshRecognitionContext();
                     window.Utils.log(`[系统] 数据库加载成功，共载入 ${dbData.length} 条质粒记录`);
+                    
+                    // 保存到历史记录
+                    if (isElectron.value && ipcRenderer) {
+                        const currentPath = window.DataService.currentDatabasePath;
+                        // 更新最近记录
+                        recordRecentDatabase(currentPath);
+                    }
                 } else {
                     window.Utils.log('[系统] 数据库为空，尝试扫描程序所在目录...');
                     if (isElectron.value && ipcRenderer) {
@@ -1102,7 +1073,7 @@ const App = {
             if (isElectron.value) {
                 const success = await window.DataService.electronSave(settings.value, 'data/settings.json');
                 if (success) {
-                    window.Utils.showToast('设置已保存到 settings.json');
+                    window.Utils.showToast(t('gen_0377_success'));
                     return;
                 }
             }
@@ -1111,11 +1082,16 @@ const App = {
             if (handle) {
                 settingsFileHandle.value = handle;
                 await window.DataService.setHandle('settings_handle', handle);
-                window.Utils.showToast('设置已保存');
+                window.Utils.showToast(t('gen_0377_success'));
             } else {
                 window.DataService.downloadJSON(settings.value, 'settings.json');
-                window.Utils.showToast('请手动保存并替换 settings.json');
+                window.Utils.showToast(t('gen_0378'));
             }
+        };
+
+        const handleSettingsConfirm = () => {
+            showSettingsModal.value = false;
+            window.Utils.showToast(t('gen_0377_success'));
         };
 
         const saveDatabaseFile = async () => {
@@ -1124,6 +1100,7 @@ const App = {
                 const success = await window.DataService.electronSave(plasmids.value);
                 if (success) {
                     window.Utils.log('[系统] 本地文件同步成功');
+                    window.Utils.showToast('数据已同步保存');
                 } else {
                     window.Utils.log('[系统] 本地文件同步失败', 'ERROR');
                 }
@@ -1141,6 +1118,10 @@ const App = {
                     plasmids.value = result.data;
                     window.DataService.setDatabasePath(result.filePath);
                     window.Utils.showToast('已切换到新数据库');
+                    // 保存到历史记录
+                    if (isElectron.value && ipcRenderer) {
+                        ipcRenderer.invoke('save-app-history', { lastDatabase: result.filePath });
+                    }
                 }
             }
         };
@@ -1152,6 +1133,10 @@ const App = {
                 plasmids.value = result.data;
                 window.DataService.setDatabasePath(result.filePath);
                 window.Utils.showToast('数据库切换成功');
+                // 保存到历史记录
+                if (isElectron.value && ipcRenderer) {
+                    ipcRenderer.invoke('save-app-history', { lastDatabase: result.filePath });
+                }
             }
         };
 
@@ -1276,7 +1261,12 @@ const App = {
         // 文件处理
         const handleFileSelect = (event) => {
             const file = event.target.files[0];
-            if (file) readFile(file);
+            if (file) {
+                if (isElectron.value && file.path) {
+                    recordRecentDatabase(file.path);
+                }
+                readFile(file);
+            }
         };
 
         const handleDrop = (event) => {
@@ -1286,6 +1276,9 @@ const App = {
 
             // 如果只拖入了一个 JSON，走数据库加载逻辑
             if (files.length === 1 && files[0].name.toLowerCase().endsWith('.json')) {
+                if (isElectron.value && files[0].path) {
+                    recordRecentDatabase(files[0].path);
+                }
                 readFile(files[0]);
             } else {
                 // 否则全部走批量导入逻辑
@@ -1413,7 +1406,7 @@ const App = {
             await window.DataService.electronSave(plasmids.value);
 
             window.Utils.log(`[维护] 完成: 成功 ${successCount}, 失败/跳过 ${failCount}`);
-            window.Utils.showToast(`处理完成：成功生成 ${successCount} 个序列文件`);
+            window.Utils.showToast(`${t('gen_0375_success')} (${successCount}/${total})`);
         };
 
         // 导出功能
@@ -1572,25 +1565,44 @@ const App = {
                 }
             }
 
+            // 尝试分离手动描述和自动描述
+            const autoDesc = window.Utils.generateDescription(item);
+            let customDesc = '';
+            if (item.描述 && item.描述 !== autoDesc) {
+                 if (autoDesc && item.描述.includes(autoDesc)) {
+                     customDesc = item.描述.replace(autoDesc, '').trim();
+                     if (customDesc.endsWith(';')) customDesc = customDesc.slice(0, -1).trim();
+                 } else {
+                     customDesc = item.描述;
+                 }
+            }
+
             editForm.value = {
                 ...item,
+                customDescription: customDesc,
                 序列: sequence,
-                载体类型: window.Utils.ensureString(item.载体类型),
-                靶基因: window.Utils.ensureString(item.靶基因),
-                功能: window.Utils.ensureString(item.功能),
-                大肠杆菌抗性: window.Utils.ensureString(item.大肠杆菌抗性),
-                哺乳动物抗性: window.Utils.ensureString(item.哺乳动物抗性),
-                物种: window.Utils.ensureString(item.物种),
-                插入类型: window.Utils.ensureString(item.插入类型),
-                蛋白标签: window.Utils.ensureString(item.蛋白标签),
-                荧光蛋白: window.Utils.ensureString(item.荧光蛋白),
-                启动子: window.Utils.ensureString(item.启动子),
-                突变: window.Utils.ensureString(item.突变),
-                四环素诱导: window.Utils.ensureString(item.四环素诱导),
+                载体类型: window.Utils.toCheckableList(item.载体类型),
+                靶基因: window.Utils.toCheckableList(item.靶基因),
+                功能: window.Utils.toCheckableList(item.功能),
+                大肠杆菌抗性: window.Utils.toCheckableList(item.大肠杆菌抗性),
+                哺乳动物抗性: window.Utils.toCheckableList(item.哺乳动物抗性),
+                物种: window.Utils.toCheckableList(item.物种),
+                插入类型: window.Utils.toCheckableList(item.插入类型),
+                蛋白标签: window.Utils.toCheckableList(item.蛋白标签),
+                荧光蛋白: window.Utils.toCheckableList(item.荧光蛋白),
+                启动子: window.Utils.toCheckableList(item.启动子),
+                突变: window.Utils.toCheckableList(item.突变),
+                四环素诱导: window.Utils.toCheckableList(item.四环素诱导),
                 保存位置: item.保存位置 || '',
                 持有人: item.持有人 || '',
                 项目: item.项目 || []
             };
+
+            // 为每个字段添加用于输入的临时变量
+            const fields = ['载体类型', '靶基因', '物种', '功能', '插入类型', '大肠杆菌抗性', '哺乳动物抗性', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
+            fields.forEach(f => {
+                if (!editForm.value[f + '_new']) editForm.value[f + '_new'] = '';
+            });
         };
 
         const saveEdit = async () => {
@@ -1608,24 +1620,36 @@ const App = {
                 const updatedItem = {
                     ...editForm.value,
                     序列: editForm.value.序列 || '',
-                    载体类型: window.Utils.ensureArray(editForm.value.载体类型),
-                    靶基因: window.Utils.ensureArray(editForm.value.靶基因),
-                    功能: window.Utils.ensureArray(editForm.value.功能),
-                    大肠杆菌抗性: window.Utils.ensureArray(editForm.value.大肠杆菌抗性),
-                    哺乳动物抗性: window.Utils.ensureArray(editForm.value.哺乳动物抗性),
-                    物种: window.Utils.ensureArray(editForm.value.物种),
-                    插入类型: window.Utils.ensureArray(editForm.value.插入类型),
-                    蛋白标签: window.Utils.ensureArray(editForm.value.蛋白标签),
-                    荧光蛋白: window.Utils.ensureArray(editForm.value.荧光蛋白),
-                    启动子: window.Utils.ensureArray(editForm.value.启动子),
-                    突变: window.Utils.ensureArray(editForm.value.突变),
-                    四环素诱导: window.Utils.ensureArray(editForm.value.四环素诱导),
+                    载体类型: window.Utils.getSelectedValues(editForm.value.载体类型),
+                    靶基因: window.Utils.getSelectedValues(editForm.value.靶基因),
+                    功能: window.Utils.getSelectedValues(editForm.value.功能),
+                    大肠杆菌抗性: window.Utils.getSelectedValues(editForm.value.大肠杆菌抗性),
+                    哺乳动物抗性: window.Utils.getSelectedValues(editForm.value.哺乳动物抗性),
+                    物种: window.Utils.getSelectedValues(editForm.value.物种),
+                    插入类型: window.Utils.getSelectedValues(editForm.value.插入类型),
+                    蛋白标签: window.Utils.getSelectedValues(editForm.value.蛋白标签),
+                    荧光蛋白: window.Utils.getSelectedValues(editForm.value.荧光蛋白),
+                    启动子: window.Utils.getSelectedValues(editForm.value.启动子),
+                    突变: window.Utils.getSelectedValues(editForm.value.突变),
+                    四环素诱导: window.Utils.getSelectedValues(editForm.value.四环素诱导),
                     保存位置: editForm.value.保存位置 || '',
                     持有人: editForm.value.持有人 || '',
                     项目: editForm.value.项目 || [],
                     添加时间: editingItem.value.添加时间 || Date.now(),
                     更新时间: Date.now()
                 };
+
+                // 重新生成完整描述 (用户备注 + 自动属性)
+                const autoDesc = window.Utils.generateDescription(updatedItem);
+                const manualDesc = editForm.value.customDescription || '';
+                updatedItem.描述 = manualDesc ? (manualDesc + (autoDesc ? '; ' + autoDesc : '')) : autoDesc;
+                delete updatedItem.customDescription;
+
+                // 清理临时字段
+                const fields = ['载体类型', '靶基因', '物种', '功能', '插入类型', '大肠杆菌抗性', '哺乳动物抗性', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
+                fields.forEach(f => {
+                    delete updatedItem[f + '_new'];
+                });
 
                 // 如果是从文件读取，且是 .dna (SnapGene) 文件，尝试转换为标准 XML-GB 格式
                 if (isElectron.value && updatedItem.路径 && updatedItem.路径.toLowerCase().endsWith('.dna')) {
@@ -1891,11 +1915,26 @@ const App = {
         watch([searchQuery, pageSize], () => currentPage.value = 1);
 
         // 自动匹配建议
+        const PRESETS = {
+            '载体类型': ['pcDNA3.1', 'pLKO.1', 'pCDH', 'pET-28a', 'pUAST', 'pAc5.1', 'pLVX', 'pCMV', 'psPAX2', 'pMD2.G', 'pSpCas9', 'lentiCRISPR v2'],
+            '靶基因': [], 
+            '物种': ['人', '小鼠', '大鼠', '果蝇', '斑马鱼', '线虫', '食蟹猴', '猪'],
+            '功能': ['过表达', '干扰/shRNA', 'CRISPR/Cas9', '病毒包装', '报告基因', '蛋白纯化', '空载体'],
+            '大肠杆菌抗性': ['Ampicillin', 'Kanamycin', 'Chloramphenicol', 'Spectinomycin', 'Tetracycline', 'Zeocin'],
+            '哺乳动物抗性': ['Puromycin', 'Neomycin/G418', 'Hygromycin', 'Blasticidin', 'Zeocin'],
+            '插入类型': ['ORF/基因序列', 'shRNA', 'sgRNA', 'miRNA', 'cDNA', 'Promoter', 'Enhancer', "3'UTR"],
+            '蛋白标签': ['Flag', '3xFlag', 'HA', '3xHA', 'Myc', '6xHis', 'V5', 'GST', 'Halo', 'SNAP'],
+            '荧光蛋白': ['EGFP', 'mCherry', 'tdTomato', 'EYFP', 'EBFP', 'BFP', 'YFP', 'GFP'],
+            '启动子': ['CMV', 'EF1a', 'U6', 'H1', 'SV40', 'CAG', 'TRE', 'UAS', 'Ac5', 'UbC', 'PGK', 'T7'],
+            '突变': ['K48R', 'K63R', 'Y66H', 'Delta', 'Point Mutation'],
+            '四环素诱导': ['Tet-On', 'Tet-Off']
+        };
+
         const suggestions = computed(() => {
             const keys = ['载体类型', '靶基因', '物种', '功能', '大肠杆菌抗性', '哺乳动物抗性', '插入类型', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
             const result = {};
             keys.forEach(k => {
-                const set = new Set();
+                const set = new Set(PRESETS[k] || []);
                 plasmids.value.forEach(p => {
                     const val = p[k];
                     if (val) (Array.isArray(val) ? val : [val]).forEach(v => set.add(v));
@@ -2078,16 +2117,32 @@ const App = {
 
         const applyRecognitionToEditForm = (info) => {
             if (!info || typeof info !== 'object') return;
-            for (const [key, value] of Object.entries(info)) {
-                if (key === '文件名') continue;
+            const fields = ['载体类型', '靶基因', '物种', '功能', '插入类型', '大肠杆菌抗性', '哺乳动物抗性', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
+            
+            for (const key of fields) {
+                const value = info[key];
+                if (!value) continue;
+                
                 const values = Array.isArray(value)
                     ? value.map(v => String(v).trim()).filter(v => v && v !== '无')
-                    : (value ? [value] : []);
+                    : (value ? [String(value).trim()] : []);
+                
                 if (values.length === 0) continue;
-                if (!editForm.value[key] || (Array.isArray(editForm.value[key]) && editForm.value[key].length === 0)) {
-                    editForm.value[key] = Array.isArray(value) ? values : value;
+                
+                // 初始化为数组
+                if (!Array.isArray(editForm.value[key])) {
+                    editForm.value[key] = [];
                 }
+                
+                // 合并到现有列表
+                values.forEach(v => {
+                    if (!editForm.value[key].some(item => item.value === v)) {
+                        editForm.value[key].push({ value: v, selected: true });
+                    }
+                });
             }
+            // 自动更新描述
+            editForm.value.描述 = window.Utils.generateDescription(editForm.value);
         };
 
         const manualRecognizeName = () => {
@@ -2106,6 +2161,114 @@ const App = {
             const info = recognizer.recognize(name);
             applyRecognitionToEditForm(info);
             window.Utils.log(`[识别] 手动触发名称识别: ${name}`);
+        };
+
+        const toggleRecognitionValue = (key, value) => {
+            if (!editForm.value[key]) return;
+            const item = editForm.value[key].find(i => i.value === value);
+            if (item) {
+                item.selected = !item.selected;
+                // 更新描述
+                editForm.value.描述 = window.Utils.generateDescription(editForm.value);
+            }
+        };
+
+        const addRecognitionValue = (key, value) => {
+            if (!value || !value.trim()) return;
+            if (!Array.isArray(editForm.value[key])) editForm.value[key] = [];
+            
+            const exists = editForm.value[key].some(i => i.value === value);
+            if (!exists) {
+                editForm.value[key].push({ value: value, selected: true });
+                // 更新描述
+                editForm.value.描述 = window.Utils.generateDescription(editForm.value);
+            }
+        };
+
+        // 监听文件名变化自动识别
+        watch(() => editForm.value.文件名, (newVal) => {
+            if (!autoRecognize.value || !editingItem.value || batchMode.value) return;
+            // 如果是正在编辑现有质粒，不自动识别（除非用户点击手动识别）
+            if (!editingItem.value.id.startsWith('plasmid_')) return;
+            
+            if (newVal && newVal.length > 3) {
+                const recognizer = window.RecognitionService?.recognize
+                    ? window.RecognitionService
+                    : window.Recognition;
+                if (recognizer && recognizer.recognize) {
+                    const info = recognizer.recognize(newVal);
+                    // 自动应用到表单
+                    applyRecognitionToEditForm(info);
+                }
+            }
+        });
+
+        // 记录最近打开的数据库
+        const recordRecentDatabase = (path) => {
+            if (!path) return;
+            
+            // 更新列表：去重 -> 插入头部 -> 截取前10个
+            let list = recentDatabases.value.filter(p => p !== path);
+            list.unshift(path);
+            if (list.length > 10) list = list.slice(0, 10);
+            recentDatabases.value = list;
+
+            if (isElectron.value) {
+                const ipcRenderer = window.require('electron').ipcRenderer;
+                ipcRenderer.invoke('save-app-history', { 
+                    lastDatabase: path,
+                    recentDatabases: list
+                });
+            }
+        };
+
+        const clearDbHistory = async () => {
+            recentDatabases.value = [];
+            if (isElectron.value) {
+                const ipcRenderer = window.require('electron').ipcRenderer;
+                await ipcRenderer.invoke('save-app-history', { 
+                    lastDatabase: window.DataService.currentDatabasePath,
+                    recentDatabases: []
+                });
+            }
+            window.Utils.showToast(t('recentDb.clear') + ' ' + t('common.success'));
+        };
+        
+        const loadFromHistory = async (path) => {
+            if (!path) return;
+            if (window.DataService.currentDatabasePath === path) {
+                window.Utils.showToast(t('common.warning') + ': ' + t('gen_0364'), 'WARN'); // 已经是当前数据库
+                return;
+            }
+            
+            if (isElectron.value) {
+                const ipcRenderer = window.require('electron').ipcRenderer;
+                const content = await ipcRenderer.invoke('read-file-silent', path);
+                if (content) {
+                    try {
+                        const data = JSON.parse(content);
+                        if (!Array.isArray(data)) throw new Error('Invalid format');
+                        
+                        plasmids.value = data;
+                        window.DataService.setDatabasePath(path);
+                        recordRecentDatabase(path);
+                        showDbHistoryModal.value = false;
+                        window.Utils.showToast(t('gen_0363')); // 加载成功
+                        
+                        // 重新加载相关配置
+                        window.DataService.loadProjects();
+                        // 刷新列表显示
+                        currentPage.value = 1;
+                    } catch(e) {
+                        window.Utils.showToast(t('gen_0365'), 'ERROR'); // 损坏
+                    }
+                } else {
+                    window.Utils.showToast(t('gen_0366'), 'ERROR'); // 不存在
+                    // 自动移除无效记录
+                    recentDatabases.value = recentDatabases.value.filter(p => p !== path);
+                    recordRecentDatabase(window.DataService.currentDatabasePath);
+                }
+            }
         };
         const copySequence = () => {
             if (!currentSequence.value) return;
@@ -2417,6 +2580,39 @@ const App = {
             window.Utils.showToast(`已删除持有人 "${holderName}" (清理质粒: ${plasmidCount})`);
         };
 
+        // 显式方法处理模态框打开，方便调试
+        const openDbHistoryModal = () => {
+            window.Utils.log('[UI] 用户点击了"最近使用的数据库"');
+            showDbHistoryModal.value = true;
+            nextTick(() => {
+                const el = document.getElementById('db-history-modal');
+                if (!el) {
+                    window.Utils.log('[UI] showDbHistoryModal DOM 检查: 未找到 #db-history-modal');
+                    return;
+                }
+
+                const style = window.getComputedStyle(el);
+                const rect = el.getBoundingClientRect();
+                window.Utils.log(`[UI] showDbHistoryModal DOM 检查: 存在 | display=${style.display} | visibility=${style.visibility} | opacity=${style.opacity} | zIndex=${style.zIndex} | rect=${Math.round(rect.width)}x${Math.round(rect.height)}`);
+            });
+        };
+
+        const openHelpModal = () => {
+            window.Utils.log('[UI] 用户点击了"使用帮助"');
+            showHelpModal.value = true;
+            nextTick(() => {
+                const el = document.getElementById('help-modal');
+                if (!el) {
+                    window.Utils.log('[UI] showHelpModal DOM 检查: 未找到 #help-modal');
+                    return;
+                }
+
+                const style = window.getComputedStyle(el);
+                const rect = el.getBoundingClientRect();
+                window.Utils.log(`[UI] showHelpModal DOM 检查: 存在 | display=${style.display} | visibility=${style.visibility} | opacity=${style.opacity} | zIndex=${style.zIndex} | rect=${Math.round(rect.width)}x${Math.round(rect.height)}`);
+            });
+        };
+
         // 暴露方法和数据
         return { 
             t, locale, setLocale,
@@ -2429,11 +2625,12 @@ const App = {
             openFileNative, openFolder, getBioLinks,
             handleFileSelect, handleDrop, isDragging, resetData,
             editingItem, editForm, editItem, saveEdit, deleteItem, createNewPlasmid, batchCreatePlasmids,
+            autoRecognize, recognitionPreview, toggleRecognitionValue, addRecognitionValue,
             createHolder, batchUpdateOwner, batchUpdateLocation,
             createTab, batchPasteContent, handleBatchPasteNames,
             downloadJSON: handleDownloadJSON, 
             downloadCSV: handleDownloadCSV,
-            saveDatabaseFile, saveSettingsFile,
+            saveDatabaseFile, saveSettingsFile, handleSettingsConfirm,
             linkLocalDatabase, loadSampleDatabase, startFromScratch, dbFileHandle,
             settings, showSettingsModal,
             suggestions,
@@ -2469,13 +2666,6 @@ const App = {
             openPlasmidExternal,
             manualRecognizeName,
             openExternalLink,
-
-            // UniProt Modal
-            showUniProtModal,
-            uniProtModalData,
-            openUniProtModal,
-            closeUniProtModal,
-            applyUniProtData,
 
             // CSV 相关
             showExportModal,
@@ -2518,7 +2708,15 @@ const App = {
             projectManager, // 确保模板可以通过 projectManager.xxx 访问
             ...projectManager,
             createNewDatabase,
-            switchDatabase
+            switchDatabase,
+
+            // Help & History Modals
+            showHelpModal, helpTab,
+            showDbHistoryModal, recentDatabases, clearDbHistory, loadFromHistory,
+            openDbHistoryModal, openHelpModal, // 新增的包装方法
+
+            // Utils
+            generateDescription: window.Utils.generateDescription,
         };
     }
 };
