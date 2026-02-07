@@ -29,6 +29,8 @@ jobs:
 
       - name: Build and Release
         uses: samuelmeuli/action-electron-builder@v1
+        env:
+          CSC_SKIP_SIGNING: true
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release: true

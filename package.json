@@ -1,6 +1,6 @@
 {
   "name": "plasmid-manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "质粒管理系统桌面版",
   "main": "main.js",
   "scripts": {
@@ -24,6 +24,7 @@
     "directories": {
       "output": "dist_v3"
     },
+    "icon": "assets/icon.png",
     "asar": true,
     "files": [
       "**/*",
@@ -44,7 +45,6 @@
         "portable"
       ],
       "forceCodeSigning": false,
-      "icon": "assets/icon.png",
       "signtoolOptions": {
         "sign": null
       }
@@ -62,8 +62,9 @@
         "zip"
       ],
       "category": "public.app-category.productivity",
-      "hardenedRuntime": true,
+      "hardenedRuntime": false,
       "gatekeeperAssess": false,
+      "identity": null,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.inherit.plist",
       "extendInfo": {
