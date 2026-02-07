@@ -99,7 +99,8 @@
       "requestHeaders": {
         "X-GitHub-Api-Version": "2022-11-28"
       },
-      "requestTimeout": 300000
+      "requestTimeout": 300000,
+      "token": "${GH_TOKEN}"
     }
   }
 }
