@@ -69,8 +69,6 @@
       "hardenedRuntime": false,
       "gatekeeperAssess": false,
       "identity": null,
-      "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.inherit.plist",
       "extendInfo": {
         "NSAppleEventsUsageDescription": "Please allow access to Apple Events.",
         "NSCameraUsageDescription": "Please allow access to the camera.",
