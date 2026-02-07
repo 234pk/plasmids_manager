@@ -4,10 +4,13 @@ node_modules/
 # Logs
 *.log
 npm-debug.log*
+*.bak
+*.tmp
 
 # User Data
 data/
 plasmid_database.json
+.env
 
 # Build Artifacts
 dist/
@@ -15,6 +18,7 @@ dist_*/
 out/
 release/
 electron_builder_cache/
+coverage/
 *.exe
 *.dmg
 *.zip
