@@ -27,6 +27,7 @@ Plasmid Manager is an efficient desktop application designed for biomedical rese
     *   Optimized for global laboratory environments with persistent language settings.
 *   **📦 Optimized Distribution**: 
     *   Cross-platform support for Windows (.exe, portable) and macOS (DMG).
+    *   **Universal macOS binaries** (support for both Intel and Apple Silicon/M1/M2/M3).
     *   High-fidelity custom branding with optimized icons for Retina displays.
     *   Automated CI/CD via GitHub Actions.
 *   **💾 Data Security & Portability**: 
@@ -66,6 +67,7 @@ Plasmid Manager is an efficient desktop application designed for biomedical rese
     *   优化了设置页面和操作反馈的翻译质量。
 *   **📦 优化的分发与体验**:
     *   支持 Windows（安装版、便携版）和 macOS（DMG）跨平台运行。
+    *   **macOS 通用二进制支持**（原生兼容 Intel 及 Apple Silicon M1/M2/M3 芯片）。
     *   针对 macOS Retina 屏幕优化的 1024x1024 高清自定义图标。
     *   通过 GitHub Actions 实现自动化构建与发布。
 *   **💾 数据安全与迁移**:
