@@ -188,7 +188,7 @@
                     <!-- {{ t('gen_0039') }} -->
                     <div class="flex items-center gap-3">
                         <div class="relative">
-                            <button type="button" id="btn-new-plasmid" @click="createNewPlasmid" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md shadow-blue-200 flex items-center gap-2 transition-all btn-scale font-bold">
+                            <button type="button" id="btn-new-plasmid" aria-label="New Plasmid" @click="createNewPlasmid" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md shadow-blue-200 flex items-center gap-2 transition-all btn-scale font-bold">
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                                 {{ t('actions.newPlasmid') }}
                             </button>
@@ -211,7 +211,7 @@
                     <div class="flex items-center gap-3">
                         <!-- {{ t('gen_1605') }} -->
                         <div class="relative group">
-                            <button type="button" class="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" :title="t('gen_0042')" :aria-label="t('gen_0042')">
+                            <button type="button" class="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" :title="t('gen_0042')" aria-label="列显示设置">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
                             </button>
                             <div class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 p-3">
@@ -233,7 +233,7 @@
                             </div>
                         </div>
 
-                        <!-- 数据工具 -->
+                        <!-- 鏁版嵁宸ュ叿 -->
                         <div class="h-6 w-px bg-gray-200 mx-1"></div>
                         
                         <div class="flex items-center bg-gray-50 rounded-lg p-1 border border-gray-200">
@@ -254,7 +254,7 @@
                         <button type="button" id="btn-save-db" @click="saveDatabaseFile" class="p-2 text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-all" :title="dbFileHandle ? '直接保存所有数据' : '保存当前所有信息'" aria-label="保存数据库">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
                         </button>
-                        <button type="button" id="btn-show-settings" @click="showSettingsModal = true" class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-all" :title="t('gen_0052')" :aria-label="t('gen_0052')">
+                        <button type="button" id="btn-show-settings" @click="showSettingsModal = true" class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-all" :title="t('gen_0052')" aria-label="设置">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                         </button>
                         
@@ -276,6 +276,15 @@
                                 <button type="button" @click="switchDatabase" class="w-full text-left px-4 py-3 hover:bg-gray-50 text-sm text-gray-700 flex items-center gap-2">
                                     <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
                                     {{ t('gen_0057') }}
+                                </button>
+                                <div class="h-px bg-gray-100 my-0"></div>
+                                <button type="button" @click="openDbHistoryModal" class="w-full text-left px-4 py-3 hover:bg-gray-50 text-sm text-gray-700 flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    {{ t('recentDb.title') }}
+                                </button>
+                                <button type="button" @click="openHelpModal" class="w-full text-left px-4 py-3 hover:bg-gray-50 text-sm text-gray-700 flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    {{ t('help.title') }}
                                 </button>
                             </div>
                         </div>
@@ -311,7 +320,7 @@
                 </button>
             </nav>
 
-            <!-- {{ t('gen_0062') }} 质粒库、项目、持有人) -->
+            <!-- {{ t('gen_0062') }} (质粒库、项目、持有人) -->
             <div v-show="['library', 'projects', 'holders'].includes(currentView)">
             <div class="flex flex-col lg:flex-row gap-6 items-start">
                     <!-- 项目列表 -->
@@ -322,7 +331,7 @@
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
                                     {{ t('gen_0067') }}
                                 </h3>
-                                <button type="button" @click="openCreateProject" class="p-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors" :aria-label="t('gen_0261')">
+                                <button type="button" @click="openCreateProject" class="p-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors" aria-label="新建项目">
                                     <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                                 </button>
                             </div>
@@ -383,7 +392,7 @@
                                     <div class="flex items-center justify-between gap-2 mb-2">
                                         <label for="search-input" class="text-sm font-bold text-gray-700 flex items-center gap-2 cursor-pointer">
                                             <svg class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                                            {{ currentView === 'library' ? '深度全局搜索' : (currentView === 'projects' ? '在当前项目中搜索' : '搜索持有人的质粒') }}
+                                            {{ currentView === 'library' ? t('gen_search_library') : (currentView === 'projects' ? t('gen_search_project') : t('gen_search_holder')) }}
                                         </label>
                                         <div class="flex items-center gap-2">
                                             <div v-if="currentView === 'projects' && selectedProjectId">
@@ -401,15 +410,15 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <input id="search-input" v-model="searchQuery" type="text" placeholder="输入任何关键词..." class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-sm" aria-label="搜索框">
+                                    <input id="search-input" v-model="searchQuery" type="text" :placeholder="t('gen_search_placeholder')" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-sm" aria-label="搜索框">
                                 </div>
                                 <div class="w-48">
                                     <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0088') }}</label>
                                     <select v-model="pageSize" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-sm">
-                                        <option :value="10">10 条</option>
-                                        <option :value="20">20 条</option>
-                                        <option :value="50">50 条</option>
-                                        <option :value="100">100 条</option>
+                                        <option :value="10">10 {{ t('gen_items_unit') }}</option>
+                                        <option :value="20">20 {{ t('gen_items_unit') }}</option>
+                                        <option :value="50">50 {{ t('gen_items_unit') }}</option>
+                                        <option :value="100">100 {{ t('gen_items_unit') }}</option>
                                         <option :value="-1">{{ t('gen_0089') }}</option>
                                     </select>
                                 </div>
@@ -431,7 +440,7 @@
                                 <div class="w-24">
                                     <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0100') }}</label>
                                     <button type="button" @click="sortConfig.order = sortConfig.order === 'asc' ? 'desc' : 'asc'" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-sm bg-white text-gray-700 font-bold flex items-center justify-center gap-2">
-                                        {{ sortConfig.order === 'asc' ? '升序' : '降序' }}
+                                        {{ sortConfig.order === 'asc' ? t('gen_0101') : t('gen_0102') }}
                                         <svg v-if="sortConfig.order === 'asc'" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" /></svg>
                                         <svg v-else class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h5m4 0v12m0 0l-4-4m4 4l4-4" /></svg>
                                     </button>
@@ -472,17 +481,21 @@
                                 <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">{{ t('gen_0108') }}</span>
                                 <div v-if="currentView === 'projects' && selectedProjectId" class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold flex items-center gap-2">
                                     {{ t('gen_0109') }} {{ getProjectNameById(selectedProjectId) }}
-                                    <button type="button" @click="selectedProjectId = null" class="hover:text-purple-900">×</button>
+                                    <button type="button" @click="selectedProjectId = null" class="hover:text-purple-900" aria-label="取消选择">
+                                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </button>
                                 </div>
                                 <div v-else-if="currentView === 'holders' && selectedHolder" class="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-bold flex items-center gap-2">
                                     {{ t('gen_0110') }} {{ selectedHolder }}
-                                    <button type="button" @click="selectedHolder = null" class="hover:text-amber-900">×</button>
+                                    <button type="button" @click="selectedHolder = null" class="hover:text-amber-900" aria-label="取消选择">
+                                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </button>
                                 </div>
-                                <div v-else class="text-xs text-gray-400 italic">请从左侧选择一个{{ currentView === 'projects' ? '项目' : '持有人' }}进行查看</div>
+                                <div v-else class="text-xs text-gray-400 italic">{{ t('gen_select_view_prompt') }}{{ currentView === 'projects' ? t('gen_0111') : t('gen_0433') }}{{ t('gen_select_view_prompt_end') }}</div>
                             </div>
                         </div>
 
-                        <!-- 数据表格 -->
+                        <!-- Data Table -->
                         <div class="bg-white rounded-xl shadow-lg border border-gray-100 min-w-full w-fit">
                 <div class="pb-3" :class="tableDensityClass">
                     <div class="">
@@ -500,7 +513,7 @@
                                     {{ t('gen_0118') }}
                                     <div class="resizer" @mousedown.stop.prevent="initResize($event)"></div>
                                 </th>
-                                <th v-if="settings.displayConfig.columnVisibility['抗性']" class="px-6 py-4 text-left whitespace-nowrap relative group" :style="getColumnWidth('抗性 & 诱导')">
+                                <th v-if="settings.displayConfig.columnVisibility['抗性 & 诱导']" class="px-6 py-4 text-left whitespace-nowrap relative group" :style="getColumnWidth('抗性 & 诱导')">
                                     {{ t('gen_0121') }}
                                     <div class="resizer" @mousedown.stop.prevent="initResize($event)"></div>
                                 </th>
@@ -559,7 +572,7 @@
                                         <div v-if="p.靶基因 && p.靶基因 !== '无' && p.靶基因.length" class="flex gap-1">
                                             <template v-for="link in getBioLinks(p.靶基因, p.物种)" :key="link.name">
                                                 <div class="flex items-center gap-0.5 group">
-                                                    <a href="#" @click.prevent="openUniProtModal(link.name, p)" class="w-4 h-4 flex items-center justify-center bg-blue-50 text-blue-600 text-[9px] font-black rounded hover:bg-blue-600 hover:text-white transition-all border border-blue-100" :title="t('gen_1607')" :aria-label="t('gen_1110')">U</a>
+                                                    <a :href="link.uniprot" @click.prevent="openExternalLink(link.uniprot)" class="w-4 h-4 flex items-center justify-center bg-blue-50 text-blue-600 text-[9px] font-black rounded hover:bg-blue-600 hover:text-white transition-all border border-blue-100" :title="t('gen_1607')" :aria-label="t('gen_1110')">U</a>
                                                     <a href="#" @click.prevent="openExternalLink(link.ncbi)" class="w-4 h-4 flex items-center justify-center bg-green-50 text-green-600 text-[9px] font-black rounded hover:bg-green-600 hover:text-white transition-all border border-green-100" :title="t('gen_1608')" :aria-label="t('gen_1111')">N</a>
                                                 </div>
                                             </template>
@@ -569,7 +582,7 @@
                                         <span class="font-medium text-gray-400">{{ t('gen_0159') }}</span> {{ Array.isArray(p.功能) ? p.功能.join(',') : p.功能 }}
                                     </div>
                                 </td>
-                                <td v-if="settings.displayConfig.columnVisibility['抗性']" class="px-6 py-5 text-xs">
+                                <td v-if="settings.displayConfig.columnVisibility['抗性 & 诱导']" class="px-6 py-5 text-xs">
                                     <div class="flex flex-col gap-1">
                                         <div v-if="p.大肠杆菌抗性 && p.大肠杆菌抗性.length" class="flex items-center gap-1">
                                             <span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>
@@ -660,13 +673,13 @@
                                 </td>
                                 <td class="px-4 py-5 bg-white group-hover:bg-blue-50/30 transition-colors">
                                     <div class="flex flex-wrap gap-2 justify-center min-w-[7.5rem]">
-                                        <button type="button" v-if="isElectron" @click="openPlasmidExternal(p)" :title="t('gen_1611')" class="inline-flex items-center gap-1.5 px-2 py-1.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold rounded-lg hover:bg-indigo-600 hover:text-white transition-all shadow-sm justify-center btn-scale">
+                                        <button type="button" v-if="isElectron" @click="openPlasmidExternal(p)" :title="t('common.openExternal')" class="inline-flex items-center gap-1.5 px-2 py-1.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold rounded-lg hover:bg-indigo-600 hover:text-white transition-all shadow-sm justify-center btn-scale">
                                             <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                                            <span class="hidden xl:inline">{{ t('gen_1611') }}</span>
+                                            <span class="hidden xl:inline">{{ t('common.openExternal') }}</span>
                                         </button>
-                                        <button type="button" @click="viewSequence(p)" :title="t('gen_1612')" class="inline-flex items-center gap-1.5 px-2 py-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-lg hover:bg-emerald-600 hover:text-white transition-all shadow-sm justify-center btn-scale">
+                                        <button type="button" @click="viewSequence(p)" :title="t('common.viewSequence')" class="inline-flex items-center gap-1.5 px-2 py-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-lg hover:bg-emerald-600 hover:text-white transition-all shadow-sm justify-center btn-scale">
                                             <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                                            <span class="hidden xl:inline">{{ t('gen_1612') }}</span>
+                                            <span class="hidden xl:inline">{{ t('common.viewSequence') }}</span>
                                         </button>
                                         <button type="button" @click="editItem(p)" :title="t('gen_0229')" class="inline-flex items-center gap-1.5 px-2 py-1.5 bg-blue-50 text-blue-600 text-[10px] font-bold rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm justify-center btn-scale">
                                             <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
@@ -686,9 +699,9 @@
                 <!-- {{ t('gen_1613') }} -->
                 <div class="px-6 py-5 flex justify-between items-center bg-gray-50 border-t border-gray-100">
                     <div class="text-sm text-gray-500 font-medium">
-                        {{ t('gen_0233') }} <span class="text-gray-900 font-bold">{{ (currentPage-1)*pageSize + 1 }}</span> 到
-                        <span class="text-gray-900 font-bold">{{ Math.min(currentPage*pageSize, filteredPlasmids.length) }}</span> 条
-                        (共 {{ filteredPlasmids.length }} {{ t('gen_0234') }})
+                        {{ t('gen_0233') }} <span class="text-gray-900 font-bold">{{ (currentPage-1)*pageSize + 1 }}</span> {{ t('gen_0233_to') }}
+                        <span class="text-gray-900 font-bold">{{ Math.min(currentPage*pageSize, filteredPlasmids.length) }}</span> {{ t('gen_items_unit') }}
+                        ({{ t('gen_total_prefix') }} {{ filteredPlasmids.length }} {{ t('gen_0234') }})
                     </div>
                     <div class="flex gap-2">
                         <button type="button" @click="currentPage--" :disabled="currentPage === 1" class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-bold text-gray-600 disabled:opacity-40 hover:bg-gray-50 transition-all shadow-sm">{{ t('gen_0235') }}</button>
@@ -706,12 +719,12 @@
 </main>
 
         <!-- {{ t('gen_0237') }} prompt) -->
-        <component is="transition" name="modal">
-            <div v-if="showBatchInputModalState" v-cloak class="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <transition name="modal">
+            <div v-if="showBatchInputModalState" class="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
                 <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md border border-gray-100 overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
                         <h3 class="text-lg font-bold text-gray-800">{{ batchInputTitle }}</h3>
-                        <button type="button" @click="showBatchInputModalState = false" class="text-gray-400 hover:text-gray-600" :aria-label="t('gen_0392')">
+                        <button type="button" @click="showBatchInputModalState = false" aria-label="Close Batch Input" class="text-gray-400 hover:text-gray-600">
                             <span class="sr-only">{{ t('gen_0392') }}</span>
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
@@ -726,20 +739,20 @@
                         </div>
                     </div>
                     <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
-                        <button type="button" @click="showBatchInputModalState = false" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 font-medium">{{ t('gen_0239') }}</button>
+                        <button type="button" @click="showBatchInputModalState = false" aria-label="Close Batch Input" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 font-medium">{{ t('gen_0239') }}</button>
                         <button type="button" @click="confirmBatchInput" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold shadow-md">{{ t('gen_0240') }}</button>
                     </div>
                 </div>
             </div>
-        </component>
+        </transition>
 
         <!-- 批量添加到项目弹窗 -->
-        <component is="transition" name="modal">
-            <div v-if="showBatchProjectModal" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <transition name="modal">
+            <div v-if="showBatchProjectModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
                 <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg border border-gray-100">
                     <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50 rounded-t-2xl">
                         <h3 class="text-lg font-bold text-gray-800">{{ t('gen_0242') }}</h3>
-                                        <button type="button" @click="showBatchProjectModal = false" class="text-gray-400 hover:text-gray-600 transition-colors" :aria-label="t('gen_0392')">
+                        <button type="button" @click="showBatchProjectModal = false" aria-label="Close Batch Project" class="text-gray-400 hover:text-gray-600 transition-colors">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </div>
@@ -760,101 +773,16 @@
                         </div>
                     </div>
                     <div class="px-6 py-4 bg-gray-50 rounded-b-2xl flex justify-end gap-3">
-                        <button type="button" @click="showBatchProjectModal = false" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all">{{ t('gen_0239') }}</button>
+                        <button type="button" @click="showBatchProjectModal = false" aria-label="Close Batch Project" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all">{{ t('gen_0239') }}</button>
                         <button type="button" @click="submitBatchProject" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition-all">{{ t('gen_0246') }}</button>
                     </div>
                 </div>
             </div>
-        </component>
-
-        <!-- UniProt 搜索弹窗 -->
-        <component is="transition" name="modal">
-            <div v-if="showUniProtModal" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl flex flex-col border border-gray-100 overflow-hidden max-h-[85vh]">
-                    <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                        <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                            <span class="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
-                                U
-                            </span>
-                            UniProt {{ t('gen_0248') }} <span class="text-blue-600 ml-1">{{ uniProtModalData.targetGene }}</span>
-                        </h3>
-                        <button type="button" @click="closeUniProtModal" class="text-gray-400 hover:text-gray-600 transition-colors p-1 hover:bg-gray-100 rounded-md" :aria-label="t('gen_0392')">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-                    </div>
-                    
-                    <div class="p-6 overflow-y-auto">
-                        <div v-if="uniProtModalData.loading" class="flex flex-col items-center justify-center py-12">
-                             <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-4"></div>
-                             <p class="text-gray-500 animate-pulse">正在查询 UniProt 数据库...</p>
-                        </div>
-                        
-                        <div v-else-if="uniProtModalData.result" class="space-y-6">
-                            <!-- Result Header -->
-                            <div class="bg-blue-50 rounded-xl p-4 border border-blue-100">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h4 class="text-lg font-bold text-gray-800">{{ uniProtModalData.result.name }}</h4>
-                                        <div class="flex items-center gap-2 mt-1 text-sm text-gray-600">
-                                            <span class="bg-white px-2 py-0.5 rounded border border-blue-200 text-blue-600 font-mono text-xs">{{ uniProtModalData.result.uniprotId }}</span>
-                                            <span class="italic">{{ uniProtModalData.result.organism }}</span>
-                                        </div>
-                                    </div>
-                                    <a :href="uniProtModalData.result.link" @click.prevent="openExternalLink(uniProtModalData.result.link)" class="text-xs text-blue-600 hover:underline flex items-center gap-1">
-                                        UniProt官网
-                                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- Details -->
-                            <div class="space-y-4">
-                                <div v-if="uniProtModalData.result.function">
-                                    <h5 class="text-sm font-bold text-gray-700 mb-1">{{ t('gen_0251') }}</h5>
-                                    <p class="text-sm text-gray-600 leading-relaxed bg-gray-50 p-3 rounded-lg border border-gray-100">{{ uniProtModalData.result.function }}</p>
-                                </div>
-                                
-                                <div class="flex gap-6">
-                                    <div v-if="uniProtModalData.result.mass">
-                                        <h5 class="text-sm font-bold text-gray-700 mb-1">{{ t('gen_0252') }}</h5>
-                                        <p class="text-sm text-gray-900 font-mono">{{ uniProtModalData.result.mass }} Da</p>
-                                    </div>
-                                    <div v-if="uniProtModalData.result.length">
-                                        <h5 class="text-sm font-bold text-gray-700 mb-1">{{ t('gen_0253') }}</h5>
-                                        <p class="text-sm text-gray-900 font-mono">{{ uniProtModalData.result.length }} aa</p>
-                                    </div>
-                                </div>
-
-                                <div v-if="uniProtModalData.result.sequence">
-                                    <h5 class="text-sm font-bold text-gray-700 mb-1">{{ t('gen_0254') }}</h5>
-                                    <div class="bg-gray-800 text-gray-300 font-mono text-xs p-3 rounded-lg break-all max-h-32 overflow-y-auto select-all">
-                                        {{ uniProtModalData.result.sequence }}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Footer Action -->
-                            <div v-if="uniProtModalData.targetPlasmid" class="pt-4 border-t border-gray-100 flex justify-end">
-                                <button type="button" @click="applyUniProtData" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition-all flex items-center gap-2" :aria-label="t('gen_1112') + ' ' + (uniProtModalData.targetPlasmid ? uniProtModalData.targetPlasmid.文件名 : '')">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                                {{ t('gen_1112') }} "{{ uniProtModalData.targetPlasmid ? uniProtModalData.targetPlasmid.文件名 : '' }}"
-                            </button>
-                            </div>
-                        </div>
-
-                        <div v-else class="text-center py-12 text-gray-400 flex flex-col items-center">
-                            <svg class="w-12 h-12 mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
-                            <p>{{ uniProtModalData.error || '未找到匹配结果' }}</p>
-                            <p v-if="!uniProtModalData.error" class="text-xs text-gray-400 mt-2">{{ t('gen_0257') }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </component>
+        </transition>
 
         <!-- 项目管理弹窗 -->
-        <component is="transition" name="modal">
-            <div v-if="showProjectModal" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <transition name="modal">
+            <div v-if="showProjectModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
                 <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl h-[85vh] flex flex-col border border-gray-100 overflow-hidden">
                     <div class="px-8 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50">
                         <h3 class="text-xl font-bold text-gray-800 flex items-center gap-3">
@@ -863,7 +791,7 @@
                             </span>
                             {{ t('gen_0259') }}
                         </h3>
-                        <button type="button" @click="showProjectModal = false" class="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-200 rounded-lg" :aria-label="t('gen_0392')">
+                        <button type="button" @click="showProjectModal = false" aria-label="Close Project" class="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-200 rounded-lg">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </div>
@@ -878,7 +806,7 @@
                                 </button>
                                 <div class="relative">
                                     <svg class="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                                    <input v-model="projectSearchQuery" type="text" placeholder="搜索项目..." class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+                                    <input v-model="projectSearchQuery" type="text" :placeholder="t('gen_0262')" class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 outline-none">
                                 </div>
                             </div>
                             <div class="flex-1 overflow-y-auto p-3 space-y-2">
@@ -888,11 +816,11 @@
                                     <div class="flex justify-between items-start">
                                         <h4 class="font-bold text-gray-800">{{ proj.name }}</h4>
                                         <div class="flex gap-1" @click.stop>
-                                            <button type="button" @click="openEditProject(proj)" class="p-1 text-gray-400 hover:text-blue-600 transition-colors" :title="t('gen_0263')"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></button>
-                                            <button type="button" @click="removeProject(proj)" class="p-1 text-gray-400 hover:text-red-600 transition-colors" :title="t('gen_0264')"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                                            <button type="button" @click="openEditProject(proj)" class="p-1 text-gray-400 hover:text-blue-600 transition-colors" :title="t('gen_0263')" aria-label="编辑项目"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></button>
+                                            <button type="button" @click="removeProject(proj)" class="p-1 text-gray-400 hover:text-red-600 transition-colors" :title="t('gen_0264')" aria-label="删除项目"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
                                         </div>
                                     </div>
-                                    <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ proj.description || '无描述' }}</p>
+                                    <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ proj.description || t('gen_0274') }}</p>
                                     <div class="mt-3 flex justify-between items-center text-xs">
                                         <span class="bg-purple-50 text-purple-600 px-2 py-0.5 rounded-full font-medium">{{ (proj.plasmidIds || []).length }} {{ t('gen_0069') }}</span>
                                         <span class="text-gray-400">{{ new Date(proj.updatedAt).toLocaleDateString() }}</span>
@@ -901,7 +829,7 @@
                             </div>
                         </div>
                         
-                        <!-- 右侧：项目详情/质粒列表 -->
+                        <!-- 右侧：项目详情 & 质粒列表 -->
                         <div class="w-2/3 bg-white flex flex-col">
                             <div v-if="Array.from(expandedProjectIds).length === 1" class="flex-1 flex flex-col h-full">
                                 <template v-for="projId in Array.from(expandedProjectIds)" :key="projId">
@@ -910,7 +838,7 @@
                                             <h2 class="text-2xl font-bold text-gray-800">{{ getProjectNameById(projId) }}</h2>
                                             <span class="text-xs text-gray-400 font-mono">ID: {{ projId }}</span>
                                         </div>
-                                        <p class="text-gray-600 text-sm mb-4">{{ getProjectDescriptionById(projId) || '暂无描述' }}</p>
+                                        <p class="text-gray-600 text-sm mb-4">{{ getProjectDescriptionById(projId) || t('gen_0493') }}</p>
                                         <div class="flex flex-wrap gap-2">
                                             <div v-for="member in getProjectMembersById(projId)" :key="member" class="px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded-lg font-medium flex items-center gap-1">
                                                 <div class="w-4 h-4 rounded-full bg-blue-200 text-blue-700 flex items-center justify-center text-[8px] font-bold">{{ member.charAt(0).toUpperCase() }}</div>
@@ -922,7 +850,7 @@
                                     <div class="flex-1 overflow-y-auto p-6 bg-gray-50/30">
                                         <h4 class="text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
                                             <svg class="w-4 h-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                                            关联质粒清单 ({{ getProjectPlasmidsById(projId).length }})
+                                            {{ t('gen_0491') }} ({{ getProjectPlasmidsById(projId).length }})
                                         </h4>
                                         
                                         <div v-if="getProjectPlasmidsById(projId).length > 0" class="space-y-2">
@@ -933,10 +861,10 @@
                                                 </div>
                                                     <div>
                                                         <div class="text-sm font-bold text-gray-800">{{ p.文件名 }}</div>
-                                                        <div class="text-[10px] text-gray-400">{{ p.靶基因 || '无靶基因' }} | {{ p.大肠杆菌抗性 || '无抗性' }}</div>
+                                                        <div class="text-[10px] text-gray-400">{{ p.靶基因 || t('gen_0492') }} | {{ p.大肠杆菌抗性 || t('gen_0494') }}</div>
                                                     </div>
                                                 </div>
-                                                <button type="button" @click="removePlasmidFromProject(getProjectById(projId), p)" class="text-gray-300 hover:text-red-500 p-2 transition-colors" :title="t('gen_0272')">
+                                                <button type="button" @click="removePlasmidFromProject(getProjectById(projId), p)" class="text-gray-300 hover:text-red-500 p-2 transition-colors" :title="t('gen_0272')" aria-label="从项目移除质粒">
                                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                                                 </button>
                                             </div>
@@ -955,24 +883,24 @@
                     </div>
                 </div>
             </div>
-        </component>
+        </transition>
 
         <!-- {{ t('gen_0275') }} -->
-        <component is="transition" name="modal">
-            <div v-if="showProjectForm" v-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <transition name="modal">
+            <div v-if="showProjectForm" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
                 <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md border border-gray-100 overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
-                        <h3 class="text-lg font-bold text-gray-800">{{ isEditingProject ? '编辑项目' : '新建项目' }}</h3>
-                        <button type="button" @click="showProjectForm = false" class="text-gray-400 hover:text-gray-600" :aria-label="t('gen_0392')"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
+                        <h3 class="text-lg font-bold text-gray-800">{{ isEditingProject ? t('gen_0070') : t('gen_0068') }}</h3>
+                        <button type="button" @click="showProjectForm = false" class="text-gray-400 hover:text-gray-600" aria-label="关闭"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
                     </div>
                     <div class="p-6 space-y-4">
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-1">{{ t('gen_0277') }} <span class="text-red-500">*</span></label>
-                            <input v-model="projectForm.name" type="text" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" placeholder="例如：癌症研究-2024">
+                            <input v-model="projectForm.name" type="text" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" :placeholder="t('gen_0278') + '2024'">
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-1">{{ t('gen_0279') }}</label>
-                            <textarea v-model="projectForm.description" rows="3" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" placeholder="简要描述项目目标..."></textarea>
+                            <textarea v-model="projectForm.description" rows="3" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none" :placeholder="t('gen_0280')"></textarea>
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-1">{{ t('gen_0281') }}</label>
@@ -984,7 +912,7 @@
                             </div>
                             <div class="flex gap-2">
                                 <div class="relative flex-1">
-                                    <input v-model="newMemberName" type="text" list="list-all-members" placeholder="输入新成员或选择" 
+                                    <input v-model="newMemberName" type="text" list="list-all-members" :placeholder="t('gen_0282')" 
                                            class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none text-sm"
                                            @keydown.enter.prevent="addMember">
                                     <datalist id="list-all-members">
@@ -1005,11 +933,11 @@
                     </div>
                 </div>
             </div>
-        </component>
+        </transition>
 
         <!-- 编辑弹窗 -->
-        <component is="transition" name="modal">
-            <div v-if="editingItem" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <transition name="modal">
+            <div v-if="editingItem" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
                 <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-100">
                     <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white z-10">
                         <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
@@ -1019,10 +947,10 @@
                             {{ t('gen_0286') }}
                         </h3>
                         <div class="flex items-center gap-2">
-                            <button type="button" @click="saveEdit" class="text-green-500 hover:text-green-700 transition-colors p-2 hover:bg-green-50 rounded-lg" :aria-label="t('gen_0287')">
+                            <button type="button" @click="saveEdit" aria-label="Save Edit" class="text-green-500 hover:text-green-700 transition-colors p-2 hover:bg-green-50 rounded-lg">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                             </button>
-                            <button type="button" @click="editingItem = null" class="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-lg" :aria-label="t('gen_0288')">
+                            <button type="button" @click="editingItem = null" aria-label="Close Edit" class="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-lg">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                             </button>
                         </div>
@@ -1053,11 +981,8 @@
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">质粒名称列表 (每行一个)</label>
-                                <textarea v-model="batchNames" rows="10" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all font-mono text-xs" placeholder="例如：
-pLenti-CMV-EGFP-Puro
-pET28a-His-Target
-..."></textarea>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0297') }}</label>
+                                <textarea v-model="batchNames" rows="10" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all font-mono text-xs" :placeholder="t('gen_0298')"></textarea>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
@@ -1078,66 +1003,236 @@ pET28a-His-Target
                                     </div>
                                 </div>
                             </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-bold text-gray-700 mb-2">统一备注 / 描述</label>
+                                <textarea v-model="editForm.customDescription" rows="2" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="将应用到所有导入的质粒 (自动识别的属性将追加在后)"></textarea>
+                            </div>
                         </div>
 
                         <!-- 单条编辑视图 -->
                         <div v-show="!batchMode" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="md:col-span-2">
-                                <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0137') }}</label>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="block text-sm font-bold text-gray-700">{{ t('gen_0137') }}</label>
+                                    <label class="flex items-center gap-2 cursor-pointer group">
+                                        <span class="text-xs text-gray-500 group-hover:text-indigo-600 transition-colors">{{ t('gen_0472') }}</span>
+                                        <span class="relative inline-flex items-center">
+                                            <input type="checkbox" v-model="autoRecognize" class="sr-only peer">
+                                            <span class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-indigo-600"></span>
+                                        </span>
+                                    </label>
+                                </div>
                                 <div class="flex items-center gap-3">
-                                    <input v-model="editForm.文件名" type="text" class="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                                    <button type="button" @click="manualRecognizeName" class="px-4 py-3 bg-indigo-50 text-indigo-600 text-xs font-bold rounded-lg hover:bg-indigo-600 hover:text-white transition-all shadow-sm">
+                                    <input v-model="editForm.文件名" type="text" class="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" :placeholder="t('gen_0298')">
+                                    <button type="button" @click="manualRecognizeName" class="px-4 py-3 bg-indigo-50 text-indigo-600 text-xs font-bold rounded-lg hover:bg-indigo-600 hover:text-white transition-all shadow-sm flex items-center gap-2" :title="t('gen_0472') || '点击基于名称自动识别属性，生成可勾选列表'">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
                                         {{ t('gen_0305') }}
                                     </button>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0146') }}</label>
-                                <input v-model="editForm.载体类型" type="text" list="list-载体类型" placeholder="用逗号隔开" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] flex flex-wrap gap-2 items-center">
+                                    <label v-for="(val, idx) in editForm.载体类型" :key="idx" 
+                                           class="flex items-center gap-1.5 px-2 py-1 bg-purple-50 text-purple-700 rounded-md border border-purple-100 cursor-pointer hover:bg-purple-100 transition-all shadow-sm group">
+                                        <input type="checkbox" v-model="val.selected"  class="w-3.5 h-3.5 rounded border-purple-300 text-purple-600 focus:ring-purple-500">
+                                        <span class="text-xs font-medium">{{ val.value }}</span>
+                                    </label>
+                                    <div class="flex-1 min-w-[80px]">
+                                        <input v-model="editForm.载体类型_new" type="text" 
+                                               :placeholder="editForm.载体类型.length === 0 ? t('gen_0300') : '+'" 
+                                               list="list-载体类型"
+                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '载体类型', editForm.载体类型_new); editForm.载体类型_new = ''; "
+                                               class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0153') }}</label>
-                                <input v-model="editForm.靶基因" type="text" list="list-靶基因" placeholder="用逗号隔开" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] flex flex-wrap gap-2 items-center">
+                                    <label v-for="(val, idx) in editForm.靶基因" :key="idx" 
+                                           class="flex items-center gap-1.5 px-2 py-1 bg-blue-50 text-blue-700 rounded-md border border-blue-100 cursor-pointer hover:bg-blue-100 transition-all shadow-sm group">
+                                        <input type="checkbox" v-model="val.selected"  class="w-3.5 h-3.5 rounded border-blue-300 text-blue-600 focus:ring-blue-500">
+                                        <span class="text-xs font-medium">{{ val.value }}</span>
+                                    </label>
+                                    <div class="flex-1 min-w-[80px]">
+                                        <input v-model="editForm.靶基因_new" type="text" 
+                                               :placeholder="editForm.靶基因.length === 0 ? t('gen_0300') : '+'" 
+                                               list="list-靶基因"
+                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '靶基因', editForm.靶基因_new); editForm.靶基因_new = ''; "
+                                               class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0150') }}</label>
-                                <input v-model="editForm.物种" type="text" list="list-物种" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] flex flex-wrap gap-2 items-center">
+                                    <label v-for="(val, idx) in editForm.物种" :key="idx" 
+                                           class="flex items-center gap-1.5 px-2 py-1 bg-green-50 text-green-700 rounded-md border border-green-100 cursor-pointer hover:bg-green-100 transition-all shadow-sm group">
+                                        <input type="checkbox" v-model="val.selected"  class="w-3.5 h-3.5 rounded border-green-300 text-green-600 focus:ring-green-500">
+                                        <span class="text-xs font-medium">{{ val.value }}</span>
+                                    </label>
+                                    <div class="flex-1 min-w-[80px]">
+                                        <input v-model="editForm.物种_new" type="text" 
+                                               :placeholder="editForm.物种.length === 0 ? t('gen_0300') : '+'" 
+                                               list="list-物种"
+                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '物种', editForm.物种_new); editForm.物种_new = ''; "
+                                               class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0161') }}</label>
-                                <input v-model="editForm.功能" type="text" list="list-功能" placeholder="用逗号隔开" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] flex flex-wrap gap-2 items-center">
+                                    <label v-for="(val, idx) in editForm.功能" :key="idx" 
+                                           class="flex items-center gap-1.5 px-2 py-1 bg-gray-50 text-gray-700 rounded-md border border-gray-200 cursor-pointer hover:bg-gray-100 transition-all shadow-sm group">
+                                        <input type="checkbox" v-model="val.selected"  class="w-3.5 h-3.5 rounded border-gray-300 text-gray-600 focus:ring-gray-500">
+                                        <span class="text-xs font-medium">{{ val.value }}</span>
+                                    </label>
+                                    <div class="flex-1 min-w-[80px]">
+                                        <input v-model="editForm.功能_new" type="text" 
+                                               :placeholder="editForm.功能.length === 0 ? t('gen_0300') : '+'" 
+                                               list="list-功能"
+                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '功能', editForm.功能_new); editForm.功能_new = ''; "
+                                               class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0165') }}</label>
-                                <input v-model="editForm.大肠杆菌抗性" type="text" list="list-大肠杆菌抗性" placeholder="用逗号隔开" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] flex flex-wrap gap-2 items-center">
+                                    <label v-for="(val, idx) in editForm.大肠杆菌抗性" :key="idx" 
+                                           class="flex items-center gap-1.5 px-2 py-1 bg-orange-50 text-orange-700 rounded-md border border-orange-100 cursor-pointer hover:bg-orange-100 transition-all shadow-sm group">
+                                        <input type="checkbox" v-model="val.selected"  class="w-3.5 h-3.5 rounded border-orange-300 text-orange-600 focus:ring-orange-500">
+                                        <span class="text-xs font-medium">{{ val.value }}</span>
+                                    </label>
+                                    <div class="flex-1 min-w-[80px]">
+                                        <input v-model="editForm.大肠杆菌抗性_new" type="text" 
+                                               :placeholder="editForm.大肠杆菌抗性.length === 0 ? t('gen_0300') : '+'" 
+                                               list="list-大肠杆菌抗性"
+                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '大肠杆菌抗性', editForm.大肠杆菌抗性_new); editForm.大肠杆菌抗性_new = ''; "
+                                               class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0168') }}</label>
-                                <input v-model="editForm.哺乳动物抗性" type="text" list="list-哺乳动物抗性" placeholder="用逗号隔开" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] flex flex-wrap gap-2 items-center">
+                                    <label v-for="(val, idx) in editForm.哺乳动物抗性" :key="idx" 
+                                           class="flex items-center gap-1.5 px-2 py-1 bg-pink-50 text-pink-700 rounded-md border border-pink-100 cursor-pointer hover:bg-pink-100 transition-all shadow-sm group">
+                                        <input type="checkbox" v-model="val.selected"  class="w-3.5 h-3.5 rounded border-pink-300 text-pink-600 focus:ring-pink-500">
+                                        <span class="text-xs font-medium">{{ val.value }}</span>
+                                    </label>
+                                    <div class="flex-1 min-w-[80px]">
+                                        <input v-model="editForm.哺乳动物抗性_new" type="text" 
+                                               :placeholder="editForm.哺乳动物抗性.length === 0 ? t('gen_0300') : '+'" 
+                                               list="list-哺乳动物抗性"
+                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '哺乳动物抗性', editForm.哺乳动物抗性_new); editForm.哺乳动物抗性_new = ''; "
+                                               class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0176') }}</label>
-                                <input v-model="editForm.插入类型" type="text" list="list-插入类型" placeholder="如 shRNA, cDNA" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] flex flex-wrap gap-2 items-center">
+                                    <label v-for="(val, idx) in editForm.插入类型" :key="idx" 
+                                           class="flex items-center gap-1.5 px-2 py-1 bg-indigo-50 text-indigo-700 rounded-md border border-indigo-100 cursor-pointer hover:bg-indigo-100 transition-all shadow-sm group">
+                                        <input type="checkbox" v-model="val.selected"  class="w-3.5 h-3.5 rounded border-indigo-300 text-indigo-600 focus:ring-indigo-500">
+                                        <span class="text-xs font-medium">{{ val.value }}</span>
+                                    </label>
+                                    <div class="flex-1 min-w-[80px]">
+                                        <input v-model="editForm.插入类型_new" type="text" 
+                                               :placeholder="editForm.插入类型.length === 0 ? t('gen_0300') : '+'" 
+                                               list="list-插入类型"
+                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '插入类型', editForm.插入类型_new); editForm.插入类型_new = ''; "
+                                               class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0180') }}</label>
-                                <input v-model="editForm.蛋白标签" type="text" list="list-蛋白标签" placeholder="如 Flag, Myc, His" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] flex flex-wrap gap-2 items-center">
+                                    <label v-for="(val, idx) in editForm.蛋白标签" :key="idx" 
+                                           class="flex items-center gap-1.5 px-2 py-1 bg-amber-50 text-amber-700 rounded-md border border-amber-100 cursor-pointer hover:bg-amber-100 transition-all shadow-sm group">
+                                        <input type="checkbox" v-model="val.selected"  class="w-3.5 h-3.5 rounded border-amber-300 text-amber-600 focus:ring-amber-500">
+                                        <span class="text-xs font-medium">{{ val.value }}</span>
+                                    </label>
+                                    <div class="flex-1 min-w-[80px]">
+                                        <input v-model="editForm.蛋白标签_new" type="text" 
+                                               :placeholder="editForm.蛋白标签.length === 0 ? t('gen_0300') : '+'" 
+                                               list="list-蛋白标签"
+                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '蛋白标签', editForm.蛋白标签_new); editForm.蛋白标签_new = ''; "
+                                               class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0184') }}</label>
-                                <input v-model="editForm.荧光蛋白" type="text" list="list-荧光蛋白" placeholder="如 EGFP, mCherry" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] flex flex-wrap gap-2 items-center">
+                                    <label v-for="(val, idx) in editForm.荧光蛋白" :key="idx" 
+                                           class="flex items-center gap-1.5 px-2 py-1 bg-emerald-50 text-emerald-700 rounded-md border border-emerald-100 cursor-pointer hover:bg-emerald-100 transition-all shadow-sm group">
+                                        <input type="checkbox" v-model="val.selected"  class="w-3.5 h-3.5 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-xs font-medium">{{ val.value }}</span>
+                                    </label>
+                                    <div class="flex-1 min-w-[80px]">
+                                        <input v-model="editForm.荧光蛋白_new" type="text" 
+                                               :placeholder="editForm.荧光蛋白.length === 0 ? t('gen_0300') : '+'" 
+                                               list="list-荧光蛋白"
+                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '荧光蛋白', editForm.荧光蛋白_new); editForm.荧光蛋白_new = ''; "
+                                               class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0188') }}</label>
-                                <input v-model="editForm.启动子" type="text" list="list-启动子" placeholder="如 CMV, EF1a, U6" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] flex flex-wrap gap-2 items-center">
+                                    <label v-for="(val, idx) in editForm.启动子" :key="idx" 
+                                           class="flex items-center gap-1.5 px-2 py-1 bg-slate-50 text-slate-700 rounded-md border border-slate-100 cursor-pointer hover:bg-slate-100 transition-all shadow-sm group">
+                                        <input type="checkbox" v-model="val.selected"  class="w-3.5 h-3.5 rounded border-slate-300 text-slate-600 focus:ring-slate-500">
+                                        <span class="text-xs font-medium">{{ val.value }}</span>
+                                    </label>
+                                    <div class="flex-1 min-w-[80px]">
+                                        <input v-model="editForm.启动子_new" type="text" 
+                                               :placeholder="editForm.启动子.length === 0 ? t('gen_0300') : '+'" 
+                                               list="list-启动子"
+                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '启动子', editForm.启动子_new); editForm.启动子_new = ''; "
+                                               class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0171') }}</label>
-                                <input v-model="editForm.四环素诱导" type="text" list="list-四环素诱导" placeholder="是/否 或 诱导剂" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] flex flex-wrap gap-2 items-center">
+                                    <label v-for="(val, idx) in editForm.四环素诱导" :key="idx" 
+                                           class="flex items-center gap-1.5 px-2 py-1 bg-violet-50 text-violet-700 rounded-md border border-violet-100 cursor-pointer hover:bg-violet-100 transition-all shadow-sm group">
+                                        <input type="checkbox" v-model="val.selected"  class="w-3.5 h-3.5 rounded border-violet-300 text-violet-600 focus:ring-violet-500">
+                                        <span class="text-xs font-medium">{{ val.value }}</span>
+                                    </label>
+                                    <div class="flex-1 min-w-[80px]">
+                                        <input v-model="editForm.四环素诱导_new" type="text" 
+                                               :placeholder="editForm.四环素诱导.length === 0 ? t('gen_0300') : '+'" 
+                                               list="list-四环素诱导"
+                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '四环素诱导', editForm.四环素诱导_new); editForm.四环素诱导_new = ''; "
+                                               class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0192') }}</label>
-                                <input v-model="editForm.突变" type="text" list="list-突变" placeholder="描述突变位点" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg min-h-[42px] flex flex-wrap gap-2 items-center">
+                                    <label v-for="(val, idx) in editForm.突变" :key="idx" 
+                                           class="flex items-center gap-1.5 px-2 py-1 bg-rose-50 text-rose-700 rounded-md border border-rose-100 cursor-pointer hover:bg-rose-100 transition-all shadow-sm group">
+                                        <input type="checkbox" v-model="val.selected"  class="w-3.5 h-3.5 rounded border-rose-300 text-rose-600 focus:ring-rose-500">
+                                        <span class="text-xs font-medium">{{ val.value }}</span>
+                                    </label>
+                                    <div class="flex-1 min-w-[80px]">
+                                        <input v-model="editForm.突变_new" type="text" 
+                                               :placeholder="editForm.突变.length === 0 ? t('gen_0300') : '+'" 
+                                               list="list-突变"
+                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '突变', editForm.突变_new); editForm.突变_new = ''; "
+                                               class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
+                                    </div>
+                                </div>
                             </div>
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0326') }}</label>
@@ -1148,20 +1243,25 @@ pET28a-His-Target
                                 <input v-model="editForm.路径" type="text" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all font-mono text-xs">
                             </div>
                             <div class="md:col-span-2">
-                                <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0331') }}</label>
-                                <textarea v-model="editForm.描述" rows="3" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"></textarea>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">
+                                    {{ t('gen_0331') }} <span class="text-xs font-normal text-gray-400 ml-2">(自动生成的属性将追加在后)</span>
+                                </label>
+                                <textarea v-model="editForm.customDescription" rows="3" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="请输入备注信息..."></textarea>
+                                <div class="mt-2 p-3 bg-gray-50 border border-gray-200 rounded-lg text-xs text-gray-500">
+                                    <span class="font-bold">自动属性预览:</span> {{ generateDescription(editForm) || '无' }}
+                                </div>
                             </div>
 
                             <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0333') }}</label>
-                                    <input v-model="editForm.保存位置" type="text" list="list-locations" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="例如：冰箱A-层1-盒3">
+                                    <input v-model="editForm.保存位置" type="text" list="list-locations" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="例如：冰箱A-层2-盒1">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0337') }}</label>
                                     <div class="relative flex items-center gap-2">
                                         <input v-model="editForm.持有人" type="text" list="list-owners" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="选择或输入新名字">
-                                        <button type="button" @click="createHolder" class="px-3 py-3 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 hover:text-blue-600 transition-colors border border-gray-200" title="新建持有人">
+                                        <button type="button" @click="createHolder" class="px-3 py-3 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 hover:text-blue-600 transition-colors border border-gray-200" title="新建持有人" aria-label="新建持有人">
                                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                                         </button>
                                     </div>
@@ -1199,28 +1299,28 @@ pET28a-His-Target
                         </div>
                     </div>
                     <div class="px-8 py-6 border-t border-gray-100 bg-gray-50 flex justify-end gap-3 rounded-b-2xl">
-                        <button type="button" @click="editingItem = null" class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-200 rounded-lg transition-all">{{ t('gen_0239') }}</button>
-                        <button type="button" @click="saveEdit" class="px-8 py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all">{{ t('gen_0348') }}</button>
+                        <button type="button" @click="editingItem = null" aria-label="Close Edit" class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-200 rounded-lg transition-all">{{ t('gen_0239') }}</button>
+                        <button type="button" @click="saveEdit" aria-label="Save Edit" class="px-8 py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all">{{ t('gen_0348') }}</button>
                     </div>
                 </div>
             </div>
-        </component>
+        </transition>
 
         <!-- 系统设置弹窗 -->
-        <component is="transition" name="modal">
-            <div v-if="showSettingsModal" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" @click.self="showSettingsModal = false">
-                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl border border-gray-100 overflow-hidden">
-                    <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+        <transition name="modal">
+            <div v-if="showSettingsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" @click.self="showSettingsModal = false">
+                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] flex flex-col border border-gray-100 overflow-hidden">
+                    <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50 flex-shrink-0">
                         <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
                             <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                             {{ t('gen_0350') }}
                         </h3>
-                        <button type="button" @click="showSettingsModal = false" class="text-gray-400 hover:text-gray-700 transition-colors p-2 hover:bg-gray-200 rounded-lg" :aria-label="t('gen_0392')">
+                        <button type="button" @click="showSettingsModal = false" class="text-gray-400 hover:text-gray-700 transition-colors p-2 hover:bg-gray-200 rounded-lg" aria-label="关闭">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </div>
 
-                    <div class="p-8 space-y-6">
+                    <div class="p-8 space-y-6 overflow-y-auto flex-1">
                         <!-- 显示设置 -->
                         <div>
                             <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">{{ t('gen_0352') }}</h4>
@@ -1230,17 +1330,20 @@ pET28a-His-Target
                                     <span class="text-gray-700 font-medium">{{ t('gen_0354') }}</span>
                                     <div class="flex bg-gray-100 p-1 rounded-lg">
                                         <button type="button" @click="setLocale('zh')" :class="['px-3 py-1 text-[10px] font-bold rounded-md transition-all', locale === 'zh' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700']">{{ t('gen_0355') }}</button>
-                                        <button type="button" @click="setLocale('en')" :class="['px-3 py-1 text-[10px] font-bold rounded-md transition-all', locale === 'en' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700']">English</button>
+                                        <button type="button" @click="setLocale('en')" :class="['px-3 py-1 text-[10px] font-bold rounded-md transition-all', locale === 'en' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700']">{{ t('gen_0355_en') }}</button>
                                     </div>
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <span class="text-gray-700 font-medium">{{ t('gen_0088') }}</span>
-                                    <select v-model="settings.displayConfig.itemsPerPage" class="px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
-                                        <option :value="10">10 条</option>
-                                        <option :value="20">20 条</option>
-                                        <option :value="50">50 条</option>
-                                        <option :value="100">100 条</option>
-                                    </select>
+                                    <div class="flex items-center gap-2">
+                                        <select v-model="settings.displayConfig.itemsPerPage" class="px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
+                                            <option :value="10">10</option>
+                                            <option :value="20">20</option>
+                                            <option :value="50">50</option>
+                                            <option :value="100">100</option>
+                                        </select>
+                                        <span class="text-xs text-gray-500">{{ t('gen_items_per_page') }}</span>
+                                    </div>
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <span class="text-gray-700 font-medium">{{ t('gen_0090') }}</span>
@@ -1259,7 +1362,7 @@ pET28a-His-Target
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('gen_0299') }}</label>
-                                    <input v-model="settings.defaultOwner" type="text" list="list-owners" placeholder="用于新建质粒的默认持有人" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                    <input v-model="settings.defaultOwner" type="text" list="list-owners" :placeholder="t('gen_default_owner_placeholder')" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all">
                                 </div>
                             </div>
                         </div>
@@ -1269,15 +1372,15 @@ pET28a-His-Target
                             <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">{{ t('gen_0361') }}</h4>
                             <div class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">默认打开软件路径 (可选)</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">{{ t('gen_0362') }}</label>
                                     <div class="flex gap-2">
-                                        <input type="text" v-model="settings.externalSoftwarePath" placeholder="如: C:\Program Files\SnapGene\SnapGene.exe" 
+                                        <input type="text" v-model="settings.externalSoftwarePath" :placeholder="t('gen_0362_placeholder')" 
                                             class="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
-                                        <button type="button" @click="selectExternalSoftware" class="px-4 py-2.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all shadow-sm" aria-label="选择软件">
+                                        <button type="button" @click="selectExternalSoftware" class="px-4 py-2.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all shadow-sm" aria-label="选择外部软件">
                                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
                                         </button>
                                     </div>
-                                    <p class="mt-1.5 text-xs text-gray-400">留空则使用系统默认软件。指定后，点击“软件打开”将强制使用该程序。</p>
+                                    <p class="mt-1.5 text-xs text-gray-400">{{ t('gen_0362_tip') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -1300,7 +1403,7 @@ pET28a-His-Target
                                 </div>
                                 <div class="pt-4 border-t border-gray-100">
                                     <h5 class="text-sm font-bold text-gray-700 mb-2">{{ t('gen_0372') }}</h5>
-                                    <p class="text-xs text-gray-500 mb-3">如果发现序列文件缺失或 CSV 导出无序列，可使用此功能重新生成</p>
+                                    <p class="text-xs text-gray-500 mb-3">{{ t('gen_0373_tip') }}</p>
                                     <button type="button" @click="regenerateAllSequences" class="w-full py-2.5 bg-emerald-50 text-emerald-600 font-bold rounded-lg hover:bg-emerald-600 hover:text-white transition-all flex items-center justify-center gap-2 border border-emerald-100">
                                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
                                         {{ t('gen_0375') }}
@@ -1318,23 +1421,23 @@ pET28a-His-Target
                             <p class="text-center text-[10px] text-gray-400 mt-2">{{ t('gen_0378') }}</p>
                         </div>
                     </div>
-                    <div class="px-8 py-4 bg-gray-50 flex justify-end gap-3">
+                    <div class="px-8 py-4 bg-gray-50 flex justify-end gap-3 flex-shrink-0 border-t border-gray-100">
                         <button type="button" @click="showSettingsModal = false" class="px-6 py-2 bg-white border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-100 transition-all">
                             {{ t('gen_0239') }}
                         </button>
-                        <button type="button" @click="showSettingsModal = false" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition-all">
+                        <button type="button" @click="handleSettingsConfirm" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition-all">
                             {{ t('gen_0240') }}
                         </button>
                     </div>
                 </div>
             </div>
-        </component>
+        </transition>
 
-        <!-- 批量操作栏 -->
-        <component is="transition" name="fade">
+        <!-- 鎵归噺鎿嶄綔鏍?-->
+        <transition name="fade">
             <div v-if="selectedPlasmids.size > 0" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-xl shadow-2xl border border-gray-200 px-6 py-3 flex items-center gap-4 z-40">
                 <div class="text-sm text-gray-600 font-medium">
-                    {{ t('gen_0380') }} <span class="text-blue-600 font-bold text-lg">{{ selectedPlasmids.size }}</span> 项
+                    {{ t('gen_0380') }} <span class="text-blue-600 font-bold text-lg">{{ selectedPlasmids.size }}</span> {{ t('gen_items_unit') }}
                 </div>
                 <div class="h-6 w-px bg-gray-200"></div>
                 <div class="flex items-center gap-2">
@@ -1360,11 +1463,11 @@ pET28a-His-Target
                     </button>
                 </div>
             </div>
-        </component>
+        </transition>
 
         <!-- 序列查看器弹窗 -->
-        <component is="transition" name="modal">
-            <div v-if="showSequenceModal" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+        <transition name="modal">
+            <div v-if="showSequenceModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
                 <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col border border-gray-100 overflow-hidden">
                     <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
                         <div class="flex flex-col">
@@ -1387,7 +1490,7 @@ pET28a-His-Target
                                     {{ t('gen_0389') }}
                                 </label>
                             </div>
-                            <button type="button" @click="showSequenceModal = false" class="text-gray-400 hover:text-gray-600 transition-colors" :aria-label="t('gen_0392')">
+                            <button type="button" @click="showSequenceModal = false" aria-label="Close Sequence" class="text-gray-400 hover:text-gray-600 transition-colors">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                             </button>
                         </div>
@@ -1423,11 +1526,11 @@ pET28a-His-Target
                                 {{ t('gen_0391') }}
                             </button>
                         </div>
-                        <button type="button" @click="showSequenceModal = false" class="px-8 py-2.5 bg-gray-800 text-white font-bold rounded-lg hover:bg-black shadow-lg transition-all">{{ t('gen_0392') }}</button>
+                        <button type="button" @click="showSequenceModal = false" aria-label="Close Sequence" class="px-8 py-2.5 bg-gray-800 text-white font-bold rounded-lg hover:bg-black shadow-lg transition-all">{{ t('gen_0392') }}</button>
                     </div>
                 </div>
             </div>
-        </component>
+        </transition>
 
         <!-- 自动匹配建议列表 -->
         <datalist v-for="(list, key) in suggestions" :key="'list-'+key" :id="'list-'+key">
@@ -1439,11 +1542,47 @@ pET28a-His-Target
         <datalist id="list-owners">
             <option v-for="m in uniqueHolders" :key="m" :value="m"></option>
         </datalist>
+        <datalist id="list-载体类型">
+            <option v-for="v in suggestions['载体类型']" :key="v" :value="v"></option>
+        </datalist>
+        <datalist id="list-靶基因">
+            <option v-for="v in suggestions['靶基因']" :key="v" :value="v"></option>
+        </datalist>
+        <datalist id="list-功能">
+            <option v-for="v in suggestions['功能']" :key="v" :value="v"></option>
+        </datalist>
+        <datalist id="list-大肠杆菌抗性">
+            <option v-for="v in suggestions['大肠杆菌抗性']" :key="v" :value="v"></option>
+        </datalist>
+        <datalist id="list-哺乳动物抗性">
+            <option v-for="v in suggestions['哺乳动物抗性']" :key="v" :value="v"></option>
+        </datalist>
+        <datalist id="list-物种">
+            <option v-for="v in suggestions['物种']" :key="v" :value="v"></option>
+        </datalist>
+        <datalist id="list-插入类型">
+            <option v-for="v in suggestions['插入类型']" :key="v" :value="v"></option>
+        </datalist>
+        <datalist id="list-蛋白标签">
+            <option v-for="v in suggestions['蛋白标签']" :key="v" :value="v"></option>
+        </datalist>
+        <datalist id="list-荧光蛋白">
+            <option v-for="v in suggestions['荧光蛋白']" :key="v" :value="v"></option>
+        </datalist>
+        <datalist id="list-启动子">
+            <option v-for="v in suggestions['启动子']" :key="v" :value="v"></option>
+        </datalist>
+        <datalist id="list-突变">
+            <option v-for="v in suggestions['突变']" :key="v" :value="v"></option>
+        </datalist>
+        <datalist id="list-四环素诱导">
+            <option v-for="v in suggestions['四环素诱导']" :key="v" :value="v"></option>
+        </datalist>
 
         <!-- 批量导入弹窗 -->
-        <component is="transition" name="modal">
-            <div v-if="showBatchModal" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-2 bg-black/60 backdrop-blur-md">
-                <div v-cloak class="bg-white rounded-2xl shadow-2xl w-full max-w-[98vw] max-h-[96vh] flex flex-col border border-gray-100 overflow-hidden">
+        <transition name="modal">
+            <div v-if="showBatchModal" class="fixed inset-0 z-50 flex items-center justify-center p-2 bg-black/60 backdrop-blur-md">
+                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-[98vw] max-h-[96vh] flex flex-col border border-gray-100 overflow-hidden">
                     <div class="px-8 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50 rounded-t-2xl">
                         <h3 class="text-xl font-bold text-gray-800 flex items-center gap-3">
                             <span class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center">
@@ -1452,12 +1591,12 @@ pET28a-His-Target
                             批量识别与导入 (确认识别结果)
                         </h3>
                         <div class="flex items-center gap-4">
-                            <div v-if="isElectron" v-cloak class="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold border border-green-200">
+                            <div v-if="isElectron" class="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold border border-green-200">
                                 <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                                 桌面专业模式 (已开启绝对路径支持)
                             </div>
                             <div class="text-sm text-gray-500" v-if="batchImportItems">{{ t('gen_0397') }} <span class="text-indigo-600 font-bold">{{ selectedBatchCount }}</span> / {{ batchImportItems.length }} {{ t('gen_0398') }}</div>
-                            <button type="button" @click="showBatchModal = false" class="text-gray-400 hover:text-gray-600 transition-colors" :aria-label="t('gen_0392')">
+                            <button type="button" @click="showBatchModal = false" aria-label="Close Batch Import" class="text-gray-400 hover:text-gray-600 transition-colors">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                             </button>
                         </div>
@@ -1529,11 +1668,12 @@ pET28a-His-Target
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0413') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.载体类型" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded border border-purple-100 cursor-pointer hover:bg-purple-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" class="w-3 h-3 rounded border-purple-300 text-purple-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-purple-300 text-purple-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.载体类型_new" @keyup.enter="item.载体类型_new = addBatchItemValue(item, '载体类型', item.载体类型_new)">
+                                                    v-model="item.载体类型_new" list="list-载体类型"
+                                                    @keyup.enter="item.载体类型_new = window.Utils.addBatchItemValue(item, '载体类型', item.载体类型_new); item.描述 = window.Utils.generateDescription(item)">
                                             </div>
                                         </div>
                                         <!-- 物种 -->
@@ -1541,11 +1681,12 @@ pET28a-His-Target
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0415') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.物种" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-green-50 text-green-700 rounded border border-green-100 cursor-pointer hover:bg-green-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" class="w-3 h-3 rounded border-green-300 text-green-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-green-300 text-green-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.物种_new" @keyup.enter="item.物种_new = addBatchItemValue(item, '物种', item.物种_new)">
+                                                    v-model="item.物种_new" list="list-物种"
+                                                    @keyup.enter="item.物种_new = window.Utils.addBatchItemValue(item, '物种', item.物种_new); item.描述 = window.Utils.generateDescription(item)">
                                             </div>
                                         </div>
                                         <!-- 插入类型 -->
@@ -1553,11 +1694,12 @@ pET28a-His-Target
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0417') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.插入类型" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" class="w-3 h-3 rounded border-blue-300 text-blue-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-blue-300 text-blue-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.插入类型_new" @keyup.enter="item.插入类型_new = addBatchItemValue(item, '插入类型', item.插入类型_new)">
+                                                    v-model="item.插入类型_new" list="list-插入类型"
+                                                    @keyup.enter="item.插入类型_new = window.Utils.addBatchItemValue(item, '插入类型', item.插入类型_new); item.描述 = window.Utils.generateDescription(item)">
                                             </div>
                                         </div>
                                     </td>
@@ -1567,11 +1709,12 @@ pET28a-His-Target
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0151') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.靶基因" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-gray-50 text-gray-700 rounded border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" class="w-3 h-3 rounded border-gray-300 text-indigo-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-gray-300 text-indigo-600">
                                                     <span class="text-[10px] font-bold">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.靶基因_new" @keyup.enter="item.靶基因_new = addBatchItemValue(item, '靶基因', item.靶基因_new)">
+                                                    v-model="item.靶基因_new" list="list-靶基因"
+                                                    @keyup.enter="item.靶基因_new = window.Utils.addBatchItemValue(item, '靶基因', item.靶基因_new); item.描述 = window.Utils.generateDescription(item)">
                                             </div>
                                         </div>
                                         <!-- 启动子 -->
@@ -1579,11 +1722,12 @@ pET28a-His-Target
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0186') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.启动子" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-gray-50 text-gray-600 rounded border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" class="w-3 h-3 rounded border-gray-300 text-gray-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-gray-300 text-gray-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.启动子_new" @keyup.enter="item.启动子_new = addBatchItemValue(item, '启动子', item.启动子_new)">
+                                                    v-model="item.启动子_new" list="list-启动子"
+                                                    @keyup.enter="item.启动子_new = window.Utils.addBatchItemValue(item, '启动子', item.启动子_new); item.描述 = window.Utils.generateDescription(item)">
                                             </div>
                                         </div>
                                         <!-- 蛋白标签 -->
@@ -1591,11 +1735,12 @@ pET28a-His-Target
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0178') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.蛋白标签" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-amber-50 text-amber-700 rounded border border-amber-100 cursor-pointer hover:bg-amber-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" class="w-3 h-3 rounded border-amber-300 text-amber-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-amber-300 text-amber-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.蛋白标签_new" @keyup.enter="item.蛋白标签_new = addBatchItemValue(item, '蛋白标签', item.蛋白标签_new)">
+                                                    v-model="item.蛋白标签_new" list="list-蛋白标签"
+                                                    @keyup.enter="item.蛋白标签_new = window.Utils.addBatchItemValue(item, '蛋白标签', item.蛋白标签_new); item.描述 = window.Utils.generateDescription(item)">
                                             </div>
                                         </div>
                                         <!-- 荧光蛋白 -->
@@ -1603,11 +1748,12 @@ pET28a-His-Target
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0182') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.荧光蛋白" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 text-emerald-700 rounded border border-emerald-100 cursor-pointer hover:bg-emerald-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" class="w-3 h-3 rounded border-emerald-300 text-emerald-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-emerald-300 text-emerald-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.荧光蛋白_new" @keyup.enter="item.荧光蛋白_new = addBatchItemValue(item, '荧光蛋白', item.荧光蛋白_new)">
+                                                    v-model="item.荧光蛋白_new" list="list-荧光蛋白"
+                                                    @keyup.enter="item.荧光蛋白_new = window.Utils.addBatchItemValue(item, '荧光蛋白', item.荧光蛋白_new); item.描述 = window.Utils.generateDescription(item)">
                                             </div>
                                         </div>
                                     </td>
@@ -1617,11 +1763,12 @@ pET28a-His-Target
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0423') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.大肠杆菌抗性" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-orange-50 text-orange-700 rounded border border-orange-100 cursor-pointer hover:bg-orange-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" class="w-3 h-3 rounded border-orange-300 text-orange-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-orange-300 text-orange-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.大肠杆菌抗性_new" @keyup.enter="item.大肠杆菌抗性_new = addBatchItemValue(item, '大肠杆菌抗性', item.大肠杆菌抗性_new)">
+                                                    v-model="item.大肠杆菌抗性_new" list="list-大肠杆菌抗性"
+                                                    @keyup.enter="item.大肠杆菌抗性_new = window.Utils.addBatchItemValue(item, '大肠杆菌抗性', item.大肠杆菌抗性_new); item.描述 = window.Utils.generateDescription(item)">
                                             </div>
                                         </div>
                                         <!-- 哺乳动物抗性 -->
@@ -1629,11 +1776,12 @@ pET28a-His-Target
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0425') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.哺乳动物抗性" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" class="w-3 h-3 rounded border-blue-300 text-blue-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-blue-300 text-blue-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.哺乳动物抗性_new" @keyup.enter="item.哺乳动物抗性_new = addBatchItemValue(item, '哺乳动物抗性', item.哺乳动物抗性_new)">
+                                                    v-model="item.哺乳动物抗性_new" list="list-哺乳动物抗性"
+                                                    @keyup.enter="item.哺乳动物抗性_new = window.Utils.addBatchItemValue(item, '哺乳动物抗性', item.哺乳动物抗性_new); item.描述 = window.Utils.generateDescription(item)">
                                             </div>
                                         </div>
                                         <!-- 四环素诱导 -->
@@ -1641,11 +1789,12 @@ pET28a-His-Target
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0427') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.四环素诱导" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-red-50 text-red-700 rounded border border-red-100 cursor-pointer hover:bg-red-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" class="w-3 h-3 rounded border-red-300 text-red-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-red-300 text-red-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.四环素诱导_new" @keyup.enter="item.四环素诱导_new = addBatchItemValue(item, '四环素诱导', item.四环素诱导_new)">
+                                                    v-model="item.四环素诱导_new" list="list-四环素诱导"
+                                                    @keyup.enter="item.四环素诱导_new = window.Utils.addBatchItemValue(item, '四环素诱导', item.四环素诱导_new); item.描述 = window.Utils.generateDescription(item)">
                                             </div>
                                         </div>
                                         <!-- 突变 -->
@@ -1653,11 +1802,12 @@ pET28a-His-Target
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0190') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.突变" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-rose-50 text-rose-700 rounded border border-rose-100 cursor-pointer hover:bg-rose-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" class="w-3 h-3 rounded border-rose-300 text-rose-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-rose-300 text-rose-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.突变_new" @keyup.enter="item.突变_new = addBatchItemValue(item, '突变', item.突变_new)">
+                                                    v-model="item.突变_new" list="list-突变"
+                                                    @keyup.enter="item.突变_new = window.Utils.addBatchItemValue(item, '突变', item.突变_new); item.描述 = window.Utils.generateDescription(item)">
                                             </div>
                                         </div>
                                     </td>
@@ -1681,7 +1831,7 @@ pET28a-His-Target
                             <span class="font-bold text-gray-500">{{ t('gen_0436') }}</span> 您可以直接在表格中修改识别结果。对于重复项，系统默认不勾选导入。
                         </div>
                         <div class="flex gap-3">
-                            <button type="button" @click="showBatchModal = false" class="px-6 py-2.5 border border-gray-300 text-gray-600 font-bold rounded-xl hover:bg-gray-100 transition-all">{{ t('gen_0239') }}</button>
+                            <button type="button" @click="showBatchModal = false" aria-label="Close Batch Import" class="px-6 py-2.5 border border-gray-300 text-gray-600 font-bold rounded-xl hover:bg-gray-100 transition-all">{{ t('gen_0239') }}</button>
                             <button v-if="batchTab === 'new'" type="button" @click="saveBatchImport" class="px-10 py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition-all flex items-center gap-2">
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                                 {{ t('gen_0439') }}
@@ -1694,11 +1844,11 @@ pET28a-His-Target
                     </div>
                 </div>
             </div>
-        </component>
+        </transition>
 
         <!-- Batch Paste Preview Modal -->
-        <component is="transition" name="modal">
-            <div v-if="showBatchPreview" v-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-8 bg-black/50 backdrop-blur-sm">
+        <transition name="modal">
+            <div v-if="showBatchPreview" class="fixed inset-0 z-[60] flex items-center justify-center p-8 bg-black/50 backdrop-blur-sm">
                 <div class="bg-white w-full max-w-7xl max-h-full rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-fade-in-up">
                     <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-indigo-50 to-white">
                         <div>
@@ -1718,33 +1868,141 @@ pET28a-His-Target
                                 <tr>
                                     <th class="px-4 py-3 text-left font-bold text-gray-500 uppercase">{{ t('gen_0137') }}</th>
                                     <th class="px-4 py-3 text-left font-bold text-gray-500 uppercase">{{ t('gen_0443') }}</th>
-                                    <th class="px-4 py-3 text-left font-bold text-gray-500 uppercase">基因/启动子/标签</th>
+                                    <th class="px-4 py-3 text-left font-bold text-gray-500 uppercase">{{ t('gen_0444') }}</th>
                                     <th class="px-4 py-3 text-left font-bold text-gray-500 uppercase">{{ t('gen_0408') }}</th>
-                                    <th class="px-4 py-3 text-left font-bold text-gray-500 uppercase">位置/人员/项目</th>
+                                    <th class="px-4 py-3 text-left font-bold text-gray-500 uppercase">{{ t('gen_0445') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100 bg-white">
                                 <tr v-for="(item, index) in batchPreviewList" :key="index" class="hover:bg-gray-50">
                                     <td class="px-4 py-3 align-top">
                                         <input type="text" v-model="item.文件名" class="w-full bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none font-bold py-1">
+                                        <div class="mt-2 text-[10px] text-gray-400 break-all leading-tight">
+                                            {{ item.描述 }}
+                                        </div>
                                     </td>
-                                    <td class="px-4 py-3 space-y-1 align-top">
-                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-8 shrink-0">{{ t('gen_0413') }}</span><input type="text" v-model="item.载体类型" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-purple-600 font-medium"></div>
-                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-8 shrink-0">{{ t('gen_0415') }}</span><input type="text" v-model="item.物种" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-green-600 font-medium"></div>
-                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-8 shrink-0">{{ t('gen_0417') }}</span><input type="text" v-model="item.插入类型" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-blue-500 font-medium"></div>
-                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-8 shrink-0">{{ t('gen_0159') }}</span><input type="text" v-model="item.功能" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-gray-600"></div>
+                                    <td class="px-4 py-3 space-y-3 align-top">
+                                        <!-- 载体类型 -->
+                                        <div class="space-y-1">
+                                            <span class="text-[9px] text-gray-400 block">{{ t('gen_0413') }}</span>
+                                            <div class="flex flex-wrap gap-1">
+                                                <label v-for="val in item.载体类型" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded border border-purple-100 cursor-pointer hover:bg-purple-100 transition-colors">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-purple-300 text-purple-600">
+                                                    <span class="text-[10px]">{{ val.value }}</span>
+                                                </label>
+                                                <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
+                                                    v-model="item.载体类型_new" list="list-载体类型"
+                                                    @keyup.enter="item.载体类型_new = window.Utils.addBatchItemValue(item, '载体类型', item.载体类型_new); item.描述 = window.Utils.generateDescription(item)">
+                                            </div>
+                                        </div>
+                                        <!-- 物种 -->
+                                        <div class="space-y-1">
+                                            <span class="text-[9px] text-gray-400 block">{{ t('gen_0415') }}</span>
+                                            <div class="flex flex-wrap gap-1">
+                                                <label v-for="val in item.物种" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-green-50 text-green-700 rounded border border-green-100 cursor-pointer hover:bg-green-100 transition-colors">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-green-300 text-green-600">
+                                                    <span class="text-[10px]">{{ val.value }}</span>
+                                                </label>
+                                                <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
+                                                    v-model="item.物种_new" list="list-物种"
+                                                    @keyup.enter="item.物种_new = window.Utils.addBatchItemValue(item, '物种', item.物种_new); item.描述 = window.Utils.generateDescription(item)">
+                                            </div>
+                                        </div>
+                                        <!-- 插入类型 -->
+                                        <div class="space-y-1">
+                                            <span class="text-[9px] text-gray-400 block">{{ t('gen_0417') }}</span>
+                                            <div class="flex flex-wrap gap-1">
+                                                <label v-for="val in item.插入类型" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-blue-300 text-blue-600">
+                                                    <span class="text-[10px]">{{ val.value }}</span>
+                                                </label>
+                                                <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
+                                                    v-model="item.插入类型_new" list="list-插入类型"
+                                                    @keyup.enter="item.插入类型_new = window.Utils.addBatchItemValue(item, '插入类型', item.插入类型_new); item.描述 = window.Utils.generateDescription(item)">
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td class="px-4 py-3 space-y-1 align-top">
-                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-10 shrink-0">{{ t('gen_0151') }}</span><input type="text" v-model="item.靶基因" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 font-bold"></div>
-                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-10 shrink-0">{{ t('gen_0186') }}</span><input type="text" v-model="item.启动子" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-gray-600"></div>
-                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-10 shrink-0">{{ t('gen_0178') }}</span><input type="text" v-model="item.蛋白标签" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-amber-600"></div>
-                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-10 shrink-0">{{ t('gen_0182') }}</span><input type="text" v-model="item.荧光蛋白" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-emerald-500"></div>
+                                    <td class="px-4 py-3 space-y-3 align-top">
+                                        <!-- 靶基因 -->
+                                        <div class="space-y-1">
+                                            <span class="text-[9px] text-gray-400 block">{{ t('gen_0151') }}</span>
+                                            <div class="flex flex-wrap gap-1">
+                                                <label v-for="val in item.靶基因" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-gray-50 text-gray-700 rounded border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-gray-300 text-indigo-600">
+                                                    <span class="text-[10px] font-bold">{{ val.value }}</span>
+                                                </label>
+                                                <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
+                                                    v-model="item.靶基因_new" list="list-靶基因"
+                                                    @keyup.enter="item.靶基因_new = window.Utils.addBatchItemValue(item, '靶基因', item.靶基因_new); item.描述 = window.Utils.generateDescription(item)">
+                                            </div>
+                                        </div>
+                                        <!-- 启动子 -->
+                                        <div class="space-y-1">
+                                            <span class="text-[9px] text-gray-400 block">{{ t('gen_0186') }}</span>
+                                            <div class="flex flex-wrap gap-1">
+                                                <label v-for="val in item.启动子" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-gray-50 text-gray-600 rounded border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-gray-300 text-gray-600">
+                                                    <span class="text-[10px]">{{ val.value }}</span>
+                                                </label>
+                                                <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
+                                                    v-model="item.启动子_new" list="list-启动子"
+                                                    @keyup.enter="item.启动子_new = window.Utils.addBatchItemValue(item, '启动子', item.启动子_new); item.描述 = window.Utils.generateDescription(item)">
+                                            </div>
+                                        </div>
+                                        <!-- 蛋白标签 -->
+                                        <div class="space-y-1">
+                                            <span class="text-[9px] text-gray-400 block">{{ t('gen_0178') }}</span>
+                                            <div class="flex flex-wrap gap-1">
+                                                <label v-for="val in item.蛋白标签" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-amber-50 text-amber-700 rounded border border-amber-100 cursor-pointer hover:bg-amber-100 transition-colors">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-amber-300 text-amber-600">
+                                                    <span class="text-[10px]">{{ val.value }}</span>
+                                                </label>
+                                                <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
+                                                    v-model="item.蛋白标签_new" list="list-蛋白标签"
+                                                    @keyup.enter="item.蛋白标签_new = window.Utils.addBatchItemValue(item, '蛋白标签', item.蛋白标签_new); item.描述 = window.Utils.generateDescription(item)">
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td class="px-4 py-3 space-y-1 align-top">
-                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-10 shrink-0">{{ t('gen_0445') }}</span><input type="text" v-model="item.大肠杆菌抗性" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-orange-600"></div>
-                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-10 shrink-0">{{ t('gen_0446') }}</span><input type="text" v-model="item.哺乳动物抗性" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-blue-600"></div>
-                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-10 shrink-0">{{ t('gen_0427') }}</span><input type="text" v-model="item.四环素诱导" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-red-500"></div>
-                                        <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-10 shrink-0">{{ t('gen_0190') }}</span><input type="text" v-model="item.突变" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-rose-500"></div>
+                                    <td class="px-4 py-3 space-y-3 align-top">
+                                        <!-- 大肠杆菌抗性 -->
+                                        <div class="space-y-1">
+                                            <span class="text-[9px] text-gray-400 block">{{ t('gen_0423') }}</span>
+                                            <div class="flex flex-wrap gap-1">
+                                                <label v-for="val in item.大肠杆菌抗性" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-orange-50 text-orange-700 rounded border border-orange-100 cursor-pointer hover:bg-orange-100 transition-colors">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-orange-300 text-orange-600">
+                                                    <span class="text-[10px]">{{ val.value }}</span>
+                                                </label>
+                                                <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
+                                                    v-model="item.大肠杆菌抗性_new" list="list-大肠杆菌抗性"
+                                                    @keyup.enter="item.大肠杆菌抗性_new = window.Utils.addBatchItemValue(item, '大肠杆菌抗性', item.大肠杆菌抗性_new); item.描述 = window.Utils.generateDescription(item)">
+                                            </div>
+                                        </div>
+                                        <!-- 哺乳动物抗性 -->
+                                        <div class="space-y-1">
+                                            <span class="text-[9px] text-gray-400 block">{{ t('gen_0425') }}</span>
+                                            <div class="flex flex-wrap gap-1">
+                                                <label v-for="val in item.哺乳动物抗性" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-blue-300 text-blue-600">
+                                                    <span class="text-[10px]">{{ val.value }}</span>
+                                                </label>
+                                                <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
+                                                    v-model="item.哺乳动物抗性_new" list="list-哺乳动物抗性"
+                                                    @keyup.enter="item.哺乳动物抗性_new = window.Utils.addBatchItemValue(item, '哺乳动物抗性', item.哺乳动物抗性_new); item.描述 = window.Utils.generateDescription(item)">
+                                            </div>
+                                        </div>
+                                        <!-- 突变 -->
+                                        <div class="space-y-1">
+                                            <span class="text-[9px] text-gray-400 block">{{ t('gen_0190') }}</span>
+                                            <div class="flex flex-wrap gap-1">
+                                                <label v-for="val in item.突变" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-rose-50 text-rose-700 rounded border border-rose-100 cursor-pointer hover:bg-rose-100 transition-colors">
+                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-rose-300 text-rose-600">
+                                                    <span class="text-[10px]">{{ val.value }}</span>
+                                                </label>
+                                                <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
+                                                    v-model="item.突变_new" list="list-突变"
+                                                    @keyup.enter="item.突变_new = window.Utils.addBatchItemValue(item, '突变', item.突变_new); item.描述 = window.Utils.generateDescription(item)">
+                                            </div>
+                                        </div>
                                     </td>
                                     <td class="px-4 py-3 space-y-1 align-top">
                                         <div class="flex gap-1"><span class="text-[9px] text-gray-400 w-8 shrink-0">{{ t('gen_0430') }}</span><input type="text" v-model="item.保存位置" list="list-locations" class="flex-1 bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none py-0 text-gray-600"></div>
@@ -1767,11 +2025,11 @@ pET28a-His-Target
                     </div>
                 </div>
             </div>
-        </component>
+        </transition>
 
         <!-- 系统日志弹窗 -->
-        <component is="transition" name="modal">
-            <div v-if="showLogModal" v-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <transition name="modal">
+            <div v-if="showLogModal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
                 <div class="bg-slate-900 rounded-2xl shadow-2xl w-full max-w-4xl h-[80vh] flex flex-col border border-slate-700">
                     <div class="px-8 py-6 border-b border-slate-700 flex justify-between items-center bg-slate-800 rounded-t-2xl">
                         <h3 class="text-xl font-bold text-white flex items-center gap-3">
@@ -1782,7 +2040,7 @@ pET28a-His-Target
                         </h3>
                         <div class="flex gap-2">
                             <button type="button" @click="systemLogs.splice(0)" class="px-3 py-1.5 text-xs text-slate-400 hover:text-white hover:bg-slate-700 rounded-md transition-all">{{ t('gen_0450') }}</button>
-                            <button type="button" @click="showLogModal = false" class="text-slate-400 hover:text-white transition-colors" :aria-label="t('gen_0392')">
+                            <button type="button" @click="showLogModal = false" aria-label="Close Logs" class="text-slate-400 hover:text-white transition-colors">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                             </button>
                         </div>
@@ -1801,128 +2059,14 @@ pET28a-His-Target
                     </div>
                 </div>
             </div>
-        </component>
+        </transition>
 
-        <!-- UniProt 搜索弹窗 -->
-        <component is="transition" name="modal">
-            <div v-if="showUniProtModal" v-cloak class="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl flex flex-col border border-gray-100 overflow-hidden max-h-[90vh]">
-                    <!-- Header -->
-                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
-                        <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                            <span class="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center font-black text-xs">UP</span>
-                            UniProt {{ t('gen_0248') }} <span class="text-blue-600">{{ uniProtModalData.targetGene }}</span>
-                        </h3>
-                        <button type="button" @click="closeUniProtModal" class="text-gray-400 hover:text-gray-600 transition-colors">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-                    </div>
-                    
-                    <!-- Content -->
-                    <div class="p-6 overflow-y-auto">
-                        <!-- Loading -->
-                        <div v-if="uniProtModalData.loading" class="flex flex-col items-center justify-center py-12 text-gray-500">
-                            <div class="w-10 h-10 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mb-3"></div>
-                            <p class="text-sm font-bold">正在搜索 UniProt 数据库...</p>
-                        </div>
 
-                        <!-- Error -->
-                        <div v-else-if="uniProtModalData.error" class="bg-red-50 border border-red-100 rounded-xl p-4 flex items-start gap-3">
-                            <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <div>
-                                <h4 class="text-sm font-bold text-red-700">{{ t('gen_0455') }}</h4>
-                                <p class="text-xs text-red-600 mt-1">{{ uniProtModalData.error }}</p>
-                            </div>
-                        </div>
-
-                        <!-- Results -->
-                        <div v-else-if="uniProtModalData.result" class="space-y-6">
-                            <!-- Result Header -->
-                            <div class="bg-blue-50 rounded-xl p-4 border border-blue-100">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h4 class="text-lg font-bold text-gray-800">{{ uniProtModalData.result.name }}</h4>
-                                        <div class="flex items-center gap-2 mt-1 text-sm text-gray-600">
-                                            <span class="bg-white px-2 py-0.5 rounded border border-blue-200 text-blue-600 font-mono text-xs">{{ uniProtModalData.result.uniprotId }}</span>
-                                            <span class="italic">{{ uniProtModalData.result.organism }}</span>
-                                        </div>
-                                    </div>
-                                    <a :href="uniProtModalData.result.link" @click.prevent="openExternalLink(uniProtModalData.result.link)" class="text-xs text-blue-600 hover:underline flex items-center gap-1">
-                                        UniProt官网
-                                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- Details -->
-                            <div class="space-y-4">
-                                <div v-if="uniProtModalData.result.functions && uniProtModalData.result.functions.length > 0">
-                                    <h5 class="text-sm font-bold text-gray-700 mb-1">{{ t('gen_0251') }}</h5>
-                                    <ul class="text-sm text-gray-600 leading-relaxed bg-gray-50 p-3 rounded-lg border border-gray-100 list-disc list-inside space-y-2">
-                                        <li v-for="(func, idx) in uniProtModalData.result.functions" :key="idx" v-html="func" class="break-words"></li>
-                                    </ul>
-                                </div>
-                                <div v-else-if="uniProtModalData.result.function">
-                                    <h5 class="text-sm font-bold text-gray-700 mb-1">{{ t('gen_0251') }}</h5>
-                                    <p class="text-sm text-gray-600 leading-relaxed bg-gray-50 p-3 rounded-lg border border-gray-100">{{ uniProtModalData.result.function }}</p>
-                                </div>
-                                <div v-if="uniProtModalData.result.subcellularLocation && uniProtModalData.result.subcellularLocation !== '无细胞定位信息'">
-                                    <h5 class="text-sm font-bold text-gray-700 mb-1">{{ t('gen_0457') }}</h5>
-                                    <p class="text-sm text-gray-600 bg-gray-50 p-2 rounded border border-gray-100">{{ uniProtModalData.result.subcellularLocation }}</p>
-                                </div>
-                                <div class="flex gap-6 flex-wrap">
-                                    <div v-if="uniProtModalData.result.mass">
-                                        <h5 class="text-sm font-bold text-gray-700 mb-1">{{ t('gen_0252') }}</h5>
-                                        <p class="text-sm text-gray-900 font-mono">{{ uniProtModalData.result.mass }} Da</p>
-                                    </div>
-                                    <div v-if="uniProtModalData.result.length">
-                                        <h5 class="text-sm font-bold text-gray-700 mb-1">{{ t('gen_0253') }}</h5>
-                                        <p class="text-sm text-gray-900 font-mono">{{ uniProtModalData.result.length }} aa</p>
-                                    </div>
-                                    <div v-if="uniProtModalData.result.flyBaseId">
-                                        <h5 class="text-sm font-bold text-gray-700 mb-1">FlyBase</h5>
-                                        <a :href="'https://flybase.org/reports/' + uniProtModalData.result.flyBaseId" @click.prevent="openExternalLink('https://flybase.org/reports/' + uniProtModalData.result.flyBaseId)" class="text-sm text-blue-600 hover:underline font-mono">{{ uniProtModalData.result.flyBaseId }}</a>
-                                    </div>
-                                    <div v-if="uniProtModalData.result.refSeqId">
-                                        <h5 class="text-sm font-bold text-gray-700 mb-1">RefSeq</h5>
-                                        <a :href="'https://www.ncbi.nlm.nih.gov/nuccore/' + uniProtModalData.result.refSeqId" @click.prevent="openExternalLink('https://www.ncbi.nlm.nih.gov/nuccore/' + uniProtModalData.result.refSeqId)" class="text-sm text-blue-600 hover:underline font-mono">{{ uniProtModalData.result.refSeqId }}</a>
-                                    </div>
-                                    <div v-if="uniProtModalData.result.stringId">
-                                        <h5 class="text-sm font-bold text-gray-700 mb-1">STRING</h5>
-                                        <a :href="'https://string-db.org/network/' + uniProtModalData.result.stringId" @click.prevent="openExternalLink('https://string-db.org/network/' + uniProtModalData.result.stringId)" class="text-sm text-blue-600 hover:underline font-mono">{{ uniProtModalData.result.stringId }}</a>
-                                    </div>
-                                </div>
-                                <div v-if="uniProtModalData.result.sequence">
-                                    <h5 class="text-sm font-bold text-gray-700 mb-1">{{ t('gen_0254') }}</h5>
-                                    <div class="bg-gray-800 text-gray-300 font-mono text-xs p-3 rounded-lg break-all max-h-32 overflow-y-auto select-all">
-                                        {{ uniProtModalData.result.sequence }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Empty State (No Results) -->
-                         <div v-else class="text-center py-12 text-gray-500">
-                            <p class="text-sm">{{ t('gen_0458') }}</p>
-                        </div>
-                    </div>
-
-                    <!-- Footer -->
-                    <div v-if="uniProtModalData.result && uniProtModalData.targetPlasmid" class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
-                         <button type="button" @click="closeUniProtModal" class="px-4 py-2 border border-gray-300 text-gray-600 font-bold rounded-lg hover:bg-gray-100 transition-all">{{ t('gen_0239') }}</button>
-                        <button type="button" @click="applyUniProtData" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 shadow-md transition-all flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                            填入数据到 "{{ uniProtModalData.targetPlasmid.文件名 }}"
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </component>
 
         <!-- CSV 导出设置弹窗 -->
-        <component is="transition" name="modal">
-            <div v-if="showExportModal" v-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                <div v-cloak class="bg-white rounded-2xl shadow-2xl w-full max-w-md flex flex-col border border-gray-100 overflow-hidden">
+        <transition name="modal">
+            <div v-if="showExportModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md flex flex-col border border-gray-100 overflow-hidden">
                     <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
                         <h3 class="text-xl font-bold text-gray-800 flex items-center gap-3">
                             <span class="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
@@ -1930,7 +2074,7 @@ pET28a-His-Target
                             </span>
                             CSV {{ t('gen_0460') }}
                         </h3>
-                        <button type="button" @click="showExportModal = false" class="text-gray-400 hover:text-gray-600 transition-colors" :aria-label="t('gen_0392')">
+                        <button type="button" @click="showExportModal = false" aria-label="Close Export" class="text-gray-400 hover:text-gray-600 transition-colors">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </div>
@@ -1945,13 +2089,13 @@ pET28a-His-Target
                         <div class="grid grid-cols-2 gap-3 max-h-[40vh] overflow-y-auto pr-2 scrollbar-thin">
                             <label v-for="field in exportFields" :key="field.id" class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:bg-blue-50 cursor-pointer transition-all group">
                                 <input type="checkbox" v-model="field.selected" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                                <span class="text-sm text-gray-700 group-hover:text-blue-700 transition-colors">{{ field.label }}</span>
+                                <span class="text-sm text-gray-700 group-hover:text-blue-700 transition-colors">{{ t(field.label) }}</span>
                             </label>
                         </div>
                         <p class="text-[10px] text-gray-400 mt-4 italic text-center" v-if="filteredPlasmids">{{ t('gen_0464') }} {{ filteredPlasmids.length }} {{ t('gen_0398') }}</p>
                     </div>
                     <div class="px-8 py-6 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
-                        <button type="button" @click="showExportModal = false" class="px-6 py-2.5 border border-gray-300 text-gray-600 font-bold rounded-xl hover:bg-gray-100 transition-all">{{ t('gen_0239') }}</button>
+                        <button type="button" @click="showExportModal = false" aria-label="Close Export" class="px-6 py-2.5 border border-gray-300 text-gray-600 font-bold rounded-xl hover:bg-gray-100 transition-all">{{ t('gen_0239') }}</button>
                         <button type="button" @click="downloadCSV" class="px-8 py-2.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all flex items-center gap-2 btn-scale">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                             {{ t('gen_0465') }}
@@ -1959,7 +2103,7 @@ pET28a-His-Target
                     </div>
                 </div>
             </div>
-        </component>
+        </transition>
 
 <!-- Duplicate Modal Removed -->
 
@@ -1968,20 +2112,98 @@ pET28a-His-Target
             <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
             <span id="toast-text">{{ t('gen_0467') }}</span>
         </div>
+
+        <!-- Help Modal -->
+        <transition name="modal">
+        <div v-if="showHelpModal" id="help-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm" @click.self="showHelpModal = false">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                    <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                        <span class="text-2xl">📖</span> {{ t('help.title') }}
+                    </h3>
+                    <button type="button" @click="showHelpModal = false" aria-label="Close Help" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+                
+                <div class="flex flex-1 overflow-hidden">
+                    <!-- Sidebar -->
+                    <div class="w-64 bg-gray-50 border-r border-gray-100 p-4 space-y-2 overflow-y-auto">
+                        <button type="button" v-for="(label, key) in t('help.tabs')" :key="key"
+                            @click="helpTab = key"
+                            :class="['w-full text-left px-4 py-3 rounded-xl transition-all font-medium text-sm', helpTab === key ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-gray-600 hover:bg-gray-200']"
+                        >
+                            {{ label }}
+                        </button>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="flex-1 p-8 overflow-y-auto bg-white">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-4">{{ t('help.tabs')[helpTab] }}</h2>
+                        <div class="prose prose-blue max-w-none text-gray-600 leading-relaxed whitespace-pre-line">
+                            {{ t('help.content')[helpTab] }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </transition>
+
+        <!-- Database History Modal -->
+        <transition name="modal">
+        <div v-if="showDbHistoryModal" id="db-history-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm" @click.self="showDbHistoryModal = false">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800">{{ t('recentDb.title') }}</h3>
+                    <button type="button" @click="clearDbHistory" class="text-sm text-red-500 hover:text-red-700 font-medium px-3 py-1 rounded-lg hover:bg-red-50 transition-colors">
+                        {{ t('recentDb.clear') }}
+                    </button>
+                </div>
+                <div class="max-h-[60vh] overflow-y-auto p-2">
+                    <div v-if="recentDatabases.length === 0" class="p-8 text-center text-gray-400">
+                        {{ t('recentDb.empty') }}
+                    </div>
+                    <div v-else class="space-y-1">
+                        <div v-for="dbPath in recentDatabases" :key="dbPath" 
+                            class="group flex items-center justify-between p-4 hover:bg-blue-50 rounded-xl transition-all cursor-pointer border border-transparent hover:border-blue-100"
+                            @click="loadFromHistory(dbPath)"
+                        >
+                            <div class="flex items-center gap-3 overflow-hidden">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>
+                                </div>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="font-medium text-gray-800 truncate" :title="dbPath">{{ dbPath.split(/[\\/]/).pop() }}</span>
+                                    <span class="text-xs text-gray-400 truncate font-mono" :title="dbPath">{{ dbPath }}</span>
+                                </div>
+                            </div>
+                            <span class="text-blue-600 opacity-0 group-hover:opacity-100 text-sm font-bold px-3 py-1 bg-white rounded-lg shadow-sm">
+                                {{ t('recentDb.load') }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 bg-gray-50 border-t border-gray-100 text-right">
+                    <button type="button" @click="showDbHistoryModal = false" aria-label="Close History" class="px-6 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium">
+                        {{ t('common.close') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        </transition>
     </div>
 
     <!-- 系统初始化加载层 (Vue 挂载前可见) -->
     <div class="init-loader" id="init-loader">
         <div class="w-16 h-16 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mb-4"></div>
         <div class="text-center">
-            <p class="text-gray-500 font-bold animate-pulse text-lg">{{ t('gen_0469') }}</p>
-            <p class="text-gray-400 text-sm mt-1">{{ t('gen_0470') }}</p>
-            <p class="text-[10px] text-gray-400 mt-4 opacity-50">{{ t('gen_0471') }} data/app_debug.log</p>
+            <p class="text-gray-500 font-bold animate-pulse text-lg">正在初始化…</p>
+            <p class="text-gray-400 text-sm mt-1">请稍候</p>
+            <p class="text-[10px] text-gray-400 mt-4 opacity-50">日志: data/app_debug.log</p>
         </div>
     </div>
 
     <script src="js/utils.js"></script>
-    <script src="js/services/uniprotService.js"></script>
     <script src="js/recognition.js"></script>
     <script src="js/data-service.js"></script>
     <script src="js/project-window.js"></script>
@@ -1990,3 +2212,5 @@ pET28a-His-Target
     <script src="js/app.js"></script>
 </body>
 </html>
+
+

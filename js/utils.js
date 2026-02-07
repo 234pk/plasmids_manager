@@ -89,6 +89,85 @@ window.Utils = {
     },
 
     /**
+     * 将值转换为带选中状态的对象列表
+     */
+    toCheckableList: (val) => {
+        let items = [];
+        if (val instanceof Set) {
+            items = Array.from(val);
+        } else {
+            items = window.Utils.ensureArray(val);
+        }
+        return items.map(v => ({ value: v, selected: true }));
+    },
+
+    /**
+     * 获取列表中选中的值
+     */
+    getSelectedValues: (list) => {
+        if (!Array.isArray(list)) return window.Utils.ensureArray(list);
+        if (list.length > 0 && typeof list[0] === 'object' && 'selected' in list[0]) {
+            return list.filter(i => i.selected).map(i => i.value);
+        }
+        return window.Utils.ensureArray(list);
+    },
+
+    /**
+     * 向批量项添加值并清空输入框
+     */
+    addBatchItemValue: (item, field, newValue) => {
+        if (!newValue || !newValue.trim()) return "";
+        const val = newValue.trim();
+        if (!item[field]) item[field] = [];
+        // 检查重复
+        if (!item[field].some(i => i.value === val)) {
+            item[field].push({ value: val, selected: true });
+        }
+        return ""; // 清空输入框
+    },
+
+    /**
+     * 根据字段自动生成描述
+     */
+    generateDescription: (item) => {
+        const parts = [];
+        const getVals = (f) => {
+            const vals = window.Utils.getSelectedValues(item[f]);
+            return vals.length > 0 ? vals.join(', ') : '';
+        };
+        
+        const vector = getVals('载体类型');
+        if (vector) parts.push(`载体: ${vector}`);
+        
+        const target = getVals('靶基因');
+        if (target) parts.push(`靶基因: ${target}`);
+        
+        const species = getVals('物种');
+        if (species) parts.push(`物种: ${species}`);
+        
+        const insert = getVals('插入类型');
+        if (insert) parts.push(`插入类型: ${insert}`);
+        
+        const coliRes = getVals('大肠杆菌抗性');
+        const mamRes = getVals('哺乳动物抗性');
+        const resistance = [coliRes, mamRes].filter(Boolean).join(', ');
+        if (resistance) parts.push(`抗性: ${resistance}`);
+
+        const promoter = getVals('启动子');
+        if (promoter) parts.push(`启动子: ${promoter}`);
+
+        const tags = getVals('蛋白标签');
+        const fluo = getVals('荧光蛋白');
+        const allTags = [tags, fluo].filter(Boolean).join(', ');
+        if (allTags) parts.push(`标签: ${allTags}`);
+
+        const mutation = getVals('突变');
+        if (mutation) parts.push(`突变: ${mutation}`);
+
+        return parts.join('; ');
+    },
+
+    /**
      * 增强版搜索算法：平衡模糊度与准确度
      */
     fuzzyMatch: (query, target) => {

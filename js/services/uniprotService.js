@@ -32,6 +32,23 @@ class UniProtService {
         const taxId = options.taxId;
         const fields = 'accession,protein_name,organism_name,cc_function,gene_names,mass,sequence,xref_biogrid,xref_flybase,cc_subcellular_location,xref_refseq,xref_string';
 
+        const escapeQueryTerm = (term) => {
+            const t = String(term ?? '').trim();
+            if (!t) return '';
+            if (/^[A-Za-z0-9_.-]+$/.test(t)) return t;
+            return `"${t.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+        };
+
+        const and = (...parts) => `(${parts.filter(Boolean).join(' AND ')})`;
+        const or = (...parts) => `(${parts.filter(Boolean).join(' OR ')})`;
+        const reviewed = (v) => `(reviewed:${v ? 'true' : 'false'})`;
+        const taxonomy = (id) => id ? `(taxonomy_id:${String(id).trim()})` : '';
+        const geneExact = (term) => `(gene_exact:${escapeQueryTerm(term)})`;
+        const gene = (term) => `(gene:${escapeQueryTerm(term)})`;
+        const proteinName = (term) => `(protein_name:${escapeQueryTerm(term)})`;
+        const accession = (term) => `(accession:${escapeQueryTerm(term)})`;
+        const id = (term) => `(id:${escapeQueryTerm(term)})`;
+
         const fetchResults = async (q) => {
              const params = new URLSearchParams({
                 query: q,
@@ -39,7 +56,11 @@ class UniProtService {
                 format: 'json',
                 fields
             });
-            const response = await fetch(`${this.baseUrl}/search?${params}`);
+            const response = await fetch(`${this.baseUrl}/search?${params}`, {
+                headers: {
+                    Accept: 'application/json'
+                }
+            });
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             return await response.json();
         };
@@ -48,8 +69,21 @@ class UniProtService {
             let results = [];
             
             // 1. Primary Search (Reviewed + Optional TaxId)
-            let q = `gene_exact:${encodeURIComponent(query)} AND reviewed:true`;
-            if (taxId) q += ` AND (taxonomy_id:${taxId})`;
+            const rawQuery = String(query).trim();
+            const taxClause = taxonomy(taxId);
+            const term = escapeQueryTerm(rawQuery);
+
+            const looksLikeAccession = /^[A-NR-Z0-9]{6,10}$/.test(rawQuery) || /^[OPQ][0-9][A-Z0-9]{3}[0-9]$/.test(rawQuery);
+            const looksLikeEntryName = /^[A-Z0-9]{1,10}_[A-Z0-9]{1,10}$/.test(rawQuery);
+
+            let q = '';
+            if (looksLikeAccession) {
+                q = and(accession(rawQuery), reviewed(true), taxClause);
+            } else if (looksLikeEntryName) {
+                q = and(id(rawQuery), reviewed(true), taxClause);
+            } else {
+                q = and(geneExact(rawQuery), reviewed(true), taxClause);
+            }
             
             let data = await fetchResults(q);
             results = data.results || [];
@@ -57,32 +91,71 @@ class UniProtService {
             // 2. Fallback: If taxId used but no results -> Global Search
             if (results.length === 0 && taxId) {
                  // Global Reviewed
-                 q = `gene_exact:${encodeURIComponent(query)} AND reviewed:true`;
+                 if (looksLikeAccession) {
+                    q = and(accession(rawQuery), reviewed(true));
+                 } else if (looksLikeEntryName) {
+                    q = and(id(rawQuery), reviewed(true));
+                 } else {
+                    q = and(geneExact(rawQuery), reviewed(true));
+                 }
                  data = await fetchResults(q);
                  results = data.results || [];
                  
                  // Global Unreviewed if still empty
                  if (results.length === 0) {
-                     q = `gene_exact:${encodeURIComponent(query)} AND reviewed:false`;
+                     if (looksLikeAccession) {
+                        q = and(accession(rawQuery), reviewed(false));
+                     } else if (looksLikeEntryName) {
+                        q = and(id(rawQuery), reviewed(false));
+                     } else {
+                        q = and(geneExact(rawQuery), reviewed(false));
+                     }
                      data = await fetchResults(q);
                      results = data.results || [];
                  }
             }
             // 3. Fallback: If no taxId and no results -> Unreviewed
             else if (results.length === 0 && !taxId) {
-                 q = `gene_exact:${encodeURIComponent(query)} AND reviewed:false`;
+                 if (looksLikeAccession) {
+                    q = and(accession(rawQuery), reviewed(false));
+                 } else if (looksLikeEntryName) {
+                    q = and(id(rawQuery), reviewed(false));
+                 } else {
+                    q = and(geneExact(rawQuery), reviewed(false));
+                 }
                  data = await fetchResults(q);
                  results = data.results || [];
+            }
+
+            // 4. Extra Fallback: broader query if still empty
+            if (results.length === 0) {
+                const broad = or(gene(rawQuery), proteinName(rawQuery), `(${term})`);
+                const broaderQueries = [
+                    and(broad, reviewed(true), taxClause),
+                    and(broad, reviewed(true)),
+                    and(broad, reviewed(false), taxClause),
+                    and(broad, reviewed(false))
+                ];
+                for (const candidate of broaderQueries) {
+                    try {
+                        const d = await fetchResults(candidate);
+                        const r = d.results || [];
+                        if (r.length > 0) {
+                            results = r;
+                            break;
+                        }
+                    } catch (_) {}
+                }
             }
             
             // 4. Supplement: If no taxId and results < limit -> Fetch Unreviewed to fill
             if (!taxId && results.length > 0 && results.length < limit) {
-                 q = `gene_exact:${encodeURIComponent(query)} AND reviewed:false`;
+                 q = and(geneExact(rawQuery), reviewed(false));
                  const extraData = await fetchResults(q);
                  // Avoid duplicates (by accession)
-                 const existingIds = new Set(results.map(r => r.primaryAccession.value));
+                 const existingIds = new Set(results.map(r => r.primaryAccession));
                  for (const r of (extraData.results || [])) {
-                     if (!existingIds.has(r.primaryAccession.value)) {
+                     if (!existingIds.has(r.primaryAccession)) {
                          results.push(r);
                          if (results.length >= limit) break;
                      }
@@ -102,7 +175,7 @@ class UniProtService {
             return transformedResults;
         } catch (error) {
             console.error('UniProt 查询失败:', error);
-            return { count: 0, results: [], error: error.message };
+            return { count: 0, results: [], error: error.message || String(error) };
         }
     }
     
@@ -162,7 +235,7 @@ class UniProtService {
         }
 
         return {
-            uniprotId: entry.primaryAccession?.value,
+            uniprotId: entry.primaryAccession,
             name: entry.proteinDescription?.recommendedName?.fullName?.value || entry.proteinDescription?.submissionNames?.[0]?.fullName?.value,
             altNames: (entry.proteinDescription?.alternativeNames || [])
                 .map(n => n.fullName?.value),
@@ -178,7 +251,7 @@ class UniProtService {
             refSeqId,
             stringId,
             flyBaseId,
-            link: `https://www.uniprot.org/uniprot/${entry.primaryAccession?.value}`
+            link: `https://www.uniprot.org/uniprot/${entry.primaryAccession}`
         };
     }
     

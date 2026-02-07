@@ -1,19 +1,74 @@
 const { app, BrowserWindow, ipcMain, dialog, shell, nativeImage } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const { exec } = require('child_process');
+const { exec, execFile } = require('child_process');
+
+if (!app.isPackaged) {
+  try {
+    const devUserData = path.join(app.getPath('appData'), `${app.getName()}-dev`);
+    app.setPath('userData', devUserData);
+    app.setPath('cache', path.join(devUserData, 'Cache'));
+  } catch (_) {}
+}
+
+function getAppDataDir() {
+  return path.join(app.getPath('userData'), 'data');
+}
+
+function getLogPath() {
+  return path.join(getAppDataDir(), 'app_debug.log');
+}
+
+function ensureUtf8BomFile(filePath) {
+  const dir = path.dirname(filePath);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+
+  const bom = Buffer.from([0xEF, 0xBB, 0xBF]);
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, bom);
+    return;
+  }
+
+  const stat = fs.statSync(filePath);
+  if (stat.size === 0) {
+    fs.writeFileSync(filePath, bom);
+    return;
+  }
+
+  const fd = fs.openSync(filePath, 'r');
+  try {
+    const head = Buffer.alloc(3);
+    const bytesRead = fs.readSync(fd, head, 0, 3, 0);
+    if (bytesRead === 3 && head.equals(bom)) return;
+  } finally {
+    fs.closeSync(fd);
+  }
+
+  if (stat.size > 5 * 1024 * 1024) {
+    const bakPath = `${filePath}.bak`;
+    try {
+      if (fs.existsSync(bakPath)) fs.unlinkSync(bakPath);
+    } catch (_) {}
+    fs.renameSync(filePath, bakPath);
+    fs.writeFileSync(filePath, bom);
+    fs.appendFileSync(filePath, `[${new Date().toLocaleString()}] [INFO] Log rotated to preserve UTF-8 BOM. Previous log: ${path.basename(bakPath)}\n`, 'utf8');
+    return;
+  }
+
+  const existing = fs.readFileSync(filePath);
+  fs.writeFileSync(filePath, Buffer.concat([bom, existing]));
+}
 
 function createWindow() {
-  // 数据目录：打包后应使用用户数据目录，开发环境使用本地 data 目录
-  const userDataPath = app.isPackaged ? app.getPath('userData') : __dirname;
-  const logDir = path.join(userDataPath, 'data');
-  if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
+  const dataDir = getAppDataDir();
+  const logPath = getLogPath();
+  ensureUtf8BomFile(logPath);
 
   const iconPath = path.join(__dirname, 'assets', 'icon.png'); // 优先使用 PNG 提高兼容性
   const image = fs.existsSync(iconPath) ? nativeImage.createFromPath(iconPath) : null;
   
   // 打印日志到文件以供调试
-  fs.appendFileSync(path.join(logDir, 'app_debug.log'), `[${new Date().toLocaleString()}] [INFO] App started. UserData: ${userDataPath}\n`);
+  fs.appendFileSync(logPath, `[${new Date().toLocaleString()}] [INFO] App started. DataDir: ${dataDir}\n`, 'utf8');
 
   const win = new BrowserWindow({
     width: 1300,
@@ -32,14 +87,18 @@ function createWindow() {
 
   // win.webContents.openDevTools({ mode: 'detach' });
 
-  win.webContents.on('console-message', (_event, level, message, line, sourceId) => {
+  win.webContents.on('console-message', (event) => {
     try {
       const fullTime = new Date().toLocaleString();
-      const logPath = path.join(__dirname, 'data', 'app_debug.log');
-      const dir = path.dirname(logPath);
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      const levelText = level === 3 ? 'ERROR' : level === 2 ? 'WARN' : 'INFO';
-      fs.appendFileSync(logPath, `[${fullTime}] [${levelText}] [RendererConsole] ${message} (${sourceId}:${line})\n`, 'utf8');
+      const logPath = getLogPath();
+      ensureUtf8BomFile(logPath);
+      if (!event || typeof event !== 'object' || !('message' in event)) {
+        fs.appendFileSync(logPath, `[${fullTime}] [INFO] [RendererConsole] (console-message event missing payload)\n`, 'utf8');
+        return;
+      }
+
+      const levelText = event.level === 3 ? 'ERROR' : event.level === 2 ? 'WARN' : 'INFO';
+      fs.appendFileSync(logPath, `[${fullTime}] [${levelText}] [RendererConsole] ${event.message} (${event.sourceId}:${event.line})\n`, 'utf8');
     } catch (e) {
       console.error('Failed to mirror renderer console message:', e);
     }
@@ -89,12 +148,17 @@ ipcMain.handle('check-init-files', async () => {
     const dataDir = path.join(userDataPath, 'data');
     const dbPath = path.join(dataDir, 'plasmid_database.json');
     const settingsPath = path.join(dataDir, 'settings.json');
+    const historyPath = path.join(dataDir, 'app_history.json');
     
     let created = false;
     if (!fs.existsSync(dataDir)) {
         fs.mkdirSync(dataDir, { recursive: true });
     }
     
+    if (!fs.existsSync(historyPath)) {
+        fs.writeFileSync(historyPath, JSON.stringify({ lastDatabase: '', recentDatabases: [] }, null, 2), 'utf8');
+    }
+
     if (!fs.existsSync(dbPath)) {
         // 尝试从本地或根目录寻找旧版数据库文件（用于迁移）
         const localDbPath = path.join(__dirname, 'data', 'plasmid_database.json');
@@ -154,10 +218,34 @@ ipcMain.handle('check-init-files', async () => {
     return created;
 });
 
+// 核心功能：历史记录管理
+ipcMain.handle('get-app-history', async () => {
+    try {
+        const historyPath = path.join(getAppDataDir(), 'app_history.json');
+        if (fs.existsSync(historyPath)) {
+            return JSON.parse(fs.readFileSync(historyPath, 'utf8'));
+        }
+        return { lastDatabase: '', recentDatabases: [] };
+    } catch (err) {
+        return { lastDatabase: '', recentDatabases: [] };
+    }
+});
+
+ipcMain.handle('save-app-history', async (event, history) => {
+    try {
+        const historyPath = path.join(getAppDataDir(), 'app_history.json');
+        fs.writeFileSync(historyPath, JSON.stringify(history, null, 2), 'utf8');
+        return true;
+    } catch (err) {
+        return false;
+    }
+});
+
 // 核心功能：读取文件 Buffer（用于 DNA 等二进制或特殊格式文件）
 ipcMain.handle('read-file-buffer', async (event, relativePath) => {
     try {
-        const fullPath = path.isAbsolute(relativePath) ? relativePath : path.join(__dirname, relativePath);
+        const baseDir = app.getPath('userData');
+        const fullPath = path.isAbsolute(relativePath) ? relativePath : path.join(baseDir, relativePath);
         if (fs.existsSync(fullPath)) {
             return fs.readFileSync(fullPath);
         }
@@ -206,12 +294,23 @@ ipcMain.handle('open-file-native', async (event, { filePath, softwarePath }) => 
         }
 
         if (softwarePath && fs.existsSync(softwarePath)) {
-            // 使用指定软件打开，处理路径中的空格
-            const command = `"${softwarePath}" "${filePath}"`;
-            exec(command, (error) => {
-                if (error) {
-                    console.error('Exec error:', error);
-                }
+            if (process.platform === 'darwin') {
+                execFile('open', ['-a', softwarePath, filePath], (error) => {
+                    if (error) console.error('open -a error:', error);
+                });
+                return { success: true };
+            }
+
+            if (process.platform === 'win32') {
+                const command = `"${softwarePath}" "${filePath}"`;
+                exec(command, (error) => {
+                    if (error) console.error('Exec error:', error);
+                });
+                return { success: true };
+            }
+
+            execFile(softwarePath, [filePath], (error) => {
+                if (error) console.error('execFile error:', error);
             });
             return { success: true };
         } else {
@@ -229,7 +328,8 @@ ipcMain.handle('open-file-native', async (event, { filePath, softwarePath }) => 
 ipcMain.handle('show-item-in-folder', async (event, filePath) => {
     try {
         if (!filePath) return false;
-        const fullPath = path.isAbsolute(filePath) ? filePath : path.join(__dirname, filePath);
+        const baseDir = app.getPath('userData');
+        const fullPath = path.isAbsolute(filePath) ? filePath : path.join(baseDir, filePath);
         if (!fs.existsSync(fullPath)) return false;
         
         shell.showItemInFolder(fullPath);
@@ -242,9 +342,11 @@ ipcMain.handle('show-item-in-folder', async (event, filePath) => {
 
 // 核心功能：新建数据库对话框
 ipcMain.handle('save-database-dialog', async () => {
+    const dataDir = getAppDataDir();
+    if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
     const result = await dialog.showSaveDialog({
         title: '新建数据库',
-        defaultPath: path.join(__dirname, 'data', 'new_database.json'),
+        defaultPath: path.join(dataDir, 'new_database.json'),
         filters: [
             { name: 'JSON Database', extensions: ['json'] }
         ]
@@ -289,7 +391,8 @@ ipcMain.handle('scan-local-plasmids', async () => {
 
 ipcMain.on('write-debug-log', (event, logLine) => {
     try {
-        const logPath = path.join(__dirname, 'data', 'app_debug.log');
+        const logPath = getLogPath();
+        ensureUtf8BomFile(logPath);
         fs.appendFileSync(logPath, logLine, 'utf8');
     } catch (err) {
         console.error('Failed to write debug log:', err);

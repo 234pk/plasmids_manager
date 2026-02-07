@@ -30,5 +30,5 @@ electron_builder_cache/
 Thumbs.db
 
 # Documentation (as requested)
-*.md
+# *.md
 Prompts/

@@ -26,7 +26,9 @@
             start: '立即开启',
             finish: '完成',
             records: '条记录',
-            filtered: '当前筛选出'
+            filtered: '当前筛选出',
+            openExternal: '软件打开',
+            viewSequence: '查看序列'
         },
         nav: {
             library: '质粒库',
@@ -84,6 +86,29 @@
             updateTime: '更新时间',
             description: '描述',
             sequence: '序列'
+        },
+        help: {
+            title: '使用帮助',
+            tabs: {
+                intro: '功能简介',
+                import: '导入与识别',
+                search: '搜索技巧',
+                faq: '常见问题'
+            },
+            content: {
+                intro: '这是一个面向实验室日常工作的质粒管理工具，目标是把散落的质粒文件变成可检索、可统计、可追溯的数据库。\n\n你可以用它做什么：\n1) 建库：导入/新建数据库，集中管理质粒条目\n2) 自动识别：从文件名与路径中提取抗性、启动子、标签、物种等字段（支持手动校准）\n3) 结构化管理：按“项目 / 持有人 / 保存位置”组织与统计\n4) 快速检索：全局搜索 + 高级筛选 + 排序\n5) 外部联动：一键打开所在文件夹、外部软件、UniProt/NCBI\n\n推荐工作流：批量导入 → 校准识别结果 → 分配项目/持有人 → 日常用搜索与筛选快速定位。',
+                import: '导入方式：\n- 批量导入：适合初始化建库。可多选文件或扫描目录（桌面版支持绝对路径）。\n- 手动新建：适合临时记录或补录。\n\n识别机制：\n- 系统会对文件名拆词，匹配抗性/启动子/标签/物种/诱导等关键词；可能给出多个候选值，你可以在校准界面勾选保留。\n\n导入建议：\n- 文件名尽量包含关键信息（载体/插入/抗性/物种），同一实验室统一命名后识别准确率会明显提升。\n\n常见失败原因：\n- 文件移动/重命名导致路径失效\n- 权限限制（尤其 macOS 受保护目录）\n- 网络不可用导致 UniProt 查询失败',
+                search: '搜索入口：\n- 顶部全局搜索：直接输入关键词（文件名/靶基因/抗性/项目/持有人/位置等）\n- 高级筛选（质粒库视图）：按字段多选过滤，并支持“交集 AND / 并集 OR”\n\n实用技巧：\n- 先筛选后搜索：先按项目/持有人/位置缩小范围，再查关键词更快\n- 善用排序：按更新时间快速找到最近修改的数据\n- 文件定位：桌面版支持打开所在文件夹；外部软件打开需先在设置中配置软件路径',
+                faq: 'Q: 新手引导点下一步就消失？\nA: 已修复：之前逻辑层误用 computed 导致报错中断渲染。\n\nQ: UniProt 为什么查询失败/无结果？\nA: 可能是基因名不规范、物种不匹配或网络不可用。已增强：会展示接口错误，并增加更宽松的兜底查询。\n\nQ: macOS 上打不开文件/选不中文件夹？\nA: 请到 系统设置 → 隐私与安全 → 文件与文件夹，允许应用访问；并尽量把数据库放在可读写目录（如 Documents/用户目录）。\n\nQ: 数据库文件存在哪里？\nA: 桌面版默认使用 Electron userData 目录下的 data 文件夹；也可通过“新建数据库/切换数据库”保存到任意位置。'
+            }
+        },
+        recentDb: {
+            title: '最近使用的数据库',
+            path: '路径',
+            action: '操作',
+            clear: '清空记录',
+            empty: '暂无历史记录',
+            load: '加载'
         }
     };
 
@@ -112,7 +137,9 @@
             start: 'Start Now',
             finish: 'Finish',
             records: 'records',
-            filtered: 'Filtered'
+            filtered: 'Filtered',
+            openExternal: 'Open in Software',
+            viewSequence: 'View Sequence'
         },
         nav: {
             library: 'Library',
@@ -170,6 +197,29 @@
             updateTime: 'Updated',
             description: 'Description',
             sequence: 'Sequence'
+        },
+        help: {
+            title: 'Help Center',
+            tabs: {
+                intro: 'Introduction',
+                import: 'Import & Recognize',
+                search: 'Search Tips',
+                faq: 'FAQ'
+            },
+            content: {
+                intro: 'This app helps labs turn scattered plasmid files into a searchable and maintainable database.\n\nKey capabilities:\n1) Build a database from existing files\n2) Auto-extract features (resistance/promoter/tags/species) with manual correction\n3) Organize by Projects / Holders / Locations\n4) Fast search + advanced filters + sorting\n5) Integrations: open folder, open in external software, UniProt/NCBI links\n\nRecommended workflow: Batch import → validate recognition results → assign projects/holders → search & filter daily.',
+                import: 'Import options:\n- Batch Import: best for initial database setup. Select multiple files or scan a directory (desktop mode supports absolute paths).\n- Manual Create: add a single plasmid entry quickly.\n\nCommon issues:\n- File moved/renamed after import\n- Permission restrictions (especially on macOS protected folders)\n- Network unavailable (UniProt search)',
+                search: 'Tips:\n- Use global search for quick lookup (name/gene/resistance/project/owner/location).\n- Use filters in Library view to narrow down, then search inside the smaller set.\n- Sort by Updated time to find recent edits quickly.\n\nDesktop integrations:\n- Open folder / open in external software (configure software path in Settings).',
+                faq: 'Q: Why did onboarding disappear on Next?\nA: Fixed: computed access bug in guide logic caused a render error.\n\nQ: Why UniProt search fails?\nA: Gene names may not match exactly, taxonomy may differ, or network is unavailable. The search now shows API errors and uses broader fallback queries.\n\nQ: macOS cannot open/select files?\nA: Check System Settings → Privacy & Security → Files and Folders permissions, and avoid read-only locations.\n\nQ: Where is data stored?\nA: Desktop builds store app data under Electron userData directory by default. You can also create/switch databases anywhere.'
+            }
+        },
+        recentDb: {
+            title: 'Recent Databases',
+            path: 'Path',
+            action: 'Action',
+            clear: 'Clear History',
+            empty: 'No history found',
+            load: 'Load'
         }
     };
 

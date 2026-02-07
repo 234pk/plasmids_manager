@@ -5,10 +5,10 @@ const sharp = require('sharp');
 const svgPath = path.join(__dirname, 'assets', 'icon.svg');
 const pngPath = path.join(__dirname, 'assets', 'icon.png');
 
-console.log('正在读取 SVG 文件并转换为 PNG (256x256)...');
+console.log('正在读取 SVG 文件并转换为 PNG (1024x1024)...');
 
 sharp(svgPath)
-    .resize(256, 256)
+    .resize(1024, 1024)
     .png()
     .toFile(pngPath)
     .then(info => {

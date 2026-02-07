@@ -18,34 +18,9 @@ window.createBatchLogic = (refs) => {
     // Batch Modal Tab State
     const batchTab = ref('new'); // 'new' | 'update'
 
-    const toCheckableList = (val) => {
-        let items = [];
-        if (val instanceof Set) {
-            items = Array.from(val);
-        } else {
-            items = window.Utils.ensureArray(val);
-        }
-        return items.map(v => ({ value: v, selected: true }));
-    };
-
-    const addBatchItemValue = (item, field, newValue) => {
-        if (!newValue || !newValue.trim()) return "";
-        const val = newValue.trim();
-        if (!item[field]) item[field] = [];
-        // 检查重复
-        if (!item[field].some(i => i.value === val)) {
-            item[field].push({ value: val, selected: true });
-        }
-        return ""; // 清空输入框
-    };
-
-    const getSelectedValues = (list) => {
-        if (!Array.isArray(list)) return window.Utils.ensureArray(list);
-        if (list.length > 0 && typeof list[0] === 'object' && 'selected' in list[0]) {
-            return list.filter(i => i.selected).map(i => i.value);
-        }
-        return window.Utils.ensureArray(list);
-    };
+    const toCheckableList = window.Utils.toCheckableList;
+    const addBatchItemValue = window.Utils.addBatchItemValue;
+    const getSelectedValues = window.Utils.getSelectedValues;
 
     // 批量导入处理逻辑
     const handleBatchFiles = async (files) => {

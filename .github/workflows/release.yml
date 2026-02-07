@@ -25,15 +25,10 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build and Release
-        uses: samuelmeuli/action-electron-builder@v1
         env:
-          CSC_SKIP_SIGNING: true
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release: true
-          # For macOS, if you have a certificate, you can add it here
-          # mac_certs: ${{ secrets.MAC_CERTS }}
-          # mac_certs_password: ${{ secrets.MAC_CERTS_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm run build -- --publish always
