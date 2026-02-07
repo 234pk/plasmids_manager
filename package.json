@@ -1,6 +1,6 @@
 {
   "name": "plasmid-manager",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "质粒管理系统桌面版",
   "repository": {
     "type": "git",
@@ -24,7 +24,8 @@
   },
   "build": {
     "appId": "com.plasmid.manager",
-    "productName": "质粒管理系统",
+    "productName": "PlasmidManager",
+    "executableName": "PlasmidManager",
     "directories": {
       "output": "dist_v3"
     },
