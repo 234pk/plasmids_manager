@@ -1,6 +1,6 @@
 {
   "name": "plasmid-manager",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "质粒管理系统桌面版",
   "repository": {
     "type": "git",
@@ -34,7 +34,6 @@
       "zh_CN",
       "en"
     ],
-    "remoteBuild": false,
     "files": [
       "**/*",
       "!data/**/*",
