@@ -1,6 +1,6 @@
 {
   "name": "plasmid-manager",
-  "version": "1.0.2",
+  "version": "1.0.9",
   "description": "质粒管理系统桌面版",
   "repository": {
     "type": "git",
@@ -30,6 +30,11 @@
     },
     "icon": "assets/icon.png",
     "asar": true,
+    "electronLanguages": [
+      "zh_CN",
+      "en"
+    ],
+    "remoteBuild": false,
     "files": [
       "**/*",
       "!data/**/*",
@@ -41,8 +46,15 @@
       "!electron_builder_cache/**/*",
       "!.git/**/*",
       "!.idea/**/*",
-      "!.vscode/**/*"
+      "!.vscode/**/*",
+      "!archive/**/*"
     ],
+    "publish": {
+      "provider": "github",
+      "owner": "234pk",
+      "repo": "plasmids_manager"
+    },
+    "requestTimeout": 300000,
     "win": {
       "target": [
         "nsis",
@@ -62,8 +74,20 @@
     },
     "mac": {
       "target": [
-        "dmg",
-        "zip"
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
       ],
       "category": "public.app-category.productivity",
       "hardenedRuntime": false,
