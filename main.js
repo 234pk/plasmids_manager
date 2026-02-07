@@ -1,13 +1,25 @@
-const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell, nativeImage } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { exec } = require('child_process');
 
 function createWindow() {
+  // 数据目录：打包后应使用用户数据目录，开发环境使用本地 data 目录
+  const userDataPath = app.isPackaged ? app.getPath('userData') : __dirname;
+  const logDir = path.join(userDataPath, 'data');
+  if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
+
+  const iconPath = path.join(__dirname, 'assets', 'icon.png'); // 优先使用 PNG 提高兼容性
+  const image = fs.existsSync(iconPath) ? nativeImage.createFromPath(iconPath) : null;
+  
+  // 打印日志到文件以供调试
+  fs.appendFileSync(path.join(logDir, 'app_debug.log'), `[${new Date().toLocaleString()}] [INFO] App started. UserData: ${userDataPath}\n`);
+
   const win = new BrowserWindow({
     width: 1300,
     height: 900,
     title: "质粒管理系统 - 桌面版",
+    icon: image,
     resizable: true,
     webPreferences: {
       nodeIntegration: true,
@@ -40,7 +52,8 @@ function createWindow() {
 // 核心功能：静默保存文件（用于自动保存数据库）
 ipcMain.handle('save-file-silent', async (event, { data, path: targetPath }) => {
     try {
-        const fullPath = path.isAbsolute(targetPath) ? targetPath : path.join(__dirname, targetPath);
+        const userDataPath = app.isPackaged ? app.getPath('userData') : __dirname;
+        const fullPath = path.isAbsolute(targetPath) ? targetPath : path.join(userDataPath, targetPath);
         const dir = path.dirname(fullPath);
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
@@ -58,7 +71,8 @@ ipcMain.handle('save-file-silent', async (event, { data, path: targetPath }) => 
 // 核心功能：静默读取文件
 ipcMain.handle('read-file-silent', async (event, targetPath) => {
     try {
-        const fullPath = path.isAbsolute(targetPath) ? targetPath : path.join(__dirname, targetPath);
+        const userDataPath = app.isPackaged ? app.getPath('userData') : __dirname;
+        const fullPath = path.isAbsolute(targetPath) ? targetPath : path.join(userDataPath, targetPath);
         if (fs.existsSync(fullPath)) {
             return fs.readFileSync(fullPath, 'utf8');
         }
@@ -71,7 +85,8 @@ ipcMain.handle('read-file-silent', async (event, targetPath) => {
 
 // 核心功能：检查并初始化必要文件
 ipcMain.handle('check-init-files', async () => {
-    const dataDir = path.join(__dirname, 'data');
+    const userDataPath = app.isPackaged ? app.getPath('userData') : __dirname;
+    const dataDir = path.join(userDataPath, 'data');
     const dbPath = path.join(dataDir, 'plasmid_database.json');
     const settingsPath = path.join(dataDir, 'settings.json');
     
@@ -81,11 +96,14 @@ ipcMain.handle('check-init-files', async () => {
     }
     
     if (!fs.existsSync(dbPath)) {
-        // 尝试从根目录寻找旧版数据库文件
+        // 尝试从本地或根目录寻找旧版数据库文件（用于迁移）
+        const localDbPath = path.join(__dirname, 'data', 'plasmid_database.json');
         const oldDbPath = path.join(__dirname, 'plasmid_database.json');
-        if (fs.existsSync(oldDbPath)) {
+        
+        if (fs.existsSync(localDbPath)) {
+            fs.copyFileSync(localDbPath, dbPath);
+        } else if (fs.existsSync(oldDbPath)) {
             fs.copyFileSync(oldDbPath, dbPath);
-            console.log('Migrated database from root to data/');
         } else {
             fs.writeFileSync(dbPath, '[]', 'utf8');
         }
@@ -93,32 +111,37 @@ ipcMain.handle('check-init-files', async () => {
     }
     
     if (!fs.existsSync(settingsPath)) {
-        const defaultSettings = {
-            theme: 'light',
-            autoSave: true,
-            externalSoftwarePath: '',
-            recognitionConfig: {
-                minMatchScore: 0.75,
-                enableNlp: true,
-                extractTargetGene: true,
-                saveSequence: true // 新增：是否自动保存序列
-            },
-            displayConfig: {
-                showTags: true,
-                showDate: true,
-                itemsPerPage: 20,
-                batchPathPrefix: '',
-                columnVisibility: {
-                    '质粒信息': true,
-                    '特征与分类': true,
-                    '抗性': true,
-                    '专业特征': true,
-                    '序列信息': true, // 新增：序列信息列
-                    '描述': true
+        const localSettingsPath = path.join(__dirname, 'data', 'settings.json');
+        if (fs.existsSync(localSettingsPath)) {
+            fs.copyFileSync(localSettingsPath, settingsPath);
+        } else {
+            const defaultSettings = {
+                theme: 'light',
+                autoSave: true,
+                externalSoftwarePath: '',
+                recognitionConfig: {
+                    minMatchScore: 0.75,
+                    enableNlp: true,
+                    extractTargetGene: true,
+                    saveSequence: true // 新增：是否自动保存序列
+                },
+                displayConfig: {
+                    showTags: true,
+                    showDate: true,
+                    itemsPerPage: 20,
+                    batchPathPrefix: '',
+                    columnVisibility: {
+                        '质粒信息': true,
+                        '特征与分类': true,
+                        '抗性': true,
+                        '专业特征': true,
+                        '序列信息': true, // 新增：序列信息列
+                        '描述': true
+                    }
                 }
-            }
-        };
-        fs.writeFileSync(settingsPath, JSON.stringify(defaultSettings, null, 2), 'utf8');
+            };
+            fs.writeFileSync(settingsPath, JSON.stringify(defaultSettings, null, 2), 'utf8');
+        }
         created = true;
     }
 

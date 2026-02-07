@@ -1,0 +1,130 @@
+
+const fs = require('fs');
+
+const webPlasmids = [
+    {
+        文件名: "psPAX2.dna",
+        载体类型: "psPAX2",
+        靶基因: "gag, pol, rev, tat",
+        物种: "哺乳动物",
+        大肠杆菌抗性: "Ampicillin",
+        哺乳动物抗性: "无",
+        启动子: "CMV",
+        功能: "病毒包装"
+    },
+    {
+        文件名: "pMD2.G.dna",
+        载体类型: "pMD2.G",
+        靶基因: "VSV-G",
+        物种: "哺乳动物",
+        大肠杆菌抗性: "Ampicillin",
+        哺乳动物抗性: "无",
+        启动子: "CMV",
+        功能: "病毒包装"
+    },
+    {
+        文件名: "pSpCas9(BB)-2A-GFP (PX458).dna",
+        载体类型: "pSpCas9",
+        靶基因: "SpCas9",
+        物种: "哺乳动物",
+        大肠杆菌抗性: "Ampicillin",
+        哺乳动物抗性: "无",
+        启动子: "CMV, U6",
+        荧光蛋白: "EGFP",
+        功能: "CRISPR/Cas9"
+    },
+    {
+        文件名: "lentiCRISPR v2.dna",
+        载体类型: "lentiCRISPR",
+        靶基因: "SpCas9",
+        物种: "哺乳动物",
+        大肠杆菌抗性: "Ampicillin",
+        哺乳动物抗性: "Puromycin",
+        启动子: "EF1a, U6",
+        功能: "CRISPR/Cas9"
+    },
+    {
+        文件名: "pcDNA3.1-EGFP.dna",
+        载体类型: "pcDNA3.1",
+        靶基因: "EGFP",
+        物种: "哺乳动物",
+        大肠杆菌抗性: "Ampicillin",
+        哺乳动物抗性: "Neomycin/G418",
+        启动子: "CMV",
+        荧光蛋白: "EGFP"
+    },
+    {
+        文件名: "pLKO.1-puro-scramble.dna",
+        载体类型: "pLKO.1",
+        靶基因: "Scramble",
+        物种: "哺乳动物",
+        大肠杆菌抗性: "Ampicillin",
+        哺乳动物抗性: "Puromycin",
+        启动子: "U6",
+        插入类型: "shRNA",
+        功能: "干扰/shRNA"
+    },
+    {
+        文件名: "pET-28a-Trp53.dna",
+        载体类型: "pET-28a",
+        靶基因: "Trp53",
+        物种: "小鼠",
+        大肠杆菌抗性: "Kanamycin",
+        哺乳动物抗性: "无",
+        启动子: "T7",
+        蛋白标签: "His"
+    },
+    {
+        文件名: "pUC19.dna",
+        载体类型: "pUC19",
+        靶基因: "无",
+        物种: "大肠杆菌",
+        大肠杆菌抗性: "Ampicillin",
+        哺乳动物抗性: "无",
+        启动子: "lac"
+    },
+    {
+        文件名: "pUAST-Bacc-HA.dna",
+        载体类型: "pUAST",
+        靶基因: "Bacc",
+        物种: "果蝇",
+        大肠杆菌抗性: "Ampicillin",
+        哺乳动物抗性: "无",
+        启动子: "UAS",
+        蛋白标签: "HA"
+    },
+    {
+        文件名: "pAc5.1-V5-His-poxn.dna",
+        载体类型: "pAc5.1",
+        靶基因: "poxn",
+        物种: "果蝇",
+        大肠杆菌抗性: "Ampicillin",
+        哺乳动物抗性: "无",
+        启动子: "Ac5",
+        蛋白标签: "V5, His"
+    },
+    {
+        文件名: "pTeton-3xFlag-APP.dna",
+        载体类型: "pTet-On",
+        靶基因: "APP",
+        物种: "哺乳动物",
+        大肠杆菌抗性: "Ampicillin",
+        哺乳动物抗性: "Neomycin/G418",
+        启动子: "TRE",
+        蛋白标签: "3xFlag",
+        四环素诱导: "Tet-On"
+    },
+    {
+        文件名: "pGL3-Promoter-Luc.dna",
+        载体类型: "pGL3",
+        靶基因: "Luciferase",
+        物种: "哺乳动物",
+        大肠杆菌抗性: "Ampicillin",
+        哺乳动物抗性: "无",
+        启动子: "SV40",
+        功能: "报告基因"
+    }
+];
+
+fs.writeFileSync('web_plasmids.json', JSON.stringify(webPlasmids, null, 2));
+console.log('Successfully created web_plasmids.json with 12 classic plasmids.');

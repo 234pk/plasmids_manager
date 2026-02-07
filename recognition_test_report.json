@@ -1,0 +1,2528 @@
+{
+  "timestamp": "2026-02-06T14:57:48.070Z",
+  "averageScore": 61.33333333333334,
+  "results": [
+    {
+      "score": 77.77777777777779,
+      "filename": "pCDH-CMV-N-3xFlag-APPsweK595NM596L.dna",
+      "matches": {
+        "载体类型": [
+          "pCDH"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Puromycin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "蛋白标签": [
+          "3xFlag"
+        ],
+        "启动子": [
+          "CMV"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "APP"
+          ],
+          "actual": [
+            "3xFlag"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 44.44444444444444,
+      "filename": "pTeton-NLS-BaccN-HA.dna",
+      "matches": {
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Puromycin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "启动子": [
+          "TRE"
+        ]
+      },
+      "mismatches": {
+        "载体类型": {
+          "expected": [
+            "pTet-On"
+          ],
+          "actual": [
+            "pTeton"
+          ]
+        },
+        "靶基因": {
+          "expected": [
+            "Bacc (N-term)"
+          ],
+          "actual": [
+            "PTETON",
+            "NLS",
+            "BACCN"
+          ]
+        },
+        "物种": {
+          "expected": [
+            "哺乳动物"
+          ],
+          "actual": [
+            "果蝇"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "HA"
+          ],
+          "actual": [
+            "NLS",
+            "HA"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 44.44444444444444,
+      "filename": "pCo-3xHA-Bacc.dna",
+      "matches": {
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "蛋白标签": [
+          "3xHA"
+        ]
+      },
+      "mismatches": {
+        "载体类型": {
+          "expected": [
+            "pCo"
+          ],
+          "actual": [
+            "pUAST",
+            "pCo"
+          ]
+        },
+        "靶基因": {
+          "expected": [
+            "Bacc"
+          ],
+          "actual": [
+            "BACC",
+            "Bacc"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "Copia"
+          ],
+          "actual": [
+            "UAS"
+          ]
+        }
+      }
+    },
+    {
+      "score": 77.77777777777779,
+      "filename": "pET-N-HIS-dsnail-C-His .dna",
+      "matches": {
+        "载体类型": [
+          "pET"
+        ],
+        "靶基因": [
+          "dSnail"
+        ],
+        "物种": [
+          "大肠杆菌"
+        ],
+        "大肠杆菌抗性": [
+          "Kanamycin"
+        ],
+        "哺乳动物抗性": [],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "启动子": [
+          "T7"
+        ]
+      },
+      "mismatches": {
+        "蛋白标签": {
+          "expected": [
+            "6xHis"
+          ],
+          "actual": [
+            "His"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pUAST-3X HA-14-3-3E(C) -6Xmyc.dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "14-3-3epsilon"
+          ],
+          "actual": [
+            "3E(C)"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "3xHA",
+            "6xMyc"
+          ],
+          "actual": [
+            "6xMyc",
+            "HA"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pUAST-3XFlag-14-3-3EC.dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "3EC"
+          ],
+          "actual": [
+            "3EC",
+            "3xFlag"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "3xFlag",
+            "Flag"
+          ],
+          "actual": [
+            "3xFlag"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pmBaoJin-FOXO3A.dna",
+      "matches": {
+        "靶基因": [
+          "FOXO3A"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Neomycin/G418"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "荧光蛋白": [
+          "Baojin (GFP variant)"
+        ]
+      },
+      "mismatches": {
+        "载体类型": {
+          "expected": [
+            "pmBaoJin"
+          ],
+          "actual": [
+            "pmBaoJin",
+            "pmBaojin"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "CMV"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pJET-U6-NTC-sgRNA.dna",
+      "matches": {
+        "载体类型": [
+          "pJET"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [],
+        "启动子": [
+          "U6"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "NTC"
+          ],
+          "actual": [
+            "TIA1",
+            "NTC"
+          ]
+        },
+        "插入类型": {
+          "expected": [
+            "sgRNA"
+          ],
+          "actual": [
+            "sgRNA",
+            "shRNA"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 77.77777777777779,
+      "filename": "pUAST-VC155.dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "荧光蛋白": [
+          "VC155"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "无"
+          ],
+          "actual": [
+            "VC155"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "VC155 (Venus C-terminal)"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 77.77777777777779,
+      "filename": "pUAST-Bacc-deltaNLS-Myc.dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "蛋白标签": [
+          "Myc"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "BACC",
+            "DELTANLS"
+          ],
+          "actual": [
+            "BACC",
+            "Bacc",
+            "DELTANLS"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pLKO.1-EGFP-miR15b.dna",
+      "matches": {
+        "载体类型": [
+          "pLKO"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Puromycin"
+        ],
+        "荧光蛋白": [
+          "EGFP"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "miR-15b"
+          ],
+          "actual": [
+            "miR15b"
+          ]
+        },
+        "插入类型": {
+          "expected": [
+            "miRNA"
+          ],
+          "actual": [
+            "shRNA",
+            "mir15"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "U6",
+            "hPGK"
+          ],
+          "actual": [
+            "U6"
+          ]
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pUAST-3X HA-14-3-3epsilon 241A-6Xmyc.dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "241A",
+            "3X",
+            "3EPSILON"
+          ],
+          "actual": [
+            "14-3-3epsilon",
+            "3EPSILON",
+            "241A"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "Myc",
+            "6xMyc",
+            "HA"
+          ],
+          "actual": [
+            "6xMyc",
+            "HA"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 44.44444444444444,
+      "filename": "pCMV-TIA1-3'UTR.dna",
+      "matches": {
+        "载体类型": [
+          "pCMV"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "启动子": [
+          "CMV"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "TIA1 3'UTR"
+          ],
+          "actual": [
+            "TIA1",
+            "3'UTR"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [
+            "Neomycin/G418"
+          ],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "插入类型": {
+          "expected": [
+            "ORF/基因序列"
+          ],
+          "actual": [
+            "3'UTR"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pUAST-3xFlag-dFOXO-FH.dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "DFOXO",
+            "FH"
+          ],
+          "actual": [
+            "DFOXO",
+            "3xFlag"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "3xFlag",
+            "Flag"
+          ],
+          "actual": [
+            "3xFlag"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pLKO.1-EGFP-T2A-PuroR-TIA1-1-shRNA.dna",
+      "matches": {
+        "载体类型": [
+          "pLKO"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Puromycin"
+        ],
+        "插入类型": [
+          "shRNA"
+        ],
+        "荧光蛋白": [
+          "EGFP"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "TIA1",
+            "T2A",
+            "PUROR"
+          ],
+          "actual": [
+            "TIA1",
+            "T2A",
+            "Puromycin"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "U6",
+            "hPGK"
+          ],
+          "actual": [
+            "U6"
+          ]
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pAc5.1_3X FLAG_GFP  -3'UTR(Key)(Start (0) .. End (6110)).dna",
+      "matches": {
+        "载体类型": [
+          "pAc5"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "蛋白标签": [
+          "Flag"
+        ],
+        "荧光蛋白": [
+          "EGFP"
+        ],
+        "启动子": [
+          "Ac5"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "GFP-3'UTR(KEY)"
+          ],
+          "actual": [
+            "EGFP",
+            "(6110))",
+            "(0)",
+            "END",
+            "3'UTR(KEY)(START"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "插入类型": {
+          "expected": [
+            "ORF/基因序列"
+          ],
+          "actual": [
+            "ORF/基因序列",
+            "3'UTR"
+          ]
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pJET-U6-TIA1-KO-1-sgRNA.dna",
+      "matches": {
+        "载体类型": [
+          "pJET"
+        ],
+        "靶基因": [
+          "TIA1"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "启动子": [
+          "U6"
+        ]
+      },
+      "mismatches": {
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "插入类型": {
+          "expected": [
+            "sgRNA"
+          ],
+          "actual": [
+            "sgRNA",
+            "shRNA"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 44.44444444444444,
+      "filename": "pTeton-miR339-Flank-NeoR-new.dna",
+      "matches": {
+        "载体类型": [
+          "pTeton"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "启动子": [
+          "TRE"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "NEW",
+            "PTETON",
+            "FLANK",
+            "NEOR"
+          ],
+          "actual": [
+            "NEW",
+            "Neomycin/G418",
+            "PTETON",
+            "FLANK"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [
+            "NeoR"
+          ],
+          "actual": [
+            "Neomycin/G418"
+          ]
+        },
+        "插入类型": {
+          "expected": [
+            "miRNA"
+          ],
+          "actual": [
+            "miRNA",
+            "mir339"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pGL3-key-promoter3-Luc.dna",
+      "matches": {
+        "载体类型": [
+          "pGL3"
+        ],
+        "靶基因": [
+          "PGL3",
+          "LUC",
+          "KEY",
+          "PROMOTER3"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": []
+      },
+      "mismatches": {
+        "插入类型": {
+          "expected": [
+            "ORF/基因序列"
+          ],
+          "actual": [
+            "ORF/基因序列",
+            "promoter"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "SV40/None"
+          ],
+          "actual": [
+            "SV40"
+          ]
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pVALIUM20-crebB-shrna.dna",
+      "matches": {
+        "载体类型": [
+          "pVALIUM20"
+        ],
+        "靶基因": [
+          "crebB"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "shRNA"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "物种": {
+          "expected": [
+            "果蝇"
+          ],
+          "actual": []
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pUAST-3X HA-dicer2.dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "蛋白标签": [
+          "HA"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "3X",
+            "DICER2"
+          ],
+          "actual": [
+            "DICER2"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 77.77777777777779,
+      "filename": "pUAST-flag-dFOXO.dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "靶基因": [
+          "DFOXO"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "蛋白标签": [
+          "Flag"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Neomycin/G418"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 77.77777777777779,
+      "filename": "pUAST-3xHA-Rox8.dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "靶基因": [
+          "ROX8"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "蛋白标签": {
+          "expected": [
+            "HA"
+          ],
+          "actual": [
+            "3xHA"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pLKO.1-EGFP-hsa-miR-149.dna",
+      "matches": {
+        "载体类型": [
+          "pLKO"
+        ],
+        "靶基因": [
+          "miR-149"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Puromycin"
+        ],
+        "荧光蛋白": [
+          "EGFP"
+        ]
+      },
+      "mismatches": {
+        "插入类型": {
+          "expected": [
+            "miRNA"
+          ],
+          "actual": [
+            "shRNA"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "U6",
+            "hPGK"
+          ],
+          "actual": [
+            "U6"
+          ]
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pGL3-key-promoter-all-Luc.dna",
+      "matches": {
+        "载体类型": [
+          "pGL3"
+        ],
+        "靶基因": [
+          "PGL3",
+          "LUC",
+          "KEY",
+          "ALL",
+          "PROMOTER"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": []
+      },
+      "mismatches": {
+        "插入类型": {
+          "expected": [
+            "ORF/基因序列"
+          ],
+          "actual": [
+            "ORF/基因序列",
+            "promoter"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "SV40/None"
+          ],
+          "actual": [
+            "SV40"
+          ]
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pLKO.1-EGFP-T2A-PuroR-TIA1-3-shRNA.dna",
+      "matches": {
+        "载体类型": [
+          "pLKO"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Puromycin"
+        ],
+        "插入类型": [
+          "shRNA"
+        ],
+        "荧光蛋白": [
+          "EGFP"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "TIA1",
+            "T2A",
+            "PUROR"
+          ],
+          "actual": [
+            "TIA1",
+            "T2A",
+            "Puromycin"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "U6",
+            "hPGK"
+          ],
+          "actual": [
+            "U6"
+          ]
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pLKO.1-EGFP-miR-130a.dna",
+      "matches": {
+        "载体类型": [
+          "pLKO"
+        ],
+        "靶基因": [
+          "miR-130a"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Puromycin"
+        ],
+        "荧光蛋白": [
+          "EGFP"
+        ]
+      },
+      "mismatches": {
+        "插入类型": {
+          "expected": [
+            "miRNA"
+          ],
+          "actual": [
+            "shRNA"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "U6",
+            "hPGK"
+          ],
+          "actual": [
+            "U6"
+          ]
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pJET-U6-TIA1-KO-3-sgRNA.dna",
+      "matches": {
+        "载体类型": [
+          "pJET"
+        ],
+        "靶基因": [
+          "TIA1"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "启动子": [
+          "U6"
+        ]
+      },
+      "mismatches": {
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "插入类型": {
+          "expected": [
+            "sgRNA"
+          ],
+          "actual": [
+            "sgRNA",
+            "shRNA"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 77.77777777777779,
+      "filename": "pcDNA3.1-NGFP-CRM1.dna",
+      "matches": {
+        "载体类型": [
+          "pcDNA3"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Neomycin/G418"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "荧光蛋白": [
+          "EGFP"
+        ],
+        "启动子": [
+          "CMV"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "CRM1"
+          ],
+          "actual": [
+            "CRM1",
+            "PCDNA3"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pJET-U6-TIA1-i-2-sgRNA.dna",
+      "matches": {
+        "载体类型": [
+          "pJET"
+        ],
+        "靶基因": [
+          "TIA1"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "启动子": [
+          "U6"
+        ]
+      },
+      "mismatches": {
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "插入类型": {
+          "expected": [
+            "sgRNA"
+          ],
+          "actual": [
+            "sgRNA",
+            "shRNA"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pLKO.1-EGFP-miR-497.dna",
+      "matches": {
+        "载体类型": [
+          "pLKO"
+        ],
+        "靶基因": [
+          "miR-497"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Puromycin"
+        ],
+        "荧光蛋白": [
+          "EGFP"
+        ]
+      },
+      "mismatches": {
+        "插入类型": {
+          "expected": [
+            "miRNA"
+          ],
+          "actual": [
+            "shRNA"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "U6",
+            "hPGK"
+          ],
+          "actual": [
+            "U6"
+          ]
+        }
+      }
+    },
+    {
+      "score": 77.77777777777779,
+      "filename": "pUAST-VC173.dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "荧光蛋白": [
+          "VC173"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "蛋白标签": {
+          "expected": [
+            "VC173 (Venus C-terminal)"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 77.77777777777779,
+      "filename": "pAc5.1-3xHA-Bacc",
+      "matches": {
+        "载体类型": [
+          "pAc5"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "蛋白标签": [
+          "3xHA"
+        ],
+        "荧光蛋白": [],
+        "启动子": [
+          "Ac5"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "BACC"
+          ],
+          "actual": [
+            "BACC",
+            "Bacc"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pLKO.1-EGFP-miR-140.dna",
+      "matches": {
+        "载体类型": [
+          "pLKO"
+        ],
+        "靶基因": [],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Puromycin"
+        ],
+        "荧光蛋白": [
+          "EGFP"
+        ]
+      },
+      "mismatches": {
+        "插入类型": {
+          "expected": [
+            "miRNA"
+          ],
+          "actual": [
+            "shRNA"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "U6",
+            "hPGK"
+          ],
+          "actual": [
+            "U6"
+          ]
+        }
+      }
+    },
+    {
+      "score": 44.44444444444444,
+      "filename": "pTeton-hsa-miR-15b.dna",
+      "matches": {
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "miRNA"
+        ],
+        "启动子": [
+          "TRE"
+        ]
+      },
+      "mismatches": {
+        "载体类型": {
+          "expected": [
+            "四环素诱导系统"
+          ],
+          "actual": [
+            "pTeton"
+          ]
+        },
+        "靶基因": {
+          "expected": [
+            "miR-15b"
+          ],
+          "actual": [
+            "miR-15b",
+            "PTETON"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [
+            "Neomycin/G418"
+          ],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pGL3-hsp70-Luc-baceLU-PK-win11.dna",
+      "matches": {
+        "载体类型": [
+          "pGL3"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [],
+        "插入类型": [
+          "ORF/基因序列"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "HSP70",
+            "PGL3",
+            "WIN11",
+            "PK",
+            "BACELU",
+            "LUC"
+          ],
+          "actual": [
+            "HSP70",
+            "PGL3",
+            "WIN11",
+            "BACELU",
+            "LUC"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "SV40/None"
+          ],
+          "actual": [
+            "SV40"
+          ]
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pAc5.1_mir971.dna",
+      "matches": {
+        "载体类型": [
+          "pAc5"
+        ],
+        "靶基因": [],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "启动子": [
+          "Ac5"
+        ]
+      },
+      "mismatches": {
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "插入类型": {
+          "expected": [
+            "miRNA"
+          ],
+          "actual": [
+            "ORF/基因序列",
+            "mir971"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pET GST sdC HIS.dna",
+      "matches": {
+        "载体类型": [
+          "pET"
+        ],
+        "物种": [
+          "大肠杆菌"
+        ],
+        "大肠杆菌抗性": [
+          "Kanamycin"
+        ],
+        "哺乳动物抗性": [],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "启动子": [
+          "T7"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "Sd (C-term)"
+          ],
+          "actual": [
+            "SDC"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "6xHis",
+            "GST"
+          ],
+          "actual": [
+            "His",
+            "GST"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pHA-SLUG-MYC-CMV.dna",
+      "matches": {
+        "靶基因": [
+          "Slug"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Neomycin/G418"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "蛋白标签": [
+          "Myc",
+          "HA"
+        ],
+        "启动子": [
+          "CMV"
+        ]
+      },
+      "mismatches": {
+        "载体类型": {
+          "expected": [
+            "pCMV"
+          ],
+          "actual": [
+            "pUAST"
+          ]
+        },
+        "物种": {
+          "expected": [
+            "哺乳动物"
+          ],
+          "actual": [
+            "果蝇"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 44.44444444444444,
+      "filename": "PAC5.1 baceRB.dna",
+      "matches": {
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "启动子": [
+          "Ac5"
+        ]
+      },
+      "mismatches": {
+        "载体类型": {
+          "expected": [
+            "pAc5.1"
+          ],
+          "actual": [
+            "pAc5"
+          ]
+        },
+        "靶基因": {
+          "expected": [
+            "Bace (RB)"
+          ],
+          "actual": [
+            "1 baceRB"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 44.44444444444444,
+      "filename": "pTeton-hsa-miR-497.dna",
+      "matches": {
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "miRNA"
+        ],
+        "启动子": [
+          "TRE"
+        ]
+      },
+      "mismatches": {
+        "载体类型": {
+          "expected": [
+            "四环素诱导系统"
+          ],
+          "actual": [
+            "pTeton"
+          ]
+        },
+        "靶基因": {
+          "expected": [
+            "miR-497"
+          ],
+          "actual": [
+            "miR-497",
+            "PTETON"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [
+            "Neomycin/G418"
+          ],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 77.77777777777779,
+      "filename": "pUAST-VN173.dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "靶基因": [
+          "VN173"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": [
+            "VN173"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pGL3-hsp70-Luc-Bace-UTR Mut2.dna",
+      "matches": {
+        "载体类型": [
+          "pGL3"
+        ],
+        "靶基因": [
+          "HSP70",
+          "PGL3",
+          "LUC",
+          "BACE",
+          "UTR",
+          "MUT2"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [],
+        "插入类型": [
+          "ORF/基因序列"
+        ]
+      },
+      "mismatches": {
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "SV40/None"
+          ],
+          "actual": [
+            "SV40"
+          ]
+        }
+      }
+    },
+    {
+      "score": 77.77777777777779,
+      "filename": "pcDNA3.1-Bacc-HA.dna",
+      "matches": {
+        "载体类型": [
+          "pcDNA3"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Neomycin/G418"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "蛋白标签": [
+          "HA"
+        ],
+        "启动子": [
+          "CMV"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "BACC"
+          ],
+          "actual": [
+            "BACC",
+            "Bacc",
+            "PCDNA3"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 66.66666666666666,
+      "filename": "pLKO.1-EGFP-miR-16.dna",
+      "matches": {
+        "载体类型": [
+          "pLKO"
+        ],
+        "靶基因": [
+          "miR-16"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "哺乳动物抗性": [
+          "Puromycin"
+        ],
+        "荧光蛋白": [
+          "EGFP"
+        ]
+      },
+      "mismatches": {
+        "插入类型": {
+          "expected": [
+            "miRNA"
+          ],
+          "actual": [
+            "shRNA"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "U6",
+            "hPGK"
+          ],
+          "actual": [
+            "U6"
+          ]
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pUAST-VN173-linker-Bacc.dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "VN173",
+            "LINKER",
+            "BACC"
+          ],
+          "actual": [
+            "BACC",
+            "Bacc",
+            "LINKER",
+            "VN173"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Neomycin/G418"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": [
+            "VN173"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 44.44444444444444,
+      "filename": "pET-GST-Bacc-C.dna",
+      "matches": {
+        "载体类型": [
+          "pET"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "蛋白标签": [
+          "GST"
+        ],
+        "启动子": [
+          "T7"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "Bacc (C-term)"
+          ],
+          "actual": [
+            "BACC",
+            "Bacc"
+          ]
+        },
+        "物种": {
+          "expected": [
+            "大肠杆菌"
+          ],
+          "actual": [
+            "人",
+            "果蝇"
+          ]
+        },
+        "大肠杆菌抗性": {
+          "expected": [
+            "Kanamycin"
+          ],
+          "actual": [
+            "Ampicillin"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pUAST-3xFlag-C-dFOXO(202-622).dna",
+      "matches": {
+        "载体类型": [
+          "pUAST"
+        ],
+        "物种": [
+          "果蝇"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "插入类型": [
+          "ORF/基因序列"
+        ],
+        "启动子": [
+          "UAS"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "622)",
+            "DFOXO(202"
+          ],
+          "actual": [
+            "622)",
+            "DFOXO(202",
+            "3xFlag"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "3xFlag",
+            "Flag"
+          ],
+          "actual": [
+            "3xFlag"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    },
+    {
+      "score": 44.44444444444444,
+      "filename": "GV141-3xFlag.dna",
+      "matches": {
+        "载体类型": [
+          "GV141"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "蛋白标签": [
+          "3xFlag"
+        ]
+      },
+      "mismatches": {
+        "靶基因": {
+          "expected": [
+            "无"
+          ],
+          "actual": [
+            "3xFlag"
+          ]
+        },
+        "哺乳动物抗性": {
+          "expected": [
+            "Neomycin/G418"
+          ],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "插入类型": {
+          "expected": [
+            "无"
+          ],
+          "actual": [
+            "ORF/基因序列"
+          ]
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "启动子": {
+          "expected": [
+            "CMV"
+          ],
+          "actual": [
+            "UAS"
+          ]
+        }
+      }
+    },
+    {
+      "score": 55.55555555555556,
+      "filename": "pJET-U6-TIA1-KO-2-sgRNA.dna",
+      "matches": {
+        "载体类型": [
+          "pJET"
+        ],
+        "靶基因": [
+          "TIA1"
+        ],
+        "物种": [
+          "哺乳动物"
+        ],
+        "大肠杆菌抗性": [
+          "Ampicillin"
+        ],
+        "启动子": [
+          "U6"
+        ]
+      },
+      "mismatches": {
+        "哺乳动物抗性": {
+          "expected": [],
+          "actual": [
+            "Puromycin"
+          ]
+        },
+        "插入类型": {
+          "expected": [
+            "sgRNA"
+          ],
+          "actual": [
+            "sgRNA",
+            "shRNA"
+          ]
+        },
+        "蛋白标签": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        },
+        "荧光蛋白": {
+          "expected": [
+            "无"
+          ],
+          "actual": []
+        }
+      }
+    }
+  ]
+}

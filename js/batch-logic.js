@@ -18,8 +18,38 @@ window.createBatchLogic = (refs) => {
     // Batch Modal Tab State
     const batchTab = ref('new'); // 'new' | 'update'
 
+    const toCheckableList = (val) => {
+        let items = [];
+        if (val instanceof Set) {
+            items = Array.from(val);
+        } else {
+            items = window.Utils.ensureArray(val);
+        }
+        return items.map(v => ({ value: v, selected: true }));
+    };
+
+    const addBatchItemValue = (item, field, newValue) => {
+        if (!newValue || !newValue.trim()) return "";
+        const val = newValue.trim();
+        if (!item[field]) item[field] = [];
+        // 检查重复
+        if (!item[field].some(i => i.value === val)) {
+            item[field].push({ value: val, selected: true });
+        }
+        return ""; // 清空输入框
+    };
+
+    const getSelectedValues = (list) => {
+        if (!Array.isArray(list)) return window.Utils.ensureArray(list);
+        if (list.length > 0 && typeof list[0] === 'object' && 'selected' in list[0]) {
+            return list.filter(i => i.selected).map(i => i.value);
+        }
+        return window.Utils.ensureArray(list);
+    };
+
     // 批量导入处理逻辑
     const handleBatchFiles = async (files) => {
+        const t = (path) => window.I18n ? window.I18n.t(path) : path;
         window.Utils.log(`[批量导入] 收到待处理文件列表，共 ${files.length} 个`);
         const fileList = Array.from(files);
         
@@ -57,14 +87,49 @@ window.createBatchLogic = (refs) => {
                                     const contentMeta = await window.Recognition.recognizeFromContent(buffer, file.name);
                                     if (contentMeta) {
                                         window.Utils.log(`${stepPrefix} 智能识别成功，提取到: ${Object.keys(contentMeta).join(', ')}`);
-                                        // Merge contentMeta into recognized
-                                        Object.keys(contentMeta).forEach(key => {
-                                            if (recognized[key] !== undefined) {
-                                                // Union arrays
-                                                const set = new Set([...recognized[key], ...contentMeta[key]]);
-                                                recognized[key] = Array.from(set);
+                                        
+                                        // 交叉验证策略：
+                                        // 1. 对于序列相关字段 (抗性, 启动子, 标签, 荧光蛋白)，优先信赖内容识别结果
+                                        // 2. 对于结构性字段 (载体类型, 插入类型, 功能)，结合两者
+                                        // 3. 靶基因：内容识别可能更准 (GenBank)，合并去重
+                                        
+                                        const seqFields = ['大肠杆菌抗性', '哺乳动物抗性', '启动子', '蛋白标签', '荧光蛋白'];
+                                        const structFields = ['载体类型', '插入类型', '功能', '物种'];
+                                        
+                                        // 处理序列字段：如果内容有，则以内容为主或合并
+                                        seqFields.forEach(key => {
+                                            if (contentMeta[key] && contentMeta[key] instanceof Set && contentMeta[key].size > 0) {
+                                                // 如果文件名识别结果较少或不确定，直接用内容结果
+                                                if (!recognized[key] || recognized[key].size === 0) {
+                                                    recognized[key] = new Set(contentMeta[key]);
+                                                } else {
+                                                    // 合并
+                                                    contentMeta[key].forEach(v => recognized[key].add(v));
+                                                }
                                             }
                                         });
+
+                                        // 处理结构字段
+                                        structFields.forEach(key => {
+                                            if (contentMeta[key] && contentMeta[key] instanceof Set && contentMeta[key].size > 0) {
+                                                contentMeta[key].forEach(v => recognized[key].add(v));
+                                            }
+                                        });
+
+                                        // 处理靶基因
+                                         if (contentMeta['靶基因'] && contentMeta['靶基因'].size > 0) {
+                                             contentMeta['靶基因'].forEach(v => recognized['靶基因'].add(v));
+                                         }
+
+                                        // 重新进行一次全局标准化与去重
+                                        Object.keys(recognized).forEach(key => {
+                                            if (recognized[key] instanceof Set) {
+                                                window.Recognition.normalizeSet(recognized[key]);
+                                            }
+                                        });
+
+                                        // 重新生成描述
+                                        recognized.描述 = window.Recognition.generateDescription(recognized);
                                     }
                                 }
                             } catch (e) {
@@ -92,13 +157,20 @@ window.createBatchLogic = (refs) => {
                         
                         results.push({
                             ...recognized,
+                            文件名: (typeof recognized.文件名 === 'string' && recognized.文件名.length > 1) ? recognized.文件名 : (file.name || recognized.文件名),
                             序列: sequence, // 暂存序列，保存时写入文件
-                            载体类型: window.Utils.ensureString(recognized.载体类型),
-                            靶基因: window.Utils.ensureString(recognized.靶基因),
-                            物种: window.Utils.ensureString(recognized.物种),
-                            功能: window.Utils.ensureString(recognized.功能),
-                            大肠杆菌抗性: window.Utils.ensureString(recognized.大肠杆菌抗性),
-                            哺乳动物抗性: window.Utils.ensureString(recognized.哺乳动物抗性),
+                            载体类型: toCheckableList(recognized.载体类型),
+                            靶基因: toCheckableList(recognized.靶基因),
+                            物种: toCheckableList(recognized.物种),
+                            功能: toCheckableList(recognized.功能),
+                            插入类型: toCheckableList(recognized.插入类型),
+                            大肠杆菌抗性: toCheckableList(recognized.大肠杆菌抗性),
+                            哺乳动物抗性: toCheckableList(recognized.哺乳动物抗性),
+                            蛋白标签: toCheckableList(recognized.蛋白标签),
+                            荧光蛋白: toCheckableList(recognized.荧光蛋白),
+                            启动子: toCheckableList(recognized.启动子),
+                            突变: toCheckableList(recognized.突变),
+                            四环素诱导: toCheckableList(recognized.四环素诱导),
                             isDuplicate: isDuplicate,
                             selected: !isDuplicate,
                             保存位置: '',
@@ -260,18 +332,18 @@ window.createBatchLogic = (refs) => {
                 路径: item.路径,
                 序列: item.序列 || '', // 原始序列
                 序列文件: sequencePath, // 保存的 txt 路径
-                载体类型: window.Utils.ensureArray(item.载体类型),
-                靶基因: window.Utils.ensureArray(item.靶基因),
-                功能: window.Utils.ensureArray(item.功能),
-                大肠杆菌抗性: window.Utils.ensureArray(item.大肠杆菌抗性),
-                哺乳动物抗性: window.Utils.ensureArray(item.哺乳动物抗性),
-                物种: window.Utils.ensureArray(item.物种),
-                插入类型: window.Utils.ensureArray(item.插入类型),
-                蛋白标签: window.Utils.ensureArray(item.蛋白标签),
-                荧光蛋白: window.Utils.ensureArray(item.荧光蛋白),
-                启动子: window.Utils.ensureArray(item.启动子),
-                突变: window.Utils.ensureArray(item.突变),
-                四环素诱导: window.Utils.ensureArray(item.四环素诱导),
+                载体类型: getSelectedValues(item.载体类型),
+                靶基因: getSelectedValues(item.靶基因),
+                功能: getSelectedValues(item.功能),
+                大肠杆菌抗性: getSelectedValues(item.大肠杆菌抗性),
+                哺乳动物抗性: getSelectedValues(item.哺乳动物抗性),
+                物种: getSelectedValues(item.物种),
+                插入类型: getSelectedValues(item.插入类型),
+                蛋白标签: getSelectedValues(item.蛋白标签),
+                荧光蛋白: getSelectedValues(item.荧光蛋白),
+                启动子: getSelectedValues(item.启动子),
+                突变: getSelectedValues(item.突变),
+                四环素诱导: getSelectedValues(item.四环素诱导),
                 描述: item.描述 || '',
                 保存位置: item.保存位置 || '',
                 持有人: item.持有人 || '',
@@ -358,7 +430,7 @@ window.createBatchLogic = (refs) => {
                 // Array fields: merge and unique
                 const arrayFields = ['载体类型', '靶基因', '功能', '大肠杆菌抗性', '哺乳动物抗性', '物种', '插入类型', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
                 arrayFields.forEach(field => {
-                    const newVal = window.Utils.ensureArray(item[field]);
+                    const newVal = getSelectedValues(item[field]);
                     const oldVal = window.Utils.ensureArray(existing[field]);
                     existing[field] = [...new Set([...oldVal, ...newVal])];
                 });
@@ -408,6 +480,7 @@ window.createBatchLogic = (refs) => {
         saveBatchImport,
         saveBatchUpdate,
         toggleAllBatchItems,
+        addBatchItemValue,
         batchTab
     };
 };

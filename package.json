@@ -5,14 +5,18 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder",
+    "build:clean": "rimraf dist_v3 && electron-builder",
+    "icon": "node convert-icon.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "electron": "^40.1.0",
-    "electron-builder": "^26.7.0"
+    "electron-builder": "^26.7.0",
+    "rimraf": "^5.0.0",
+    "sharp": "^0.33.0"
   },
   "build": {
     "appId": "com.plasmid.manager",
@@ -20,7 +24,7 @@
     "directories": {
       "output": "dist_v3"
     },
-    "asar": false,
+    "asar": true,
     "files": [
       "**/*",
       "!data/**/*",
@@ -36,17 +40,52 @@
     ],
     "win": {
       "target": [
-        "dir"
+        "nsis",
+        "portable"
       ],
       "forceCodeSigning": false,
-      "icon": "icon.ico",
+      "icon": "assets/icon.png",
       "signtoolOptions": {
         "sign": null
       }
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "质粒管理系统"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.productivity",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.inherit.plist",
+      "extendInfo": {
+        "NSAppleEventsUsageDescription": "Please allow access to Apple Events.",
+        "NSCameraUsageDescription": "Please allow access to the camera.",
+        "NSMicrophoneUsageDescription": "Please allow access to the microphone."
+      }
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
     }
   }
 }
