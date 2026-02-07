@@ -1,0 +1,37 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Circle -->
+    <circle cx="256" cy="256" r="250" fill="white" />
+    
+    <!-- Outer Broken Ring (Thick Blue) -->
+    <path d="M 400 130 A 190 190 0 1 1 450 240" fill="none" stroke="#4a90e2" stroke-width="42" stroke-linecap="butt" />
+    <path d="M 180 380 A 150 150 0 0 0 420 310" fill="none" stroke="#63b3ed" stroke-width="35" stroke-linecap="butt" opacity="0.7" />
+
+    <!-- DNA Helix Structure -->
+    <g transform="translate(0, -20)">
+        <!-- DNA Rungs -->
+        <rect x="125" y="270" width="22" height="90" rx="11" fill="#4fd1c5" opacity="0.8" />
+        <rect x="195" y="295" width="22" height="50" rx="11" fill="#4fd1c5" opacity="0.8" />
+        <rect x="305" y="295" width="22" height="50" rx="11" fill="#3182ce" opacity="0.8" />
+        <rect x="375" y="265" width="22" height="100" rx="11" fill="#3182ce" opacity="0.8" />
+
+        <!-- DNA Helix - Bottom Blue Strand -->
+        <path d="M 60 320 C 130 460, 220 460, 285 320 C 350 180, 440 180, 510 320" fill="none" stroke="#3182ce" stroke-width="48" stroke-linecap="round" />
+        
+        <!-- DNA Helix - Top Cyan Strand -->
+        <path d="M 2 320 C 72 180, 162 180, 227 320 C 292 460, 382 460, 452 320" fill="none" stroke="#4fd1c5" stroke-width="48" stroke-linecap="round" />
+    </g>
+
+    <!-- Top Right Spark/Break Detail -->
+    <g transform="translate(420, 120)">
+        <path d="M -10 40 L 5 25 L -15 15" fill="none" stroke="#2d3748" stroke-width="12" stroke-linejoin="round" />
+        <line x1="15" y1="-5" x2="40" y2="-30" stroke="#4fd1c5" stroke-width="15" stroke-linecap="round" />
+    </g>
+
+    <!-- Scientific Text: Plasmids Manager (Simplified for better conversion compatibility) -->
+    <text x="256" y="470" font-family="monospace" font-weight="bold" font-size="34" fill="#2d3748" text-anchor="middle" letter-spacing="2">
+        > PLASMIDS_MANAGER _
+    </text>
+    
+    <!-- Small Decorative Base Pairs -->
+    <text x="256" y="495" font-family="monospace" font-size="12" fill="#a0aec0" text-anchor="middle" letter-spacing="6">A T C G G C T A</text>
+</svg>

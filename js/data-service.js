@@ -247,7 +247,7 @@ window.DataService = {
         URL.revokeObjectURL(url);
     },
 
-    downloadCSV: (data, filename = 'plasmid_export.csv', customHeaders = null) => {
+    downloadCSV: (data, filename = 'plasmid_export.csv', customHeaders = null, getProjectNameFn = null) => {
         if (!data || data.length === 0) return;
         
         // 默认表头添加 时间字段
@@ -256,7 +256,7 @@ window.DataService = {
             "大肠杆菌抗性", "哺乳动物抗性", "插入类型", "蛋白标签", 
             "荧光蛋白", "启动子", "突变", "四环素诱导", 
             "保存位置", "持有人", "项目", 
-            "添加时间", "更新时间", // 新增
+            "添加时间", "更新时间", 
             "序列", "序列文件", "路径", "描述"
         ];
         
@@ -264,8 +264,10 @@ window.DataService = {
             return headers.map(header => {
                 let val = p[header];
                 
-                // 时间字段格式化
-                if ((header === '添加时间' || header === '更新时间') && val) {
+                // 项目字段处理：如果提供了获取名称的函数，则转换 ID 为名称
+                if (header === '项目' && getProjectNameFn) {
+                    val = getProjectNameFn(val);
+                } else if ((header === '添加时间' || header === '更新时间') && val) {
                     try {
                         val = new Date(val).toLocaleString();
                     } catch (e) {

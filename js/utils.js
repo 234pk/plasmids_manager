@@ -10,8 +10,8 @@ window.Utils = {
 
     ensureString: (val) => {
         if (!val) return "";
-        if (Array.isArray(val)) return val.join(", ");
-        return val;
+        if (Array.isArray(val)) return val.filter(s => s && String(s).trim()).join(", ");
+        return String(val).trim();
     },
 
     /**
