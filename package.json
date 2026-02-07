@@ -1,6 +1,6 @@
 {
   "name": "plasmid-manager",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "质粒管理系统桌面版",
   "repository": {
     "type": "git",
@@ -54,7 +54,6 @@
       "owner": "234pk",
       "repo": "plasmids_manager"
     },
-    "requestTimeout": 300000,
     "win": {
       "target": [
         "nsis",
