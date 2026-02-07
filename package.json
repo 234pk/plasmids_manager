@@ -1,7 +1,7 @@
 {
   "name": "plasmid-manager",
-  "version": "1.0.13",
-  "description": "质粒管理系统桌面版",
+  "version": "1.0.14",
+  "description": "Plasmid Manager Desktop Application",
   "repository": {
     "type": "git",
     "url": "https://github.com/234pk/plasmids_manager.git"
@@ -70,7 +70,7 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "质粒管理系统"
+      "shortcutName": "PlasmidManager"
     },
     "mac": {
       "target": [
@@ -100,6 +100,7 @@
       }
     },
     "dmg": {
+      "title": "PlasmidManager-${version}",
       "window": {
         "width": 540,
         "height": 380
