@@ -22,12 +22,10 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        working-directory: ./macversion
         run: npm install
 
       - name: Build Mac App
         # Build for macOS without publishing
-        working-directory: ./macversion
         run: npm run build -- --mac -c.mac.identity=null
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -37,6 +35,6 @@ jobs:
         with:
           name: PlasmidManager-Mac
           path: |
-            macversion/dist_v3/*.dmg
-            macversion/dist_v3/*.zip
+            dist_v3/*.dmg
+            dist_v3/*.zip
           if-no-files-found: warn

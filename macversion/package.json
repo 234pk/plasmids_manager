@@ -1,0 +1,25 @@
+{
+  "name": "plasmid-manager",
+  "version": "1.0.16",
+  "description": "Plasmid Manager Desktop Application",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/234pk/plasmids_manager.git"
+  },
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:clean": "rimraf dist_v3 && electron-builder",
+    "icon": "node convert-icon.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "34.0.0",
+    "electron-builder": "^25.1.8",
+    "png2icons": "^2.0.1",
+    "rimraf": "^5.0.0"
+  }
+}
