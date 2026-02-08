@@ -1,0 +1,40 @@
+name: Build Mac (Check)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Mac App
+        # Build for macOS without publishing
+        run: npm run build -- --mac -c.mac.identity=null
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: PlasmidManager-Mac
+          path: |
+            dist_v3/*.dmg
+            dist_v3/*.zip
+          if-no-files-found: warn
