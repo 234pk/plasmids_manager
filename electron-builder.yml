@@ -21,6 +21,7 @@ publish:
   owner: 234pk
   repo: plasmids_manager
 win:
+  icon: assets/icon.ico
   target:
     - nsis
     - portable
@@ -32,6 +33,7 @@ nsis:
   createStartMenuShortcut: true
   shortcutName: PlasmidManager
 mac:
+  icon: assets/icon.icns
   target:
     - target: dmg
       arch:
