@@ -42,8 +42,10 @@ mac:
         - x64
         - arm64
   category: public.app-category.productivity
-  hardenedRuntime: false
+  hardenedRuntime: true
   gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.inherit.plist
   forceCodeSigning: false
   extendInfo:
     NSAppleEventsUsageDescription: Please allow access to Apple Events.
