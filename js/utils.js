@@ -1,4 +1,29 @@
 /**
+ * Global Electron API Setup
+ * Polyfill for missing preload script when nodeIntegration is enabled
+ */
+if (typeof window !== 'undefined' && window.require) {
+    try {
+        const { ipcRenderer } = window.require('electron');
+        window.electronAPI = {
+            invoke: (channel, ...args) => ipcRenderer.invoke(channel, ...args),
+            on: (channel, listener) => {
+                ipcRenderer.on(channel, (event, ...args) => listener(event, ...args));
+            },
+            send: (channel, ...args) => ipcRenderer.send(channel, ...args),
+            removeAllListeners: (channel) => ipcRenderer.removeAllListeners(channel)
+        };
+        window.isElectron = true;
+        console.log('Electron API initialized manually.');
+    } catch (e) {
+        console.warn('Failed to initialize Electron API:', e);
+        window.isElectron = false;
+    }
+} else {
+    window.isElectron = false;
+}
+
+/**
  * 辅助函数：处理数组与字符串转换
  */
 window.Utils = {
@@ -127,6 +152,24 @@ window.Utils = {
     },
 
     /**
+     * 更新项的完整描述 (手动备注 + 自动生成)
+     */
+    updateItemDescription: (item) => {
+        const autoDesc = window.Utils.generateDescription(item);
+        let manualDesc = item.customDescription || "";
+        
+        // 修复：移除自动填充的“批量导入”字样
+        if (manualDesc.trim() === '批量导入') {
+            manualDesc = "";
+            // 可选：同时清除源数据中的该值，避免下次依然出现
+            if (item.customDescription === '批量导入') item.customDescription = ""; 
+        }
+
+        item.描述 = manualDesc ? (manualDesc + (autoDesc ? '; ' + autoDesc : '')) : autoDesc;
+        return item.描述;
+    },
+
+    /**
      * 根据字段自动生成描述
      */
     generateDescription: (item) => {
@@ -149,17 +192,19 @@ window.Utils = {
         if (insert) parts.push(`插入类型: ${insert}`);
         
         const coliRes = getVals('大肠杆菌抗性');
+        if (coliRes) parts.push(`大肠杆菌抗性: ${coliRes}`);
+
         const mamRes = getVals('哺乳动物抗性');
-        const resistance = [coliRes, mamRes].filter(Boolean).join(', ');
-        if (resistance) parts.push(`抗性: ${resistance}`);
+        if (mamRes) parts.push(`哺乳动物抗性: ${mamRes}`);
 
         const promoter = getVals('启动子');
         if (promoter) parts.push(`启动子: ${promoter}`);
 
         const tags = getVals('蛋白标签');
+        if (tags) parts.push(`标签: ${tags}`);
+
         const fluo = getVals('荧光蛋白');
-        const allTags = [tags, fluo].filter(Boolean).join(', ');
-        if (allTags) parts.push(`标签: ${allTags}`);
+        if (fluo) parts.push(`荧光蛋白: ${fluo}`);
 
         const mutation = getVals('突变');
         if (mutation) parts.push(`突变: ${mutation}`);

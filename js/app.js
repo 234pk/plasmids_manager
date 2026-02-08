@@ -445,6 +445,14 @@ const App = {
             const names = batchNames.value.split('\n').map(n => n.trim()).filter(n => n);
             if (names.length === 0) return;
 
+            // 自动提交所有输入框中未按回车的临时值 (_new 字段) 到 editForm，以便作为默认值应用
+            const inputFields = ['载体类型', '靶基因', '物种', '功能', '插入类型', '大肠杆菌抗性', '哺乳动物抗性', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
+            inputFields.forEach(f => {
+                if (editForm.value[f + '_new']) {
+                    window.Utils.addBatchItemValue(editForm.value, f, editForm.value[f + '_new']);
+                }
+            });
+
             window.Utils.log(`[新增] 正在解析批量输入的 ${names.length} 条质粒名称`);
             
             const newItems = [];
@@ -467,7 +475,8 @@ const App = {
                     四环素诱导: '',
                     序列: '',
                     描述: '',
-                    保存位置: '',
+                    customDescription: editForm.value.customDescription || '',
+                    保存位置: editForm.value.保存位置 || '',
                     持有人: editForm.value.持有人 || settings.value.defaultOwner || '',
                     项目: [...(editForm.value.项目 || [])],
                     添加时间: Date.now(),
@@ -505,9 +514,9 @@ const App = {
                     });
                     
                     Object.assign(newItem, checkableInfo);
-                    // 生成描述: 用户手动备注 + 自动生成属性
+                    // 生成描述: 只有在准备阶段合并一次。之后由 Audit 窗口根据 customDescription 实时更新
                     const autoDesc = window.Utils.generateDescription(newItem);
-                    const manualDesc = editForm.value.customDescription || '';
+                    const manualDesc = newItem.customDescription || '';
                     newItem.描述 = manualDesc ? (manualDesc + (autoDesc ? '; ' + autoDesc : '')) : autoDesc;
                 } else {
                     // 如果没有识别引擎，但也可能有手动描述
@@ -532,21 +541,37 @@ const App = {
             if (batchPreviewList.value.length === 0) return;
             
             window.Utils.log(`[新增] 确认批量导入 ${batchPreviewList.value.length} 条质粒`);
+            console.log('[DEBUG] batchPreviewList.value:', JSON.parse(JSON.stringify(batchPreviewList.value)));
             
             // 查重逻辑
             let duplicateCount = 0;
             const validItems = [];
             
+            // 可勾选字段列表
+            const fields = ['载体类型', '靶基因', '物种', '功能', '插入类型', '大肠杆菌抗性', '哺乳动物抗性', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
+
             for (const item of batchPreviewList.value) {
-                // 提取所有可勾选字段的选中值
-                const fields = ['载体类型', '靶基因', '物种', '功能', '插入类型', '大肠杆菌抗性', '哺乳动物抗性', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
+                // 1. 自动提交所有输入框中未按回车的临时值 (_new 字段)
+                fields.forEach(f => {
+                    if (item[f + '_new']) {
+                        window.Utils.addBatchItemValue(item, f, item[f + '_new']);
+                        // addBatchItemValue 会清空 _new，但我们需要确保 selected 状态被更新
+                        // 实际上 addBatchItemValue 修改的是 item[f] 数组，增加了 {value: val, selected: true}
+                        // 所以后续 getSelectedValues 能够正确读取到
+                    }
+                });
+
+                // 2. 提取所有可勾选字段的选中值
                 const savedItem = { ...item };
                 
                 fields.forEach(f => {
                     const selectedVals = window.Utils.getSelectedValues(item[f]);
-                    savedItem[f] = selectedVals.join(', ');
-                    delete savedItem[f + '_new']; // 删除临时输入变量
+                    savedItem[f] = selectedVals; // 保持为数组格式，与编辑保存逻辑一致
+                    delete savedItem[f + '_new'];
                 });
+
+                // 重新生成描述，确保反映了审核窗口中的所有修改
+                savedItem.描述 = window.Utils.updateItemDescription(savedItem);
 
                 // 简单查重：检查文件名是否已存在
                 const exists = plasmids.value.some(p => p.文件名 === savedItem.文件名);
@@ -659,6 +684,17 @@ const App = {
                         ipc = electron.ipcRenderer;
                         isElectron.value = true;
                         window.isElectron = true; // Global flag for DbManager
+                        
+                        // 确保 window.electronAPI 存在 (Polyfill if utils.js failed)
+                        if (!window.electronAPI) {
+                            window.electronAPI = {
+                                invoke: (channel, ...args) => ipc.invoke(channel, ...args),
+                                on: (channel, listener) => ipc.on(channel, (event, ...args) => listener(event, ...args)),
+                                send: (channel, ...args) => ipc.send(channel, ...args),
+                                removeAllListeners: (channel) => ipc.removeAllListeners(channel)
+                            };
+                            console.log('[App] Polyfilled window.electronAPI from app.js');
+                        }
                     }
                 }
             }
@@ -1615,6 +1651,15 @@ const App = {
             const originalId = editingItem.value.id;
             const originalName = editingItem.value.文件名;
             window.Utils.log(`[编辑] 正在保存修改: ${originalName} (ID: ${originalId})`);
+            console.log('[DEBUG] editForm.value:', JSON.parse(JSON.stringify(editForm.value)));
+
+            // 自动提交所有输入框中未按回车的临时值 (_new 字段)
+            const fields = ['载体类型', '靶基因', '物种', '功能', '插入类型', '大肠杆菌抗性', '哺乳动物抗性', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
+            fields.forEach(f => {
+                if (editForm.value[f + '_new']) {
+                    window.Utils.addBatchItemValue(editForm.value, f, editForm.value[f + '_new']);
+                }
+            });
 
             try {
                 const updatedItem = {
@@ -1640,9 +1685,7 @@ const App = {
                 };
 
                 // 重新生成完整描述 (用户备注 + 自动属性)
-                const autoDesc = window.Utils.generateDescription(updatedItem);
-                const manualDesc = editForm.value.customDescription || '';
-                updatedItem.描述 = manualDesc ? (manualDesc + (autoDesc ? '; ' + autoDesc : '')) : autoDesc;
+                window.Utils.updateItemDescription(updatedItem);
                 delete updatedItem.customDescription;
 
                 // 清理临时字段

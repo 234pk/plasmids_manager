@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>质粒管理系统使用说明书</title>
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --text-color: #1f2937;
+            --text-secondary: #4b5563;
+            --bg-color: #f9fafb;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: var(--text-secondary);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        p {
+            margin-bottom: 16px;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.9em;
+            color: #d946ef;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .faq-item {
+            background: #fff;
+            border-left: 4px solid var(--primary-color);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 0 4px 4px 0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .faq-q {
+            font-weight: bold;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .faq-a {
+            color: var(--text-secondary);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 0 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <h1>质粒管理系统使用说明书</h1>
+        <p>Plasmid Manager - 实验室科研人员的高效助手</p>
+    </div>
+</header>
+
+<div class="container">
+
+    <section id="intro" class="card">
+        <h2>1. 软件简介</h2>
+        <p><strong>质粒管理系统</strong> 是一款专为实验室科研人员设计的桌面端质粒数据库管理工具。它旨在解决实验室质粒文件散乱、查找困难、信息记录不全等痛点，通过智能识别、批量导入和结构化管理，帮助实验室建立规范、高效的质粒资源库。</p>
+        
+        <div style="background-color: #f0fdf4; border-left: 4px solid #22c55e; padding: 15px; margin: 20px 0; border-radius: 4px;">
+            <h3 style="margin-top: 0; color: #166534;">📦 软件版本说明</h3>
+            <p style="margin-bottom: 10px;">本次发布包包含三种不同格式的程序，请根据需求选择：</p>
+            <ul style="margin-bottom: 0;">
+                <li><strong>安装版 (Setup.exe)</strong>: <span style="color: #15803d; font-weight: bold;">推荐使用</span>。标准的 Windows 安装程序，会自动安装到系统并创建桌面快捷方式。</li>
+                <li><strong>便携版 (单文件.exe)</strong>: 无需安装，双击即用。适合拷贝到 U 盘随身携带。</li>
+                <li><strong>解压版 (win-unpacked)</strong>: 文件夹格式的程序包，直接运行其中的 <code>PlasmidManager.exe</code> 即可。</li>
+            </ul>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-item">
+                <div class="highlight">📂 智能批量导入</div>
+                <p>支持拖拽文件夹直接导入，系统自动从文件名中识别抗性、启动子、标签、物种等关键信息。</p>
+            </div>
+            <div class="feature-item">
+                <div class="highlight">📝 自动属性识别</div>
+                <p>内置智能算法，无需手动输入即可提取质粒特征（如 <code>AmpR</code>, <code>CMV</code>, <code>EGFP</code>, <code>Flag</code> 等）。</p>
+            </div>
+            <div class="feature-item">
+                <div class="highlight">🔍 高效检索</div>
+                <p>支持按文件名、靶基因、抗性、项目等多维度组合搜索，支持拼音首字母快速查找。</p>
+            </div>
+            <div class="feature-item">
+                <div class="highlight">📊 结构化管理</div>
+                <p>按“项目”、“持有人”、“保存位置”对质粒进行分类统计，清晰掌握实验室资源分布。</p>
+            </div>
+            <div class="feature-item">
+                <div class="highlight">🧬 序列关联</div>
+                <p>自动关联 <code>.dna</code> / <code>.gb</code> / <code>.seq</code> 等序列文件，支持调用外部软件直接打开查看。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="quick-start">
+        <h2>2. 快速入门</h2>
+        
+        <h3>2.1 启动软件</h3>
+        <p>双击运行 <code>质粒管理系统.exe</code> 即可进入主界面。</p>
+        <ul>
+            <li><strong>数据存储</strong>: 软件默认在运行目录下的 <code>data</code> 文件夹中存储数据库 (<code>plasmids.json</code>) 和配置信息。请定期备份该文件夹以防数据丢失。</li>
+        </ul>
+
+        <h3>2.2 界面概览</h3>
+        <ul>
+            <li><strong>左侧导航栏</strong>: 切换不同视图（质粒库、项目管理、持有人管理、设置）。</li>
+            <li><strong>顶部工具栏</strong>: 包含搜索框、批量导入按钮、新建质粒按钮等常用操作。</li>
+            <li><strong>主列表区</strong>: 显示质粒条目，支持排序和筛选。</li>
+            <li><strong>右侧详情页</strong>: 点击列表项可查看质粒的详细信息、序列文件路径及备注。</li>
+        </ul>
+    </section>
+
+    <section id="guide">
+        <h2>3. 核心功能指南</h2>
+
+        <h3>3.1 批量导入 (推荐建库方式)</h3>
+        <p>这是初始化实验室数据库最高效的方式。</p>
+        <ol>
+            <li>点击顶部 <strong>“批量导入”</strong> 按钮。</li>
+            <li><strong>选择文件</strong>: 点击区域选择文件，或直接将包含质粒文件的<strong>文件夹</strong>拖入虚线框内（支持递归扫描子目录）。</li>
+            <li><strong>智能识别</strong>: 系统会自动分析文件名，提取特征。
+                <br><em>提示: 文件名越规范（如 <code>pCDH-CMV-MCS-EF1-GFP-Puro.dna</code>），识别越准确。</em>
+            </li>
+            <li><strong>审核与校准</strong>:
+                <ul>
+                    <li>进入审核页面，您可以预览识别结果。</li>
+                    <li><strong>标签系统</strong>: 点击属性下方的标签（如 <code>AmpR</code>）可快速勾选/取消。</li>
+                    <li><strong>手动补录</strong>: 在输入框中直接输入新属性（如 <code>KanR</code>），无需按回车，点击保存时会自动记录。</li>
+                    <li><strong>荧光蛋白</strong>: 专门的荧光蛋白字段（如 <code>EGFP</code>, <code>mCherry</code>）现已支持独立编辑。</li>
+                </ul>
+            </li>
+            <li><strong>确认导入</strong>: 点击底部 <strong>“确认导入”</strong>，数据将写入数据库。</li>
+        </ol>
+
+        <h3>3.2 单条新建</h3>
+        <p>适用于日常零星添加。</p>
+        <ol>
+            <li>点击 <strong>“新建质粒”</strong> 按钮。</li>
+            <li>填写基本信息（文件名、载体类型、靶基因等）。</li>
+            <li>可以直接拖入序列文件到窗口中进行关联。</li>
+            <li>点击 <strong>“保存”</strong>。</li>
+        </ol>
+
+        <h3>3.3 搜索与筛选</h3>
+        <ul>
+            <li><strong>全局搜索</strong>: 在顶部搜索框输入关键词（如 <code>GFP</code> 或 <code>张三</code>），实时显示匹配结果。</li>
+            <li><strong>高级筛选</strong>: 点击搜索框右侧的漏斗图标，可按“抗性”、“载体类型”、“物种”等特定字段精确过滤。</li>
+        </ul>
+
+        <h3>3.4 编辑与更新</h3>
+        <ul>
+            <li>在列表中点击质粒名称打开详情页，点击右上角 <strong>“编辑”</strong> 图标即可修改信息。</li>
+            <li><strong>注意</strong>: 所有的修改都会实时更新“描述”字段，确保信息的完整性。</li>
+        </ul>
+    </section>
+
+    <section id="faq">
+        <h2>4. 常见问题 (FAQ)</h2>
+        
+        <div class="faq-item">
+            <span class="faq-q">Q: 如何备份数据？</span>
+            <div class="faq-a">A: 请定期复制软件目录下的 <code>data</code> 文件夹到安全位置（如移动硬盘或云盘）。</div>
+        </div>
+
+        <div class="faq-item">
+            <span class="faq-q">Q: 识别结果不准确怎么办？</span>
+            <div class="faq-a">A: 可以在“设置”中自定义识别规则，添加实验室特有的命名习惯关键词。同时，建议统一实验室的质粒文件命名规范（例如：<code>载体-基因-标签-抗性</code>）。</div>
+        </div>
+
+        <div class="faq-item">
+            <span class="faq-q">Q: 为什么输入框输入后没有反应？</span>
+            <div class="faq-a">A: 最新版本已优化交互，输入内容后<strong>无需按回车键</strong>。直接点击保存，系统会自动将您输入的内容作为新标签提交。</div>
+        </div>
+
+        <div class="faq-item">
+            <span class="faq-q">Q: 找不到“荧光蛋白”选项？</span>
+            <div class="faq-a">A: 请检查是否为最新版本。最新版已在批量导入审核表中补充了“荧光蛋白”独立列。</div>
+        </div>
+    </section>
+
+    <section id="changelog" class="card">
+        <h2>5. 版本更新摘要 (2026-02-08)</h2>
+        <ul>
+            <li><strong>交互优化</strong>: 全面移除了输入框对回车键的依赖，防止误操作，输入体验更流畅。</li>
+            <li><strong>功能补全</strong>: 批量导入审核界面新增“荧光蛋白”列，抗性字段拆分为“大肠杆菌抗性”和“哺乳动物抗性”。</li>
+            <li><strong>数据安全</strong>: 增强了自动保存逻辑，防止因未按回车导致的临时输入丢失。</li>
+        </ul>
+    </section>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 质粒管理系统 | Designed for Lab Efficiency</p>
+</footer>
+
+</body>
+</html>

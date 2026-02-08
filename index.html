@@ -985,10 +985,14 @@
                                 <textarea v-model="batchNames" rows="10" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all font-mono text-xs" :placeholder="t('gen_0298')"></textarea>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-gray-100">
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0299') }}</label>
                                     <input v-model="editForm.持有人" type="text" list="list-owners" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0300') || '保存位置' }}</label>
+                                    <input v-model="editForm.保存位置" type="text" list="list-locations" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="例如：冰箱A-层2-盒1">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('gen_0301') }}</label>
@@ -1042,7 +1046,6 @@
                                         <input v-model="editForm.载体类型_new" type="text" 
                                                :placeholder="editForm.载体类型.length === 0 ? t('gen_0300') : '+'" 
                                                list="list-载体类型"
-                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '载体类型', editForm.载体类型_new); editForm.载体类型_new = ''; "
                                                class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
                                     </div>
                                 </div>
@@ -1059,7 +1062,6 @@
                                         <input v-model="editForm.靶基因_new" type="text" 
                                                :placeholder="editForm.靶基因.length === 0 ? t('gen_0300') : '+'" 
                                                list="list-靶基因"
-                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '靶基因', editForm.靶基因_new); editForm.靶基因_new = ''; "
                                                class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
                                     </div>
                                 </div>
@@ -1076,7 +1078,6 @@
                                         <input v-model="editForm.物种_new" type="text" 
                                                :placeholder="editForm.物种.length === 0 ? t('gen_0300') : '+'" 
                                                list="list-物种"
-                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '物种', editForm.物种_new); editForm.物种_new = ''; "
                                                class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
                                     </div>
                                 </div>
@@ -1093,7 +1094,6 @@
                                         <input v-model="editForm.功能_new" type="text" 
                                                :placeholder="editForm.功能.length === 0 ? t('gen_0300') : '+'" 
                                                list="list-功能"
-                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '功能', editForm.功能_new); editForm.功能_new = ''; "
                                                class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
                                     </div>
                                 </div>
@@ -1110,7 +1110,6 @@
                                         <input v-model="editForm.大肠杆菌抗性_new" type="text" 
                                                :placeholder="editForm.大肠杆菌抗性.length === 0 ? t('gen_0300') : '+'" 
                                                list="list-大肠杆菌抗性"
-                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '大肠杆菌抗性', editForm.大肠杆菌抗性_new); editForm.大肠杆菌抗性_new = ''; "
                                                class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
                                     </div>
                                 </div>
@@ -1127,7 +1126,6 @@
                                         <input v-model="editForm.哺乳动物抗性_new" type="text" 
                                                :placeholder="editForm.哺乳动物抗性.length === 0 ? t('gen_0300') : '+'" 
                                                list="list-哺乳动物抗性"
-                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '哺乳动物抗性', editForm.哺乳动物抗性_new); editForm.哺乳动物抗性_new = ''; "
                                                class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
                                     </div>
                                 </div>
@@ -1144,7 +1142,6 @@
                                         <input v-model="editForm.插入类型_new" type="text" 
                                                :placeholder="editForm.插入类型.length === 0 ? t('gen_0300') : '+'" 
                                                list="list-插入类型"
-                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '插入类型', editForm.插入类型_new); editForm.插入类型_new = ''; "
                                                class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
                                     </div>
                                 </div>
@@ -1161,7 +1158,6 @@
                                         <input v-model="editForm.蛋白标签_new" type="text" 
                                                :placeholder="editForm.蛋白标签.length === 0 ? t('gen_0300') : '+'" 
                                                list="list-蛋白标签"
-                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '蛋白标签', editForm.蛋白标签_new); editForm.蛋白标签_new = ''; "
                                                class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
                                     </div>
                                 </div>
@@ -1178,7 +1174,6 @@
                                         <input v-model="editForm.荧光蛋白_new" type="text" 
                                                :placeholder="editForm.荧光蛋白.length === 0 ? t('gen_0300') : '+'" 
                                                list="list-荧光蛋白"
-                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '荧光蛋白', editForm.荧光蛋白_new); editForm.荧光蛋白_new = ''; "
                                                class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
                                     </div>
                                 </div>
@@ -1195,7 +1190,6 @@
                                         <input v-model="editForm.启动子_new" type="text" 
                                                :placeholder="editForm.启动子.length === 0 ? t('gen_0300') : '+'" 
                                                list="list-启动子"
-                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '启动子', editForm.启动子_new); editForm.启动子_new = ''; "
                                                class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
                                     </div>
                                 </div>
@@ -1212,7 +1206,6 @@
                                         <input v-model="editForm.四环素诱导_new" type="text" 
                                                :placeholder="editForm.四环素诱导.length === 0 ? t('gen_0300') : '+'" 
                                                list="list-四环素诱导"
-                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '四环素诱导', editForm.四环素诱导_new); editForm.四环素诱导_new = ''; "
                                                class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
                                     </div>
                                 </div>
@@ -1229,7 +1222,6 @@
                                         <input v-model="editForm.突变_new" type="text" 
                                                :placeholder="editForm.突变.length === 0 ? t('gen_0300') : '+'" 
                                                list="list-突变"
-                                               @keyup.enter="window.Utils.addBatchItemValue(editForm, '突变', editForm.突变_new); editForm.突变_new = ''; "
                                                class="w-full bg-transparent border-none focus:ring-0 outline-none py-0 text-xs text-gray-600 placeholder:text-gray-400">
                                     </div>
                                 </div>
@@ -1668,12 +1660,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0413') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.载体类型" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded border border-purple-100 cursor-pointer hover:bg-purple-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-purple-300 text-purple-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-purple-300 text-purple-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.载体类型_new" list="list-载体类型"
-                                                    @keyup.enter="item.载体类型_new = window.Utils.addBatchItemValue(item, '载体类型', item.载体类型_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.载体类型_new" list="list-载体类型">
                                             </div>
                                         </div>
                                         <!-- 物种 -->
@@ -1681,12 +1672,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0415') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.物种" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-green-50 text-green-700 rounded border border-green-100 cursor-pointer hover:bg-green-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-green-300 text-green-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-green-300 text-green-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.物种_new" list="list-物种"
-                                                    @keyup.enter="item.物种_new = window.Utils.addBatchItemValue(item, '物种', item.物种_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.物种_new" list="list-物种">
                                             </div>
                                         </div>
                                         <!-- 插入类型 -->
@@ -1694,12 +1684,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0417') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.插入类型" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-blue-300 text-blue-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-blue-300 text-blue-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.插入类型_new" list="list-插入类型"
-                                                    @keyup.enter="item.插入类型_new = window.Utils.addBatchItemValue(item, '插入类型', item.插入类型_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.插入类型_new" list="list-插入类型">
                                             </div>
                                         </div>
                                     </td>
@@ -1709,12 +1698,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0151') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.靶基因" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-gray-50 text-gray-700 rounded border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-gray-300 text-indigo-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-gray-300 text-indigo-600">
                                                     <span class="text-[10px] font-bold">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.靶基因_new" list="list-靶基因"
-                                                    @keyup.enter="item.靶基因_new = window.Utils.addBatchItemValue(item, '靶基因', item.靶基因_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.靶基因_new" list="list-靶基因">
                                             </div>
                                         </div>
                                         <!-- 启动子 -->
@@ -1722,12 +1710,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0186') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.启动子" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-gray-50 text-gray-600 rounded border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-gray-300 text-gray-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-gray-300 text-gray-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.启动子_new" list="list-启动子"
-                                                    @keyup.enter="item.启动子_new = window.Utils.addBatchItemValue(item, '启动子', item.启动子_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.启动子_new" list="list-启动子">
                                             </div>
                                         </div>
                                         <!-- 蛋白标签 -->
@@ -1735,12 +1722,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0178') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.蛋白标签" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-amber-50 text-amber-700 rounded border border-amber-100 cursor-pointer hover:bg-amber-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-amber-300 text-amber-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-amber-300 text-amber-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.蛋白标签_new" list="list-蛋白标签"
-                                                    @keyup.enter="item.蛋白标签_new = window.Utils.addBatchItemValue(item, '蛋白标签', item.蛋白标签_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.蛋白标签_new" list="list-蛋白标签">
                                             </div>
                                         </div>
                                         <!-- 荧光蛋白 -->
@@ -1748,12 +1734,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0182') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.荧光蛋白" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 text-emerald-700 rounded border border-emerald-100 cursor-pointer hover:bg-emerald-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-emerald-300 text-emerald-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-emerald-300 text-emerald-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.荧光蛋白_new" list="list-荧光蛋白"
-                                                    @keyup.enter="item.荧光蛋白_new = window.Utils.addBatchItemValue(item, '荧光蛋白', item.荧光蛋白_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.荧光蛋白_new" list="list-荧光蛋白">
                                             </div>
                                         </div>
                                     </td>
@@ -1763,12 +1748,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0423') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.大肠杆菌抗性" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-orange-50 text-orange-700 rounded border border-orange-100 cursor-pointer hover:bg-orange-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-orange-300 text-orange-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-orange-300 text-orange-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.大肠杆菌抗性_new" list="list-大肠杆菌抗性"
-                                                    @keyup.enter="item.大肠杆菌抗性_new = window.Utils.addBatchItemValue(item, '大肠杆菌抗性', item.大肠杆菌抗性_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.大肠杆菌抗性_new" list="list-大肠杆菌抗性">
                                             </div>
                                         </div>
                                         <!-- 哺乳动物抗性 -->
@@ -1776,12 +1760,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0425') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.哺乳动物抗性" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-blue-300 text-blue-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-blue-300 text-blue-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.哺乳动物抗性_new" list="list-哺乳动物抗性"
-                                                    @keyup.enter="item.哺乳动物抗性_new = window.Utils.addBatchItemValue(item, '哺乳动物抗性', item.哺乳动物抗性_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.哺乳动物抗性_new" list="list-哺乳动物抗性">
                                             </div>
                                         </div>
                                         <!-- 四环素诱导 -->
@@ -1789,12 +1772,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0427') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.四环素诱导" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-red-50 text-red-700 rounded border border-red-100 cursor-pointer hover:bg-red-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-red-300 text-red-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-red-300 text-red-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.四环素诱导_new" list="list-四环素诱导"
-                                                    @keyup.enter="item.四环素诱导_new = window.Utils.addBatchItemValue(item, '四环素诱导', item.四环素诱导_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.四环素诱导_new" list="list-四环素诱导">
                                             </div>
                                         </div>
                                         <!-- 突变 -->
@@ -1802,12 +1784,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0190') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.突变" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-rose-50 text-rose-700 rounded border border-rose-100 cursor-pointer hover:bg-rose-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-rose-300 text-rose-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-rose-300 text-rose-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.突变_new" list="list-突变"
-                                                    @keyup.enter="item.突变_new = window.Utils.addBatchItemValue(item, '突变', item.突变_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.突变_new" list="list-突变">
                                             </div>
                                         </div>
                                     </td>
@@ -1877,8 +1858,13 @@
                                 <tr v-for="(item, index) in batchPreviewList" :key="index" class="hover:bg-gray-50">
                                     <td class="px-4 py-3 align-top">
                                         <input type="text" v-model="item.文件名" class="w-full bg-transparent border-b border-transparent focus:border-indigo-300 focus:outline-none font-bold py-1">
-                                        <div class="mt-2 text-[10px] text-gray-400 break-all leading-tight">
-                                            {{ item.描述 }}
+                                        <textarea v-model="item.customDescription" 
+                                            @input="window.Utils.updateItemDescription(item)"
+                                            rows="2"
+                                            class="w-full mt-2 bg-transparent text-[10px] text-gray-500 border-none focus:ring-0 focus:outline-none placeholder:text-gray-300 resize-none leading-tight" 
+                                            placeholder="点击输入备注..."></textarea>
+                                        <div class="mt-1 text-[9px] text-gray-300 break-all leading-tight italic">
+                                            预览: {{ item.描述 }}
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 space-y-3 align-top">
@@ -1887,12 +1873,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0413') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.载体类型" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded border border-purple-100 cursor-pointer hover:bg-purple-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-purple-300 text-purple-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-purple-300 text-purple-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.载体类型_new" list="list-载体类型"
-                                                    @keyup.enter="item.载体类型_new = window.Utils.addBatchItemValue(item, '载体类型', item.载体类型_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.载体类型_new" list="list-载体类型">
                                             </div>
                                         </div>
                                         <!-- 物种 -->
@@ -1900,12 +1885,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0415') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.物种" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-green-50 text-green-700 rounded border border-green-100 cursor-pointer hover:bg-green-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-green-300 text-green-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-green-300 text-green-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.物种_new" list="list-物种"
-                                                    @keyup.enter="item.物种_new = window.Utils.addBatchItemValue(item, '物种', item.物种_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.物种_new" list="list-物种">
                                             </div>
                                         </div>
                                         <!-- 插入类型 -->
@@ -1913,12 +1897,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0417') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.插入类型" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-blue-300 text-blue-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-blue-300 text-blue-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.插入类型_new" list="list-插入类型"
-                                                    @keyup.enter="item.插入类型_new = window.Utils.addBatchItemValue(item, '插入类型', item.插入类型_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.插入类型_new" list="list-插入类型">
                                             </div>
                                         </div>
                                     </td>
@@ -1928,12 +1911,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0151') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.靶基因" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-gray-50 text-gray-700 rounded border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-gray-300 text-indigo-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-gray-300 text-indigo-600">
                                                     <span class="text-[10px] font-bold">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.靶基因_new" list="list-靶基因"
-                                                    @keyup.enter="item.靶基因_new = window.Utils.addBatchItemValue(item, '靶基因', item.靶基因_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.靶基因_new" list="list-靶基因">
                                             </div>
                                         </div>
                                         <!-- 启动子 -->
@@ -1941,12 +1923,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0186') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.启动子" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-gray-50 text-gray-600 rounded border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-gray-300 text-gray-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-gray-300 text-gray-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.启动子_new" list="list-启动子"
-                                                    @keyup.enter="item.启动子_new = window.Utils.addBatchItemValue(item, '启动子', item.启动子_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.启动子_new" list="list-启动子">
                                             </div>
                                         </div>
                                         <!-- 蛋白标签 -->
@@ -1954,12 +1935,23 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0178') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.蛋白标签" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-amber-50 text-amber-700 rounded border border-amber-100 cursor-pointer hover:bg-amber-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-amber-300 text-amber-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-amber-300 text-amber-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.蛋白标签_new" list="list-蛋白标签"
-                                                    @keyup.enter="item.蛋白标签_new = window.Utils.addBatchItemValue(item, '蛋白标签', item.蛋白标签_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.蛋白标签_new" list="list-蛋白标签">
+                                            </div>
+                                        </div>
+                                        <!-- 荧光蛋白 -->
+                                        <div class="space-y-1">
+                                            <span class="text-[9px] text-gray-400 block">{{ t('gen_0182') }}</span>
+                                            <div class="flex flex-wrap gap-1">
+                                                <label v-for="val in item.荧光蛋白" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 text-emerald-700 rounded border border-emerald-100 cursor-pointer hover:bg-emerald-100 transition-colors">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-emerald-300 text-emerald-600">
+                                                    <span class="text-[10px]">{{ val.value }}</span>
+                                                </label>
+                                                <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
+                                                    v-model="item.荧光蛋白_new" list="list-荧光蛋白">
                                             </div>
                                         </div>
                                     </td>
@@ -1969,12 +1961,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0423') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.大肠杆菌抗性" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-orange-50 text-orange-700 rounded border border-orange-100 cursor-pointer hover:bg-orange-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-orange-300 text-orange-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-orange-300 text-orange-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.大肠杆菌抗性_new" list="list-大肠杆菌抗性"
-                                                    @keyup.enter="item.大肠杆菌抗性_new = window.Utils.addBatchItemValue(item, '大肠杆菌抗性', item.大肠杆菌抗性_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.大肠杆菌抗性_new" list="list-大肠杆菌抗性">
                                             </div>
                                         </div>
                                         <!-- 哺乳动物抗性 -->
@@ -1982,12 +1973,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0425') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.哺乳动物抗性" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-blue-300 text-blue-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-blue-300 text-blue-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.哺乳动物抗性_new" list="list-哺乳动物抗性"
-                                                    @keyup.enter="item.哺乳动物抗性_new = window.Utils.addBatchItemValue(item, '哺乳动物抗性', item.哺乳动物抗性_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.哺乳动物抗性_new" list="list-哺乳动物抗性">
                                             </div>
                                         </div>
                                         <!-- 突变 -->
@@ -1995,12 +1985,11 @@
                                             <span class="text-[9px] text-gray-400 block">{{ t('gen_0190') }}</span>
                                             <div class="flex flex-wrap gap-1">
                                                 <label v-for="val in item.突变" :key="val.value" class="flex items-center gap-1 px-1.5 py-0.5 bg-rose-50 text-rose-700 rounded border border-rose-100 cursor-pointer hover:bg-rose-100 transition-colors">
-                                                    <input type="checkbox" v-model="val.selected" @change="item.描述 = window.Utils.generateDescription(item)" class="w-3 h-3 rounded border-rose-300 text-rose-600">
+                                                    <input type="checkbox" v-model="val.selected" @change="window.Utils.updateItemDescription(item)" class="w-3 h-3 rounded border-rose-300 text-rose-600">
                                                     <span class="text-[10px]">{{ val.value }}</span>
                                                 </label>
                                                 <input type="text" placeholder="+" class="w-16 bg-transparent border-b border-gray-200 focus:border-indigo-300 focus:outline-none py-0 text-[10px]"
-                                                    v-model="item.突变_new" list="list-突变"
-                                                    @keyup.enter="item.突变_new = window.Utils.addBatchItemValue(item, '突变', item.突变_new); item.描述 = window.Utils.generateDescription(item)">
+                                                    v-model="item.突变_new" list="list-突变">
                                             </div>
                                         </div>
                                     </td>

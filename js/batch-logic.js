@@ -148,6 +148,7 @@ window.createBatchLogic = (refs) => {
                             四环素诱导: toCheckableList(recognized.四环素诱导),
                             isDuplicate: isDuplicate,
                             selected: !isDuplicate,
+                            customDescription: '',
                             保存位置: '',
                             持有人: '',
                             项目: [],
@@ -262,6 +263,18 @@ window.createBatchLogic = (refs) => {
             window.Utils.showToast('请至少选择一个质粒进行导入');
             return;
         }
+
+        // 自动提交所有输入框中未按回车的临时值 (_new 字段)
+        const fields = ['载体类型', '靶基因', '物种', '功能', '插入类型', '大肠杆菌抗性', '哺乳动物抗性', '蛋白标签', '荧光蛋白', '启动子', '突变', '四环素诱导'];
+        selectedItems.forEach(item => {
+            fields.forEach(f => {
+                if (item[f + '_new']) {
+                    window.Utils.addBatchItemValue(item, f, item[f + '_new']);
+                }
+            });
+            // 更新描述以反映可能的新增标签
+            window.Utils.updateItemDescription(item);
+        });
 
         const formattedItems = [];
         let sequenceSavedCount = 0;

@@ -1,0 +1,51 @@
+appId: com.plasmid.manager
+productName: PlasmidManager
+executableName: PlasmidManager
+directories:
+  output: dist_v3
+icon: assets/icon.png
+asar: true
+files:
+  - "**/*"
+  - "!data/**/*"
+  - "!dist/**/*"
+  - "!dist_v3/**/*"
+  - "!Backup/**/*"
+  - "!.git/**/*"
+  - "!.idea/**/*"
+  - "!.vscode/**/*"
+  - "!**/*.md"
+  - "!convert-icon.js"
+publish:
+  provider: github
+  owner: 234pk
+  repo: plasmids_manager
+win:
+  target:
+    - nsis
+    - portable
+  forceCodeSigning: false
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: PlasmidManager
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+    - target: zip
+      arch:
+        - x64
+        - arm64
+  category: public.app-category.productivity
+  hardenedRuntime: false
+  gatekeeperAssess: false
+  forceCodeSigning: false
+  extendInfo:
+    NSAppleEventsUsageDescription: Please allow access to Apple Events.
+    NSCameraUsageDescription: Please allow access to the camera.
+    NSMicrophoneUsageDescription: Please allow access to the microphone.
